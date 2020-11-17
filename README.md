@@ -1,0 +1,1 @@
+# développer l’interface d’administration et l’affichage des contenus et générer automatiquement des documents officiels de l’entreprise utilisant les technologies AngularJS 7, NestJS,ElasticSearch(moteur de recherche), TinyMCE, MoxieManager,DocxTemplater
