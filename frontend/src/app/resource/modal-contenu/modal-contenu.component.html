@@ -1,0 +1,6 @@
+<div class="content" (clickOutside)="close($event)" [delayClickOutsideInit]="true">
+    <i class="fas fa-times btn-close" (click)="close($event)"></i>
+    <h2>{{contenu?.titre}}</h2>
+    <div class="bloc" [innerHtml]="contenu?.contenu | safeHtml">
+    </div>
+</div>

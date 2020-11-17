@@ -1,0 +1,17 @@
+<div class="content" (clickOutside)="emitClose.emit()" [delayClickOutsideInit]="true">
+  <i class="sub fas fa-times btn-close" (click)="close()"></i>
+  <h2>Validation par le client</h2>
+  <div class="bloc">
+    <div class="formgroup full">
+      <label>Origine de validation</label>
+      <select [(ngModel)]="idOrigineValidation">
+        <option *ngFor="let key of keys" [value]="key" [label]="enumOrigineValidation[key]"></option>
+      </select>
+    </div>
+    <div class="action">
+      <div class="button" (click)="confirm()">
+        Valider
+      </div>
+    </div>
+  </div>
+</div>

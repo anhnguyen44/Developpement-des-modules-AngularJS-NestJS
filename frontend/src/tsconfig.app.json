@@ -1,0 +1,18 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../out-tsc/app",
+    "baseUrl": "./",
+    "module": "es2015",
+    "types": [
+      "leaflet", "node"
+    ]
+  },
+  "exclude": [
+    "test.ts",
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "../node_modules/@aleaac/shared/**/*.spec.ts",
+    "../node_modules/@aleaac/shared/**/*.test.ts"
+  ]
+}

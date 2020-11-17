@@ -1,0 +1,48 @@
+<div class="formgroup full">
+    <label>Liste</label>
+    <div>
+        <input type="radio" name="liste" value="1" [(ngModel)]="liste" (ngModelChange)="setListe($event)" [attr.disabled]="!canEdit ? '' : null" /> Liste A
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="radio" name="liste" value="2" [(ngModel)]="liste" (ngModelChange)="setListe($event)" [attr.disabled]="!canEdit ? '' : null" /> Liste B
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="radio" name="liste" value="3" [(ngModel)]="liste" (ngModelChange)="setListe($event)" [attr.disabled]="!canEdit ? '' : null" /> Liste C
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="radio" name="liste" value="4" [(ngModel)]="liste" (ngModelChange)="setListe($event)" [attr.disabled]="!canEdit ? '' : null" /> Liste
+        Autres
+    </div>
+</div>
+<div style="width: 100%; margin-bottom: 6px;" *ngIf="liste !== '4'">
+    <div style="width: 33%; display: inline-block;">
+        Parties de Structure :
+    </div>
+    <div style="width: 33%; display: inline-block;" *ngIf="currentPartieStructure">
+        Composants :
+    </div>
+    <div style="width: 33%; display: inline-block;" *ngIf="currentComposant">
+        Parties de Composant :
+    </div>
+</div>
+<div style="width: 100%;" *ngIf="liste !== '4'">
+    <select size="8" style="width: 33%; height: 165px;" [(ngModel)]="currentPartieStructure"
+        (ngModelChange)="setPartieStructure($event)" [attr.disabled]="!canEdit ? '' : null">
+        <option *ngFor="let ps of partiesStructure">{{ps}}</option>
+    </select>
+    <select size="8" style="width: 33%; height: 165px;" [(ngModel)]="currentComposant"
+        (ngModelChange)="setComposant($event)" *ngIf="currentPartieStructure" [attr.disabled]="!canEdit ? '' : null">
+        <option *ngFor="let c of composants">{{c}}</option>
+    </select>
+    <select size="8" style="width: 33%; height: 165px;" [(ngModel)]="currentPartieComposant"
+        (ngModelChange)="setPartieComposant($event)" *ngIf="currentComposant" [attr.disabled]="!canEdit ? '' : null">
+        <option *ngFor="let pc of partiesComposant">{{pc}}</option>
+    </select>
+</div>
+<div *ngIf="liste === '4'" style="width: 100%;">
+    <form (ngSubmit)="onSubmit()">
+        <app-liste nomListe="ListeMateriauxAmianteAutre" label="Autre matériau amianté" [parentForm]="formMateriau"
+            *ngIf="isPatchValueDone" internalFormControlName="autreMateriau" [tabIndex]="1" style="width: 100%;"
+            (emitListe)="listeMateriauxAutres = $event" [disabled]="!canEdit"></app-liste>
+        <div class="action" *ngIf="canEdit">
+            <button type="submit" class="button">Valider</button>
+        </div>
+    </form>
+</div>

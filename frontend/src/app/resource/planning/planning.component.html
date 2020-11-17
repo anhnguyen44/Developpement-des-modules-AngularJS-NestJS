@@ -1,0 +1,132 @@
+<div class="bloc">
+  <div class="cal-event">aaaaa</div>
+  <div class="actionCalendar">
+
+    <div class="actionDay">
+      <select *ngIf="bureaux && bureaux.length > 1" [(ngModel)]="idBureau" (change)="changeBureau($event.target.value)">
+        <option *ngFor="let bureau of bureaux" [value]="bureau.id">{{bureau.nom}} - {{bureau.nomCommercial}}</option>
+      </select>
+    </div>
+
+    <div class="actionSwitch">
+      <div class="button" (click)="previous()">
+        <i class="fas fa-caret-left"></i>
+      </div>
+      <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'fr-FR'}}</h3>
+      <div class="button" (click)="next()">
+        <i class="fas fa-caret-right"></i>
+      </div></div>
+
+    <div class="actionFrequence">
+      <div class="button" mwlCalendarToday [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
+        <i class="fas fa-calendar-day"></i>
+      </div>
+      <div class="button"
+           (click)="setView(CalendarView.Day)"
+           [class.active]="view === CalendarView.Day">
+        <i class="fas fa-calendar-day"></i>
+      </div>
+      <div class="button"
+           (click)="setView(CalendarView.Week)"
+           [class.active]="view === CalendarView.Week">
+        <i class="fas fa-calendar-week"></i>
+      </div>
+      <div class="button"
+           (click)="setView(CalendarView.Month)"
+           [class.active]="view === CalendarView.Month">
+        <i class="fas fa-calendar-alt"></i>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="view === CalendarView.Week && type === 'intervention'" class="nbPompes">
+    <div class="label">Envi</div>
+    <div class="nbPompe">{{nbPompesEnvi.lundi}}</div>
+    <div class="nbPompe">{{nbPompesEnvi.mardi}}</div>
+    <div class="nbPompe">{{nbPompesEnvi.mercredi}}</div>
+    <div class="nbPompe">{{nbPompesEnvi.jeudi}}</div>
+    <div class="nbPompe">{{nbPompesEnvi.vendredi}}</div>
+    <div class="nbPompe">{{nbPompesEnvi.samedi}}</div>
+    <div class="nbPompe">{{nbPompesEnvi.dimanche}}</div>
+  </div>
+  <div *ngIf="view === CalendarView.Week && type === 'intervention'" class="nbPompes">
+    <div class="label">Meta</div>
+    <div class="nbPompe">{{nbPompesMeta.lundi}}</div>
+    <div class="nbPompe">{{nbPompesMeta.mardi}}</div>
+    <div class="nbPompe">{{nbPompesMeta.mercredi}}</div>
+    <div class="nbPompe">{{nbPompesMeta.jeudi}}</div>
+    <div class="nbPompe">{{nbPompesMeta.vendredi}}</div>
+    <div class="nbPompe">{{nbPompesMeta.samedi}}</div>
+    <div class="nbPompe">{{nbPompesMeta.dimanche}}</div>
+  </div>
+  <div class="full" [ngSwitch]="view">
+    <mwl-calendar-month-view
+            *ngSwitchCase="CalendarView.Month"
+            [viewDate]="viewDate"
+            [events]="events"
+            [refresh]="refresh"
+            [weekStartsOn]="1"
+            [activeDayIsOpen]="activeDayIsOpen"
+            (dayClicked)="dayClicked($event.day)"
+            (eventClicked)="eventClicked($event)"
+    >
+    </mwl-calendar-month-view>
+    <mwl-calendar-week-view
+            *ngSwitchCase="CalendarView.Week"
+            [viewDate]="viewDate"
+            [events]="events"
+            [dayStartHour]="6"
+            [dayEndHour]="20"
+            [weekStartsOn]="1"
+            [hourSegments]="1"
+            [refresh]="refresh"
+            [tooltipPlacement]="'top'"
+            [tooltipAppendToBody]="true"
+            [tooltipTemplate]="cellTooltipTemplate"
+            (eventClicked)="eventClicked($event)"
+    >
+    </mwl-calendar-week-view>
+
+    <!-- TOOL TIP POUR LES WEEK  -->
+    <ng-template #cellTooltipTemplate
+                 let-event="event"
+                 let-placement="placement">
+      <div class="cal-tooltip" [ngClass]="'cal-tooltip-' + placement">
+        <div class="cal-tooltip-arrow"></div>
+        <div class="cal-tooltip-inner">
+          <div>
+            {{event.title}}<br />
+            De {{event.start | date : 'hh:mm'}} à {{event.end | date : 'hh:mm'}}
+          </div>
+          <div *ngIf="event.nbPompeEnvi || event.nbPompeMeta">
+            nb pompe meta : {{event.nbPompeMeta}}<br/>
+            nb pompe envi : {{event.nbPompeEnvi}}
+          </div>
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template #test>
+      <div class="cal-tooltip" [ngClass]="'cal-tooltip-' + placement">
+        <div class="cal-tooltip-arrow"></div>
+        <div class="cal-tooltip-inner" [innerHtml]="weekEvent.event">
+
+        </div>
+      </div>
+    </ng-template>
+
+
+    <mwl-calendar-day-view
+            *ngSwitchCase="CalendarView.Day"
+            [viewDate]="viewDate"
+            [dayStartHour]="6"
+            [dayEndHour]="20"
+            [hourSegments]="1"
+            [events]="events"
+            [refresh]="refresh"
+            (eventClicked)="eventClicked($event)"
+    >
+    </mwl-calendar-day-view>
+  </div>
+
+</div>

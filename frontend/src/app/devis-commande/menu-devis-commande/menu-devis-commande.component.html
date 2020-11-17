@@ -1,0 +1,8 @@
+<nav class="menu-gauche">
+  <div [class.active]="activeMenu === 'information'" [routerLink]="['/devis-commande', id, 'modifier']" *ngIf="id">Informations</div>
+  <div [class.active]="activeMenu === 'information'" *ngIf="!id">Informations</div>
+  <div [class.active]="activeMenu === 'detail'" [routerLink]="['/devis-commande', id, 'detail']" *ngIf="id">Détails</div>
+  <div [class.active]="activeMenu === 'interlocuteur'" [routerLink]="['/devis-commande', id, 'interlocuteur']" *ngIf="id">Contacts</div>
+  <div [class.active]="activeMenu === 'fichier'" [routerLink]="['/devis-commande', id, 'fichier']" *ngIf="id">Fichiers</div>
+  <div [class.active]="activeMenu === 'historique'" [routerLink]="['/devis-commande', id, 'historique']" *ngIf="id">Historique</div>
+</nav>

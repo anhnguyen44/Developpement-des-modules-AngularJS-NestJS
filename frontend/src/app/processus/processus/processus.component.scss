@@ -1,0 +1,40 @@
+@import "variables";
+
+:host{
+  width: 100%;
+}
+
+.tache {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.selection-tache {
+  display: flex;
+  width: 100%;
+}
+
+.list-taches {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.list-taches > div {
+  width: 100%;
+  display: flex;
+  background-color: $couleurFondTr1;
+}
+
+.list-taches > div:nth-child(odd) {
+  background-color: $couleurFondTr2;
+}
+
+.list-taches > div > div {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+}
+

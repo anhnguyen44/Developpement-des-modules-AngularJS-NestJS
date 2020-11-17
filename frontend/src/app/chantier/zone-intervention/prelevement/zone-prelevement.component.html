@@ -1,0 +1,10 @@
+<div class="content" *ngIf="idZoneIntervention">
+  <div class="action" *ngIf="isBtnGenererVisible">
+    <button type="button" class="button" (click)="genererPrelevements()">
+      <i class="fas fa-cogs"></i> Générer à partir de l'échantillonnage
+      <img *ngIf="isLoadingGenerate"
+      src="assets/img/ajax-loader.gif" style="margin-left: 0.5em;" />
+    </button>
+  </div>
+  <app-page-prelevement-zone application="ZIPrel" [idParent]="idZoneIntervention" [typePage]="'liste'" [franchise]="franchise" [isNew]="true" [canEdit]="canEdit" (emitRefresh)="refresh()"></app-page-prelevement-zone>
+</div>

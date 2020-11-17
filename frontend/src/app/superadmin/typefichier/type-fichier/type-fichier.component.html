@@ -1,0 +1,35 @@
+<app-menu-superadmin></app-menu-superadmin>
+<div class="content">
+  <h2>Type de fichiers</h2>
+  <div class="bloc">
+    <div class="table">
+      <div class="action">
+        <div class="right"></div>
+        <div class="left">
+          <div (click)="ajoutTypeFichier()" class="nofocus">
+            <i class="fas fa-plus"></i> Créer
+          </div>
+        </div>
+      </div>
+      <div class="header">
+        <div class="row">
+          <div class="grow1">Id</div>
+          <div class="grow2">Nom</div>
+          <div class="grow2">Groupe</div>
+          <div class="grow1">Affectable</div>
+          <div class="action">Action</div>
+        </div>
+      </div>
+      <div class="content">
+        <div class="row" *ngFor="let typeFichier of typeFichiers" (dblclick)="editTypeFichier(typeFichier)">
+          <div class="grow1">{{typeFichier.id}}</div>
+          <div class="grow2">{{typeFichier.nom}}</div>
+          <div class="grow2">{{typeFichier?.groupe?.nom}}</div>
+          <div class="grow1"><span *ngIf="typeFichier.affectable"><i class="fas fa-check"></i></span></div>
+          <div class="action"><i (click)="editTypeFichier(typeFichier)" class="fas fa-pencil-alt"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-modal-type-fichier *ngIf="typeFichier" [typeFichiers]="typeFichiers" [typeFichier]="typeFichier" (emitTypeFichier)="setTypeFichier($event)" [@fadeIn] [@fadeOut]></app-modal-type-fichier>
+</div>

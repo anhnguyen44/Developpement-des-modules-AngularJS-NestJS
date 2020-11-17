@@ -1,0 +1,98 @@
+<app-recherche [champDeRecherches]="champDeRecherches" [queryBuild]="queryBuild" (emitQueryBuild)="setQueryBuild($event)"></app-recherche>
+<!-- <div class="bloc" *ngFor="let contenu of listeContenusByMenu;let i = index">
+    <h3>
+        <span>{{contenu.titre}}</span>
+        <span class="date">{{contenu.dateAjout  | date:'dd-MM-yyyy'}}</span>
+    </h3>
+    <div class="content-actu">
+        <div class="img-actu">
+            <img *ngIf="contenu.miniature!==null" src="http://localhost:4242/api/v1/fichier/affiche/{{contenu?.miniature.keyDL}}" (click)="gotoDetails1('/contenu/article/',contenu.expression)" style="cursor:pointer;">
+        </div>
+        <div class="description">
+            <p>{{contenu.intro}}</p>
+            <div class="complement">
+                <div class="categorie">
+                    {{contenu.categorie?.titre}}
+                </div>
+                <a class="link" (click)="gotoDetails1('/contenu/article/',contenu.expression)">
+                    Lire la suite ...
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div> -->
+
+<div class="bloc" *ngFor="let contenu of listeContenuElasTest!;let i = index">
+    <h3>
+        <span (click)="gotoDetails1('/contenu/article/',contenu.expression)" style="cursor:pointer; width: 93%;">{{contenu.titre}}</span>
+        <span class="date">{{contenu.dateAjout  | date:'dd-MM-yyyy'}}</span>
+    </h3>
+    <div class="content-actu">
+        <div class="img-actu">
+            <img src="{{contenu.MiniautureURL}}" (click)="gotoDetails1('/contenu/article/',contenu.expression)" style="cursor:pointer;">
+        </div>
+        <div class="description">
+            <p>{{contenu.intro}}</p>
+            <div class="complement">
+                <div class="categorie">
+                    {{contenu.categorieTire}}
+                </div>
+                <a class="link" (click)="gotoDetails1('/contenu/article/',contenu.expression)">
+                    Lire la suite ...
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>
+<app-pagination [nbObjets]="nbObjets" [queryBuild]="queryBuild" (emitQueryBuild)="setQueryBuild($event)"></app-pagination>
+
+<!-- <div class="bloc">
+    <h3>
+        <span>Actu 1</span>
+        <span class="date">le 25 Juin 2019</span>
+    </h3>
+    <div class="content-actu">
+        <div class="img-actu">
+            <img src="assets/img/marker-icon-green.png">
+        </div>
+        <div class="description">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <div class="complement">
+                <div class="categorie">
+                    Qualité
+                </div>
+                <a class="link">
+                    Lire la suite ...
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="bloc">
+    <h3>
+        <span>Actu 1</span>
+        <span class="date">le 25 Juin 2019</span>
+    </h3>
+    <div class="content-actu">
+        <div class="img-actu">
+            <img src="assets/img/logo-alea-controles.png">
+        </div>
+        <div class="description">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <div class="complement">
+                <div class="categorie">
+                    Juridique
+                </div>
+                <a class="link">
+                    Lire la suite ...
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div> -->

@@ -1,0 +1,120 @@
+<app-menu-admin-contenu></app-menu-admin-contenu>
+<div class="content">
+    <h2>Nouveau contenu</h2>
+    <div class="bloc">
+        <form [formGroup]='contenuForm' (ngSubmit)="onSubmitContenu()">
+            <div class="formgroup full">
+                <label>Menu *</label>
+                <select (change)='isActiveSelectCate()' formControlName="menu"
+                        [ngClass]="{ 'invalid': submitedContenu && f.menu?.errors }" [compareWith]="compareFn">
+                    <option *ngFor='let menu of listeMenus;let i = index' [ngValue]="menu">
+                        {{menu.titre}}({{menu.name}})
+                    </option>
+                </select>
+            </div>
+            <div class="formgroup full" *ngIf="activeCateList">
+                <label>Categorie</label>
+                <select formControlName="categorie" [ngClass]="{ 'invalid': submitedContenu && f.categorie?.errors }"
+                        [compareWith]="compareFn">
+                    <option *ngFor="let cate of listeCates;let i = index" [ngValue]="cate">{{cate.titre}}</option>
+                </select>
+            </div>
+            <div class="formgroup full">
+                <label>Expression *</label>
+                <input type="text" formControlName="expression"
+                       [ngClass]="{ 'invalid': submitedContenu && f.expression.errors }">
+            </div>
+            <div class="formgroup full">
+                <label>Tag</label>
+                <input type="text" formControlName="tag" [ngClass]="{ 'invalid': submitedContenu && f.tag.errors }">
+            </div>
+            <div class="formgroup full">
+                <label>Titre</label>
+                <input type="text" placeholder="Si vide, l'expression sera utilisée." formControlName="titre"
+                       [ngClass]="{ 'invalid': submitedContenu && f.titre.errors }">
+            </div>
+            <div class="formgroup full">
+                <label>Libellé lien</label>
+                <input type="text" placeholder="Si vide, l'expression sera utilisée." formControlName="libelleLien"
+                       [ngClass]="{ 'invalid': submitedContenu && f.libelleLien.errors }">
+            </div>
+            <div class="formgroup full">
+                <label>Header 1</label>
+                <input type="text" placeholder="Si vide, l'expression sera utilisée." formControlName="header1"
+                       [ngClass]="{ 'invalid': submitedContenu && f.header1.errors }">
+            </div>
+            <div class="formgroup full">
+                <label>Header 2</label>
+                <input type="text" formControlName="header2"
+                       [ngClass]="{ 'invalid': submitedContenu && f.header2.errors }">
+            </div>
+            <div class="formgroup full">
+                <label>Intro *</label>
+                <textarea formControlName="intro"
+                          [ngClass]="{ 'invalid': submitedContenu && f.intro.errors }"></textarea>
+            </div>
+            <div class="formgroup full">
+                <label>Contenu</label>
+                <!-- <ckeditor formControlName="contenu" [editor]="Editor" [config]="config" (change)='affichageContenu()' [ngClass]="{ 'invalid': submitedContenu && f.contenu.errors }"></ckeditor>                 -->
+                <app-tiny-mce [ngClass]="{ 'invalid': submitedContenu && f.contenu.errors }"
+                              (emitContent)="getContent($event)" [idContenu]='id'></app-tiny-mce>
+            </div>
+            <div class="formgroup full">
+                <label>Miniature</label>
+                <!-- <div class="action">
+                    <input type="text" formControlName="miniature" [ngClass]="{ 'invalid': submitedContenu && f.miniature.errors }">
+                    <div class="action">
+                        <div class="button">Sélectionner une image</div>
+                        <div class="button">Détacher la image</div>
+                    </div>
+                </div> -->
+                <div class="col-md-3">
+                    <input type="file" style="display:none;">
+                    <button type="button" class="button" (click)="openModalFichier()"
+                            style="min-width:124px;font-size:14px;">Upload Image
+                    </button>
+                </div>
+                <div *ngIf="urlImage!='none'" class="miniature"><img src="{{urlImage}}"><i class="fas fa-times"
+                                                                                           (click)="exportImage()"></i>
+                </div>
+            </div>
+            <div class="formgroup full">
+                <label>Ordre</label>
+                <input type="number" min="0" formControlName="ordre"
+                       [ngClass]="{ 'invalid': submitedContenu && f.ordre.errors }">
+            </div>
+            <div class="formgroup full">
+                <label>Meta description *</label>
+                <textarea cols="30" rows="10" maxlength="155" formControlName="metaDescription"
+                          [ngClass]="{ 'invalid': submitedContenu && f.metaDescription.errors }"></textarea>
+            </div>
+            <div class="formgroup full">
+                <label>Visible</label>
+                <input type="checkbox" formControlName="visible"
+                       [ngClass]="{ 'invalid': submitedContenu && f.visible.errors }">
+            </div>
+            <!-- <div class="formgroup full" *ngIf="id">
+                <label>Date D'ajout</label>
+                <input type="date" formControlName="dateAjout" [ngClass]="{ 'invalid': submitedContenu && f.dateAjout.errors }">
+            </div>
+            <div class="formgroup full" *ngIf="id">
+                <label>Date mis à jour</label>
+                <input type="date" formControlName="dateMisAJour" [ngClass]="{ 'invalid': submitedContenu && f.dateMisAJour.errors }">
+            </div> -->
+            <div class="formgroup full">
+                <label>Permission</label>
+                <select formControlName="permission" [ngClass]="{ 'invalid': submitedContenu && f.permission.errors }"
+                        [compareWith]="compareFn">
+                    <option value="null">Tous</option>
+                    <option *ngFor='let droit of listeDroit;let i = index' [ngValue]="droit">{{droit.nom}}</option>
+                </select>
+            </div>
+            <div class="action">
+                <button class="button" type="submit" tabindex="13">Valider</button>
+            </div>
+        </form>
+    </div>
+</div>
+<app-modal-fichier *ngIf="modalFichier" (emitIdFichier)='getIdFichier($event)' (emitClose)="closeModalFichier()"
+                   [application]="'contenu'" [groupeTypeFicher]="groupeTypeFicher" [TypeFichier]="TypeFichier"
+                   [idParent]="0"></app-modal-fichier>

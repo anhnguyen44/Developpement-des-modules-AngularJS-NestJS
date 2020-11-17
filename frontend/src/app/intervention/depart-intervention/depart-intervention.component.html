@@ -1,0 +1,85 @@
+<div class="bloc">
+  <div class="formgroup">
+    <label>Réfèrence</label>
+    <div *ngIf="intervention?.id; else pasInterventionRef">{{intervention?.id}}</div>
+    <ng-template #pasInterventionRef>Nouvelle intervention</ng-template>
+  </div>
+  <div class="formgroup">
+    <label>Statut</label>
+    <div *ngIf="intervention?.id; else pasInterventionStatut">
+      {{enumStatutIntervention[intervention.idStatut]}}
+    </div>
+    <ng-template #pasInterventionStatut>SAISIE</ng-template>
+  </div>
+</div>
+<h2>Filtres</h2>
+<div class="bloc">
+  <form [formGroup]="interventionForm" (ngSubmit)="onSubmit(interventionForm)">
+    <div class="formgroup">
+      <label>Nombre filtres environemental</label>
+      {{interventionForm.get('nbFiltreEnvi')!.value}}
+    </div>
+    <div class="formgroup">
+      <label>Nombre filtres META OP</label>
+      {{interventionForm.get('nbFiltreMeta')!.value}}
+    </div>
+
+    <h3>Pompes</h3>
+    <div class="formgroup">
+      <label>Nombre pompes environemental</label>
+      {{interventionForm.get('nbPompeEnvi')!.value}}
+    </div>
+    <div class="formgroup">
+      <label>Nombre pompes META OP</label>
+      {{interventionForm.get('nbPompeMeta')!.value}}
+    </div>
+    <div class="table">
+      <div class="action">
+        <div class="left"></div>
+        <div class="right">
+          <div (click)="openModalPompe()" *ngIf="isEditable"><i class="fas fa-plus"></i> Ajouter</div>
+        </div>
+      </div>
+      <div class="header">
+        <div class="row">
+          <div>Référence</div>
+          <div>Libellè</div>
+          <div>Type</div>
+          <div class="action" *ngIf="isEditable">
+            Action
+          </div>
+        </div>
+      </div>
+      <div class="content">
+        <div class="row" *ngFor="let rendezVousPompes of interventionForm['controls'].rendezVous['controls']!.rendezVousPompes!.value">
+          <div>{{rendezVousPompes.pompe.id}}</div>
+          <div>{{rendezVousPompes.pompe.ref}}</div>
+          <div>{{enumTypePompe[rendezVousPompes.pompe.idTypePompe]}}</div>
+          <div class="action" *ngIf="isEditable"><i (click)="removePompe(rendezVousPompes)" class="fas fa-unlink"></i></div>
+        </div>
+      </div>
+    </div>
+    <div class="alert" *ngIf="selectionPompe()">
+      Vous n'avez pas selectionné suffisament de pompe par rapport à ce qui est définie dans la préparation.
+    </div>
+    <div class="alert" *ngIf="nbPrelevementZoneNonOccupeSansAir > 0">
+      Pensez à prendre des ventillateurs. <br/>
+      <span *ngIf="nbPrelevementZoneNonOccupeSansAir === 1">{{nbPrelevementZoneNonOccupeSansAir}} prélèvement est dans une zone  non occupé où la ventillation n'est pas suffisante</span>
+      <span *ngIf="nbPrelevementZoneNonOccupeSansAir > 1">{{nbPrelevementZoneNonOccupeSansAir}} prélèvements sont dans une zone  non occupé où la ventillation n'est pas suffisante</span>
+    </div>
+    <div class="action">
+      <button class="button">Valider</button>
+      <div class="button" (click)="retourTerrain(interventionForm)" *ngIf="interventionForm.get('idStatut')!.value < enumStatutIntervention.RETOUR_TERRAIN">
+        Retour terrain
+      </div>
+    </div>
+  </form>
+</div>
+<app-modal-pompe *ngIf="modalPompe"
+                 [pompesAjoutees]="interventionForm.get('rendezVous')['controls'].rendezVousPompes.value"
+                 [idBureau]="interventionForm.get('idBureau').value"
+                 [rendezVous]="interventionForm.get('rendezVous').value"
+                 (emitPompe)="setPompe($event)"
+                 (emitClose)="closePompeModal()"
+                 [@fadeIn] [@fadeOut]
+></app-modal-pompe>

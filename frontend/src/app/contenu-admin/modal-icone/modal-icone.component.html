@@ -1,0 +1,10 @@
+<div class="content">
+  <i class="fas fa-times btn-close" (click)="close()"></i>
+  <!-- <h2>{{test}}</h2> -->
+  <div class="bloc">
+    <strong style="padding-left:40px;">All 5 097 Awesome Icons (demo fontionne pas encore)</strong>
+    <ul style="list-style-type:none;" (clickOutside)="close()" [delayClickOutsideInit]="true">
+      <li class="icone" *ngFor='let icone of listeIcone;let i = index' (click)="setIcone(icone)"><i class='{{icone}}'></i></li>
+    </ul>
+  </div>
+</div>

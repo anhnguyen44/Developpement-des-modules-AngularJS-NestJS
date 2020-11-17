@@ -1,0 +1,18 @@
+<div class="bloc">
+  <div class="table">
+    <div class="action">
+      <div class="left"></div>
+      <div class="right"><div (click)="nouveauProcessus()"><i class="fas fa-plus"></i>Créer</div></div>
+    </div>
+    <app-header-table [headers]="headers" [querybuild]="queryBuild" (emitQueryBuild)="setQueryBuild($event)"></app-header-table>
+    <div class="content">
+      <div class="row" *ngFor="let processus of listProcessus" (dblclick)="goTo(processus)">
+        <div>{{processus.libelle}}</div>
+          <div class="action">
+              <i class="fas fa-pencil-alt" (click)="goTo(processus)"></i>
+              <i *ngIf="processus.prelevements.length === 0" (click)="delete(processus)" class="fas fa-trash"></i>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>

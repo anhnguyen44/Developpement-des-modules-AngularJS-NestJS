@@ -1,0 +1,14 @@
+<div class="content" (clickOutside)="close($event)" [delayClickOutsideInit]="true" [exclude]="'.nofocus'" [excludeBeforeClick]="true">
+  <i class="fas fa-times btn-close" (click)="close($event)"></i>
+  <h2 *ngIf="for === 'create'">
+    <span *ngIf="!siteInterv">Créer un nouveau site d'intervention &nbsp;&nbsp;&nbsp;&nbsp;</span>
+    <span *ngIf="siteInterv?.id">Modification du site d'intervention &nbsp;&nbsp;&nbsp;&nbsp;</span>
+    <button *ngIf="isOnlyCreate === false" type="button" (click)="setSelectMode($event);" class="button nofocus" style="display: inline-block">
+    <i class="fas fa-undo"></i> Sélection d'un site existant</button>
+  </h2>
+  <div class="bloc" *ngIf="for === 'create'">
+    <app-site-intervention-edit [siteInterv]="siteInterv" (emitClose)="close($event)" (emitSite)="setSiteIntervention($event)"></app-site-intervention-edit>
+  </div>
+  <h2 *ngIf="for === 'select'">Sites existants pour ce chantier</h2>
+  <app-liste-sites-intervention *ngIf="for === 'select'" [isOnlyCreate]="isOnlyCreate" (emitCreateSite)="setCreateMode($event)" (emitClose)="close($event)"></app-liste-sites-intervention>
+</div>

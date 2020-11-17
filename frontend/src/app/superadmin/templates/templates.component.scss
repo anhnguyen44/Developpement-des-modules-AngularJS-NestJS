@@ -1,0 +1,17 @@
+@import "variables";
+
+:host{
+  display: flex;
+  width: 100%;
+}
+
+.mini-titre {
+  color: $couleurH2;
+  font-weight: bold;
+}
+
+@media (max-width: 640px) {
+  :host{
+    flex-wrap: wrap;
+  }
+}

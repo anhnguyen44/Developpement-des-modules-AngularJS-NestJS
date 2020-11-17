@@ -1,0 +1,26 @@
+<div *ngIf="!isRechercheVille" >
+   <combo-box
+   [internalFormControlName]="internalFormControlName"
+   [parentForm]="parentForm"
+   [dataList] = "listeAffichage"
+   [isOnlyNumbers] = "true"
+   [columnName] = "'numCP'"
+   [displayColumnName] = "'cpVille'"
+   [tabindex]="tabindex"
+   (emitSearch)="getCPVille($event)"
+   (emitResult)="setCP($event)"
+ ></combo-box>
+</div>
+<div *ngIf="isRechercheVille" [formGroup]="parentForm">
+   <combo-box
+   [internalFormControlName]="internalFormControlName"
+   [parentForm]="parentForm"
+   [dataList] = "listeAffichage"
+   [isOnlyMajuscules] = "true"
+   [columnName] = "'nomCommune'"
+   [displayColumnName] = "'cpVille'"
+   [tabindex]="tabindex"
+   (emitSearch)="getCPVille($event)"
+   (emitResult)="setCP($event)"
+ ></combo-box>
+</div>

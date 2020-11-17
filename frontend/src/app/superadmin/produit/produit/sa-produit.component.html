@@ -1,0 +1,65 @@
+<app-menu-superadmin></app-menu-superadmin>
+<div class="content">
+  <div class="bloc" *ngIf="id">
+    <div class="formgroup">
+      <label>Référence</label>
+      <div>{{id}}</div>
+    </div>
+    <div class="formgroup">
+        <label>Rang</label>
+        <input type="number" [(ngModel)]="produit.rang" required>
+      </div>
+  </div>
+  <h2>Produit</h2>
+  <div class="bloc">
+    <form [formGroup]="produitForm" (ngSubmit)="onSubmitProduit()">
+      <div class="formgroup">
+        <label>Nom</label>
+        <input type="text" formControlName="nom" [ngClass]="{ 'invalid': submittedProduit && f.nom.errors }" tabindex="1">
+      </div>
+      <div class="formgroup">
+        <label>Général à tous les franchisés</label>
+        <input type="checkbox" formControlName="isGeneral" [ngClass]="{ 'invalid': submittedProduit && f.isGeneral.errors }" tabindex="2">
+      </div>
+
+      <div class="formgroup">
+        <label>Code produit</label>
+        <input type="text" formControlName="code" [ngClass]="{ 'invalid': submittedProduit && f.code.errors }" tabindex="1">
+      </div>
+      <div class="formgroup">
+        <label>Possède un temps de référence</label>
+        <input type="checkbox" formControlName="hasTemps" [ngClass]="{ 'invalid': submittedProduit && f.hasTemps.errors }" tabindex="2">
+      </div>
+
+      <div class="formgroup" *ngIf="f.hasTemps.value">
+        <label>Temps de référence</label>
+        <input type="text" formControlName="tempsUnitaire" [ngClass]="{ 'invalid': submittedProduit && f.tempsUnitaire.errors }" tabindex="1">
+      </div>
+      <div class="formgroup" *ngIf="f.hasTemps.value">
+        <label>Unité</label>
+        <input type="text" formControlName="uniteTemps" [ngClass]="{ 'invalid': submittedProduit && f.uniteTemps.errors }" tabindex="2">
+      </div>
+
+      <div class="formgroup">
+        <label>Prix de référence (HT)</label>
+        <input type="text" formControlName="prixUnitaire" [value]="produitForm.get('prixUnitaire')?.value" 
+         [ngClass]="{ 'invalid': submittedProduit && f.prixUnitaire.errors }" tabindex="1">
+      </div>
+      <div class="formgroup">
+      <label>Type</label>
+        <select formControlName="type" [ngClass]="{ 'invalid': submittedProduit && f.type?.errors }"
+          [compareWith]="compareFn">
+          <option *ngFor="let type of listeTypeProduit" [ngValue]="type">{{type?.nom}}</option>
+        </select>
+      </div>
+      <div class="formgroup full">
+        <label>Description</label>
+        <textarea formControlName="description" [ngClass]="{ 'invalid': submittedProduit && f.description.errors }" tabindex="2"></textarea>
+      </div>
+
+      <div class="action">
+          <button class="button" type="submit" tabindex="13">Valider</button>
+        </div>
+    </form>
+  </div>
+</div>

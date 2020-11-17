@@ -1,0 +1,77 @@
+<div class="content" (clickOutside)="emitClose.emit()" [delayClickOutsideInit]="true">
+  <i class="fas fa-times btn-close" (click)="close()"></i>
+  <h2>Résultat du blanc lot {{blancForm?.get('ref')?.value}}</h2>
+  <div class="bloc">
+    <form [formGroup]="blancForm" (ngSubmit)="onSubmit(blancForm)">
+      <div class="formgroup">
+        <label>Numéro PV</label>
+        <input type="text"
+               formControlName="numeroPV"
+               [ngClass]="{ 'invalid': blancForm['controls'].numeroPV.errors && submited}">
+      </div>
+      <div class="formgroup">
+        <label>Date réception</label>
+        <input type="date"
+               formControlName="dateReception"
+               [ngClass]="{ 'invalid': blancForm['controls'].dateReception.errors && submited}">
+      </div>
+      <div class="formgroup">
+        <label>Fraction par filtre</label>
+        <input type="number" step="0.001" min="0"
+               formControlName="fracFiltre"
+               [ngClass]="{ 'invalid': blancForm['controls'].fracFiltre.errors && submited}">
+      </div>
+      <div class="formgroup">
+        <label>Surface filtre secondaire</label>
+        <input type="number" min="0"
+               formControlName="surfaceFiltreSecondaire"
+               [ngClass]="{ 'invalid': blancForm['controls'].surfaceFiltreSecondaire.errors && submited}">
+      </div>
+      <div class="formgroup">
+        <label>Surface ouverture grille</label>
+        <input type="number" step="0.0001" min="0"
+               formControlName="surfaceOuvertureGrille"
+               [ngClass]="{ 'invalid': blancForm['controls'].surfaceOuvertureGrille.errors && submited}">
+      </div>
+      <div class="formgroup">
+        <label>Nombre de grille examinées</label>
+        <input type="number" min="0"
+               formControlName="nombreGilleExam"
+               [ngClass]="{ 'invalid': blancForm['controls'].nombreGilleExam.errors && submited}">
+      </div>
+      <div class="formgroup">
+        <label>Nombre ouverture lues</label>
+        <input type="number" min="0"
+               formControlName="nombreOuvertureGrillesLues"
+               [ngClass]="{ 'invalid': blancForm['controls'].nombreOuvertureGrillesLues.errors && submited}">
+      </div>
+      <div class="formgroup">
+        <label>Nombre fibres comptées</label>
+        <input type="number" min="0"
+               formControlName="nombreFibresComptees"
+               [ngClass]="{ 'invalid': blancForm['controls'].nombreFibresComptees.errors && submited}">
+      </div>
+      <div class="formgroup">
+        <label>Résultat</label>
+        <input type="number" step="0.01" min="0"
+               formControlName="resultat"
+               [ngClass]="{ 'invalid': blancForm['controls'].resultat.errors && submited}">
+      </div>
+      <h3>Résultat</h3>
+      <div class="formgroup" *ngIf="blancForm?.get('observationFiltre') && blancForm?.get('observationFiltre')?.value">
+        <label>Observation filtre origine (en %)</label>
+        <div>{{blancForm.get('observationFiltre').value}}</div>
+      </div>
+      <div class="formgroup" *ngIf="blancForm?.get('isConforme') && blancForm?.get('isConforme')?.value">
+        <label>Conformité</label>
+        <div>
+          <span *ngIf="blancForm.get('isConforme').value"><i class="fas fa-check"></i></span>
+          <span *ngIf="!blancForm.get('isConforme').value"><i class="fas fa-times"></i></span>
+        </div>
+      </div>
+      <div class="action">
+        <button class="button">Valider</button>
+      </div>
+    </form>
+  </div>
+</div>

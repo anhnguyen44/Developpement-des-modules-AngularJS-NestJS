@@ -1,0 +1,91 @@
+<app-menu-contact *ngIf="idType"></app-menu-contact>
+<app-menu-activite *ngIf="!idType"></app-menu-activite>
+<div class="content">
+  <div class="bloc">
+    <div class="formgroup">
+      <label>Référence</label>
+      <div>{{activite?.id}}</div>
+    </div>
+  </div>
+  <h2>Informations activité</h2>
+  <div class="bloc">
+    <form [formGroup]="activiteForm" (ngSubmit)="onSubmit(activiteForm)">
+      <div class="formgroup full o1">
+        <label>Cible concernée</label>
+        <input type="text" [(ngModel)]="nomPrenomContact" [ngModelOptions]="{standalone: true}" tabindex="1" readonly>
+        <div class="smallAction">
+          <i *ngIf="activite?.contact" class="fas fa-eye" [routerLink]="['/contact/contact/', activite.contact.id, 'modifier']"></i>
+          <i class="fas fa-user-plus" (click)="openModalContact()"></i>
+        </div>
+      </div>
+      <div class="formgroup full o1">
+        <label>Personne affectée</label>
+        <input type="text" [(ngModel)]="nomPrenomUtilisateur" [ngModelOptions]="{standalone: true}" tabindex="2" readonly>
+        <div class="smallAction">
+          <i *ngIf="activite?.utilisateur" class="fas fa-eye" [routerLink]="['/parametrage/utilisateur/modifier', activite.utilisateur.id]"></i>
+          <i class="fas fa-user-plus" (click)="openModalUtilisateur()"></i>
+        </div>
+
+      </div>
+      <div class="formgroup full o1">
+        <label></label>
+        <div [class.disable]="!activite?.contact" (click)="recuperationAdresseCible()" class="button">Récupérer l'adresse de la cible</div>
+      </div>
+      <div class="formgroup o2">
+        <label>Catégorie</label>
+        <select formControlName="categorie" [compareWith]="compare"
+                [ngClass]="{ 'invalid': submited && activiteForm['controls'].categorie.errors}" tabindex="3">
+          <option *ngFor="let categorie of categories" [ngValue]="categorie">{{categorie.nom}}</option>
+        </select>
+      </div>
+      <div class="formgroup o3" formGroupName="adresse">
+        <label>Adresse</label>
+        <input formControlName="adresse" type="text" [ngClass]="{ 'invalid': submited && activiteForm['controls'].adresse['controls'].adresse.errors}" tabindex="7">
+      </div>
+      <div class="formgroup o2">
+        <label>Date</label>
+        <input formControlName="date" type="Date" [value]="activiteForm.get('date')?.value | date:'yyyy-MM-dd'"
+               [ngClass]="{'invalid': submited && activiteForm['controls'].date.errors}" tabindex="4">
+      </div>
+      <div class="formgroup o3" formGroupName="adresse">
+        <label>Complement</label>
+        <input formControlName="complement" type="text" tabindex="8">
+      </div>
+      <div class="formgroup o2">
+        <label>Heure</label>
+        <input formControlName="time" type="time" [ngClass]="{ 'invalid': submited && activiteForm['controls'].time.errors}" tabindex="5">
+      </div>
+      <div class="formgroup o3" formGroupName="adresse">
+        <label>Code postal</label>
+        <!-- <input formControlName="cp" type="text" [ngClass]="{ 'invalid': submited && activiteForm['controls'].adresse['controls'].cp.errors}"> -->
+        <app-cp-ville [isRechercheVille]="false" [parentForm]="adresseFrom" [internalFormControlName]="'cp'" (emitCP)="setCP($event)" [tabindex]="9"></app-cp-ville>
+      </div>
+      <div class="formgroup o2">
+        <label>Durée (en minute)</label>
+        <input formControlName="duree" type="text" [ngClass]="{ 'invalid': submited && activiteForm['controls'].duree.errors}" tabindex="6">
+      </div>
+      <div class="formgroup o3" formGroupName="adresse">
+        <label>Ville</label>
+        <!-- <input formControlName="ville" type="text" [ngClass]="{ 'invalid': submited && activiteForm['controls'].adresse['controls'].ville.errors}"> -->
+        <app-cp-ville [isRechercheVille]="true" [parentForm]="adresseFrom" [internalFormControlName]="'ville'" (emitCP)="setCP($event)" [tabindex]="10"></app-cp-ville>
+      </div>
+
+      <div class="formgroup full o4">
+        <label>Objet</label>
+        <input formControlName="objet" type="text" [ngClass]="{ 'invalid': submited && activiteForm['controls'].objet.errors}" tabindex="11">
+      </div>
+      <div class="formgroup full o4">
+        <label>Contenu</label>
+        <textarea #activiteTextArea formControlName="contenu" (keyup)="upTextArea()"
+                  [ngClass]="{ 'invalid': submited && activiteForm['controls'].contenu.errors}" tabindex="12"></textarea>
+      </div>
+      <div class="action o5">
+        <button class="button">Valider</button>
+      </div>
+    </form>
+  </div>
+    <h2 *ngIf="activite && activite.id">Fichiers</h2>
+    <app-fichier *ngIf="activite && activite.id" [groupeTypeFicher]="groupeTypeFicher" [idParent]="activite.id" [application]="application"></app-fichier>
+</div>
+<app-modal-contact *ngIf="modalType" [type]="modalType" [idCompte]="idCompte" (emitContact)="setContact($event)" (emitClose)="modalType = false" [@fadeIn] [@fadeOut]></app-modal-contact>
+<app-modal-user *ngIf="userModalOpened" (emitClose)="userModalOpened = false" (emitUtilisateur)="setUser($event)" [@fadeIn] [@fadeOut]></app-modal-user>

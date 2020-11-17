@@ -1,0 +1,898 @@
+SET FOREIGN_KEY_CHECKS=0;
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de données :  `aleaAC`
+--
+
+INSERT INTO `adresse` (`id`, `adresse`, `complement`, `cp`, `ville`, `email`, `telephone`, `fax`) VALUES (NULL, '2 rue Jacques Lemercier', '', '31000', 'TOULOUSE', '', '0321654987', ''), (NULL, '2 rue Jacques Lemercier', '', '31000', 'TOULOUSE', '', '0321654987', ''), (NULL, '2 rue Jacques Lemercier', '', '31000', 'TOULOUSE', '', '0321654987', ''), (NULL, '2 rue Jacques Lemercier', '', '31000', 'TOULOUSE', '', '0321654987', ''), (NULL, '2 rue Jacques Lemercier', '', '31000', 'TOULOUSE', '', '0321654987', '');
+
+--
+-- Déchargement des données de la table `captage_aspiration_source`
+--
+
+INSERT INTO `captage_aspiration_source` (`id`, `nom`) VALUES
+(1, 'Regroupement des types de captage à la source dont le nombre de données est insuffisant pour être évalués séparément'),
+(2, 'Absence de captage des poussières à la source'),
+(3, 'Aspiration à la source avec système d\'aspiration avec filtre THE'),
+(4, 'Présence de captage localisé enveloppant');
+
+--
+-- Déchargement des données de la table `categorie`
+--
+
+INSERT INTO `categorie` (`id`, `nom`) VALUES
+(1, 'Campagne'),
+(2, 'Formation'),
+(3, 'Lettre'),
+(4, 'Mail'),
+(5, 'Objet pub'),
+(6, 'Prospection'),
+(7, 'Rendez-vous'),
+(8, 'Repas'),
+(9, 'Entretien commercial'),
+(10, 'Incentive'),
+(11, 'Téléphone'),
+(12, 'Moyen à mener'),
+(13, 'Autre');
+
+--
+-- Déchargement des données de la table `civilite`
+--
+
+INSERT INTO `civilite` (`id`, `nom`, `abbrev`) VALUES
+(1, 'Madame', 'Mme.'),
+(2, 'Monsieur', 'M.');
+
+--
+-- Déchargement des données de la table `droit`
+--
+
+INSERT INTO `droit` (`id`, `nom`, `code`, `niveau`) VALUES
+(1, 'Voir le SuperAdmin', 'SUPERADMIN_READ', 9999),
+(2, 'Utiliser le Super Admin', 'SUPERADMIN_WRITE', 9999),
+(5, 'Voir tous les utilisateurs', 'USERS_SEE_ALL', 500),
+(6, 'Gérer les droits des utilisateurs crées', 'RIGHTS_CREATED_USERS', 200),
+(7, 'Gérer les droits de tous les utilisateurs', 'RIGHTS_ALL_USERS', 600),
+(8, 'Gérer les profils des utilisateurs créés', 'PROFILES_CREATED_USERS', 200),
+(9, 'Gérer les profils de tous les utilisateurs', 'PROFILES_ALL_USERS', 600),
+(10, 'Voir les infos Franchise', 'INFO_FRANCHISE_READ', 200),
+(11, 'Modifier les infos Franchise', 'INFO_FRANCHISE_WRITE', 500),
+(12, 'Créer des utilisateurs', 'USERS_CREATE', 500),
+(15, 'Créer des droits', 'RIGHTS_CREATE', 9999),
+(16, 'Créer des profils', 'PROFILES_CREATE', 9999),
+(17, 'Modifier tous les utilisateurs', 'USERS_EDIT_ALL', 600),
+(18, 'Voir tous les utlisateurs de la franchise', 'USERS_SEE_FRANCHISE', 400),
+(20, 'Modifier tous les utilisateurs de la franchise', 'USERS_EDIT_FRANCHISE', 500),
+(21, 'Créer des bureaux', 'BUREAU_CREATE', 600),
+(22, 'Modifier tous les bureaux', 'BUREAU_EDIT_ALL', 9999),
+(23, 'Modifier tous les bureaux de la franchise', 'BUREAU_EDIT_FRANCHISE', 600),
+(24, 'Créer une franchise', 'FRANCHISE_CREATE', 9999),
+(25, 'Voir toutes les franchises', 'FRANCHISE_SEE_ALL', 9999),
+(26, 'Modifier toutes les franchises', 'FRANCHISE_EDIT_ALL', 9999),
+(27, 'Créer des produits généraux', 'PRODUCTS_CREATE_ALL', 9999),
+(28, 'Créer des produits liés à la franchise', 'PRODUCTS_CREATE_FRANCHISE', 9999),
+(29, 'Créer des grilles tarif activité labo', 'TMP_ACT_LABO', 600),
+(30, 'Créer des grilles tarif autres', 'TMP_ACT_PILOTE', 9999),
+(31, 'Voir tous les profils', 'PROFILES_SEE_ALL', 9999),
+(32, 'Voir les grilles tarif de la franchise', 'GRILLE_SEE', 200),
+(33, 'Créer des grilles tarif pour la franchise', 'GRILLE_CREATE', 600),
+(34, 'Créer une commande', 'CMD_CREATE', 400),
+(35, 'Créer des commandes de test', 'CMD_TEST', 600),
+(36, 'Voir les commandes créées', 'CMD_SEE_CREATED', 0),
+(37, 'Voir toutes les commandes de la franchise', 'CMD_SEE_FRANCHISE', 600),
+(38, 'Rédiger une stratégie', 'STRAT_REDACTION', 700),
+(39, 'Valider une stratégie', 'STRAT_VALIDATE', 800),
+(40, 'Créer des menus', 'MENUS_CREATE', 9999),
+(48, 'Modifier tous des menus', 'MENUS_EDIT_ALL', 9999),
+(53, 'Lecture interne Dirigeant', 'MENUS_SEE_INTERNAL_DIRIGEANT', 9999),
+(54, 'Lecture interne Collaborateur', 'MENUS_SEE_INTERNAL_COLLA', 9999),
+(55, 'Lecture externe tous', 'MENUS_SEE_EXTERNAL_ALL', 9999),
+(56, 'Lecture externe abonné veille réglementaire', 'MENUS_SEE_EXTER_ABON_VEIL_REGLE', 9999),
+(57, 'Créer des categories', 'CATEGORIE_CREATE', 9999),
+(58, 'Créer des categories de menus', 'CATE_MENU_CREATE', 9999),
+(59, 'Créer des contenus', 'CONTENU_MENU_CREATE', 9999);
+
+--
+-- Déchargement des données de la table `environnement`
+--
+
+INSERT INTO `environnement` (`id`, `nom`) VALUES
+(1, 'Air Urbain'),
+(2, 'Air Campagne'),
+(3, 'Milieu Intérieur');
+
+--
+-- Déchargement des données de la table `fonction`
+--
+
+INSERT INTO `fonction` (`id`, `nom`) VALUES
+(1, 'Assistant(e)'),
+(2, 'Commercial(e)'),
+(3, 'Collaborateur(trice)'),
+(4, 'Comptable'),
+(5, 'Dirigeant'),
+(6, 'Encadrement technique'),
+(7, 'Encadrement de chantier');
+
+--
+-- Déchargement des données de la table `grille_typeproduit`
+--
+
+INSERT INTO `grille_typeproduit` (`idTypeGrille`, `idTypeProduit`) VALUES
+(1, 1),
+(1, 5),
+(1, 6),
+(1, 8),
+(2, 2),
+(4, 3);
+
+--
+-- Déchargement des données de la table `moment_objectif`
+--
+
+INSERT INTO `moment_objectif` (`id`, `nom`, `code`, `typeStrategie`) VALUES
+(1, 'Pendant l\'utilisation normale des locaux', 'UTILISATION_NORMALE_LOCAUX', 1),
+(2, 'Suite à incident', 'SUITE_A_INCIDENT', 1),
+(3, 'Avant travaux et interventions liés à l\'amiante', 'AVANT_TRAVAUX_LIES_AMIANTE', 1),
+(4, 'Pendant travaux préliminaires et préparatoires', 'PENDANT_TRAVAUX_PRELIM_PREPA', 2),
+(5, 'Pendant travaux et interventions liés à l\'amiante', 'PENDANT_TRAVAUX_INTERV_LIES_AMIANTE', 2),
+(6, 'A la fin de travaux de retrait ou d\'encapsulage de l\'amiante (SS3)', 'FIN_TRAVAUX_RETRAIT_ENCAPSULAGE', 1),
+(7, 'A la fin d\'interventions susceptibles de provoquer l\'émission de fibres d\'amiante (SS4)', 'FIN_INTERVENTION_EMISSION_FIBRES', 1),
+(8, 'A l\'issue de travaux de retrait ou d\'encapsulage de l\'amiante et avant restitution aux occupants', 'ISSUE_TRAVAUX_RETRAIT_ENCAPSULAGE', 1);
+
+--
+-- Déchargement des données de la table `motif_abandon_commande`
+--
+
+INSERT INTO `motif_abandon_commande` (`id`, `nom`, `isSuppression`) VALUES
+(1, 'Annulation client (meilleure offre concurrente)', 0),
+(2, 'Annulation client (autre)', 0),
+(3, 'Annulation du cabinet Aléa Contrôles', 0),
+(4, 'Erreur de saisie des coordonnées client', 0),
+(5, 'Erreur passage en commande', 0),
+(6, 'Enregistrement de test', 1),
+(7, 'Enregistrement en doublon', 1),
+(8, 'Autre', 0);
+
+--
+-- Déchargement des données de la table `mpca`
+--
+
+INSERT INTO `mpca` (`id`, `nom`) VALUES
+(1, 'Bitume / Brai de Houille / Mastic d\'étanchéité amianté'),
+(2, 'Calorifugeage'),
+(3, 'Canalisation / Gaine en amiante ciment extérieur / Gaine d\'activités Génie Civil'),
+(4, 'Canalisation / Gaine en amiante ciment intérieur / Gaine d\'activités bâtimentaires'),
+(5, 'Colle bitumineuse'),
+(6, 'Conduits métalliques revêtus - Revêtement sur support métallique (peinture, enduit)'),
+(7, 'Enduit de lissage ou de débullage'),
+(8, 'Enduit épais (ou ciment) - Peinture de revêtement épais intérieur / extérieur'),
+(9, 'Flocage'),
+(10, 'Joint d\'installation domestique ou industrielle - Elément de friction et éléments électriques'),
+(11, 'Matériaux contaminés par un matériau amianté'),
+(12, 'Matériels et équipements contaminés'),
+(13, 'Mortier - Colle de carrelage'),
+(14, 'Peinture amiantée'),
+(15, 'Plâtre amianté'),
+(16, 'Porte ou clapet coupe-feu / Porte palière d\'ascenseur / Autre élément solide équivalent'),
+(17, 'Ragréage - Chape maigre'),
+(18, 'Revêtement de sol : dalle, lé, ...'),
+(19, 'Revêtement intérieur / Faux plafond : carton amianté, panneau sandwich'),
+(20, 'Revêtement intérieur / Faux plafond : plaque fibro ciment'),
+(21, 'Revêtement routier'),
+(22, 'Résidu amianté issu de bâtiment sinistré (tornade - incendie) et de site pollué'),
+(23, 'Terre et roche amiantifère naturelle'),
+(24, 'Toiture - Bardage : plaque plane ou ondulée, tuile, ardoise'),
+(25, 'Tresse joint de dilatation ou pied de cloison');
+
+--
+-- Déchargement des données de la table `objectif`
+--
+
+INSERT INTO `objectif` (`id`, `nom`, `code`, `description`, `lettre`, `idType`, `idMomentObjectif`, `isMesureOperateur`, `isObligatoireCOFRAC`, `SAFibreParLitre`, `limiteSup`, `isPeriodique`, `conditionsApplication`, `duree`, `frequence`, `hasTempsCalcule`, `simulationObligatoire`) VALUES
+(1, 'Surveillance Périodique Liste A', 'A', 'Liste A - CSP R. 1334-25 et 27, NF X43-050', 'A', 2, 1, 0, 1, '0.30', NULL, 0, 'Liste A - CSP R. 1334-25 et 27, NF X43-050', '24h minimum', '-', 1, 1),
+(2, 'Mesure après note 3 à l\'issue de l\'état de conservation des matériaux', 'B', 'Liste A', 'B', NULL, 1, 0, 1, '0.30', NULL, 0, 'Liste A', '24h minimum', '-', 1, 1),
+(3, 'Mesure suite à mise en oeuvre de mesures conservatoires', 'C', 'Liste A - CSP R. 1334-29, NF X43-050\r\nListe B - Arrêté du 02/12/2012 Liste B art 5, NF X43-050\r\n', 'C', 2, 1, 0, 1, '0.30', NULL, 0, 'Liste A - CSP R. 1334-29, NF X43-050\r\nListe B - Arrêté du 02/12/2012 Liste B art 5, NF X43-050\r\n', '24h minimum', '-', 1, 1),
+(4, 'Surveillance périodique (matériaux autres que liste A)', 'D', 'Autres que liste A', 'D', NULL, 1, 0, 1, NULL, '5.00', 0, 'Autres que liste A', '24h minimum', '-', 1, 1),
+(5, 'Mesure suite à incident', 'E', 'Tous matériaux', 'E', NULL, 2, 0, 0, NULL, '5.00', 0, 'Tous matériaux', '4h minimum', '-', 1, 1),
+(6, 'Mesure suite à incident après nettoyage', 'F', 'Tous matériaux', 'F', NULL, 2, 0, 0, NULL, '5.00', 0, 'Tous matériaux', '4h minimum', '-', 1, 1),
+(7, 'Etat initial', 'G', 'Tous matériaux - CT R.4412-127', 'G', 1, 3, 0, 1, '0.30', NULL, 0, 'Tous matériaux - CT R.4412-127', '24h minimum', '-', 1, 1),
+(8, 'Texte à définir', 'AnnexeB_F1_6Pt0', 'Texte à définir b', 'Annexe B-FB1 à -FB6 Pt0', 1, 3, 0, 0, NULL, NULL, 0, '', '4h', 'Selon l\'analyse de risques.', 1, 0),
+(9, 'Texte à définir 1', 'AnnexeB_F7Pt0', 'Texte à définir 1b', 'Annexe B-FB7 Pt0', 1, 3, 0, 0, NULL, NULL, 0, '', '4h', 'Selon l\'analyse de risques.', 1, 0),
+(10, 'Texte à définir 2', 'AnnexeB_F8Pt0', 'Texte à définir 2b', 'Annexe B-FB8 Pt0', 1, 3, 0, 0, NULL, NULL, 0, '', '4h', 'Selon l\'analyse de risques.', 1, 0),
+(11, 'Texte à définir 3', 'AnnexeB_F9Pt0', 'Texte à définir 3b', 'Annexe B-FB9 Pt0', 1, 3, 0, 0, NULL, NULL, 0, '', '4h', 'Selon l\'analyse de risques.', 1, 0),
+(12, 'Texte à définir 4', 'AnnexeB_F10Pt0', 'Texte à définir 4b', 'Annexe B-FB10 Pt0', 1, 3, 0, 0, NULL, NULL, 0, '', '4h', 'Selon l\'analyse de risques.', 1, 0),
+(13, 'Texte à définir 5', 'AnnexeB_F12Pt0', 'Texte à définir 5b', 'Annexe B-FB12 Pt0', 1, 3, 0, 0, NULL, NULL, 0, '', '4h', 'Selon l\'analyse de risques.', 1, 0),
+(14, 'Texte à définir 6', 'AnnexeB_F15Pt0', 'Texte à définir 6b', 'Annexe B-FB15 Pt0 (2)', 2, 3, 0, 0, NULL, NULL, 0, '', '4h à 8h', 'Selon l\'analyse de risques.', 1, 0),
+(15, 'Texte à définir 7', 'AnnexeB_F16Pt0', 'Texte à définir 7b', 'Annexe B-FB16 Pt0 (2)', 2, 3, 0, 0, NULL, NULL, 0, '', '4h à 8h', 'Selon l\'analyse de risques.', 1, 0),
+(16, 'Mesure d\'ambiance pendant les travaux préparatoires', 'H', 'Tous matériaux - NF X43-050', 'H', NULL, 4, 0, 0, NULL, NULL, 0, 'Tous matériaux - NF X43-050', 'Pas de durée minimum A définir en fonction de la durée de l’activité Durée définie dans la stratégie', 'selon l’analyse de risques.', 0, 0),
+(17, 'Mesure sur opérateur pendant travaux préparatoires', 'I', 'Tous matériaux - XP X43-269', 'I', 1, 4, 1, 0, '1.00', NULL, 0, 'Tous matériaux - XP X43-269', 'Pas de durée minimum A définir en fonction de la durée de l’activité Durée définie dans la stratégie', 'selon l’analyse de risques.', 0, 0),
+(18, 'Mesure sur opérateur pendant travaux pour validation du processus', 'J', 'Tous matériaux - CT R. 4412-128 / XP X43-269', 'J', 1, 5, 1, 1, '1.00', NULL, 0, 'Tous matériaux - CT R. 4412-128 / XP X43-269', 'Pas de durée minimum A définir en fonction de la durée de l’activité Durée définie dans la stratégie', 'selon l’analyse de risques.', 0, 0),
+(19, 'Mesure sur opérateur pendant travaux pour surveillance', 'K', 'Tous matériaux - XP X43-269', 'K', 1, 5, 1, 0, '1.00', NULL, 0, 'Tous matériaux - XP X43-269', 'Pas de durée minimum A définir en fonction de la durée de l’activité Durée définie dans la stratégie', 'selon l’analyse de risques.', 0, 0),
+(20, 'Mesure environnementale dans les locaux maintenus en activité', 'L', 'Tous matériaux - CT R. 4412-128 3°/NF X43-050', 'L', 1, 5, 0, 1, NULL, '5.00', 1, 'Tous matériaux - CT R. 4412-128 3°/NF X43-050', '4h minimum', 'selon l’analyse de risques,  au minimum une fois par semaine', 1, 0),
+(21, 'Mesure environnementale chantier dans les locaux affectés par travaux', 'M', 'Tous matériaux - CT R. 4412-128 3°/NF X43-050', 'M', 1, 5, 0, 1, NULL, '5.00', 1, 'Tous matériaux - CT R. 4412-128 3°/NF X43-050', '4h minimum', 'selon l’analyse de risques,  au minimum une fois par semaine', 1, 1),
+(22, 'Mesure environnementale chantier dans les locaux affectés par travaux en extérieur', 'MExt', 'Tous matériaux - CT R. 4412-128 3°/NF X43-050', 'M extérieur', 1, 5, 0, 1, NULL, '5.00', 1, 'Tous matériaux - CT R. 4412-128 3°/NF X43-050', '4h minimum', 'selon l’analyse de risques,  au minimum une fois par semaine', 1, 0),
+(23, 'Mesure aux rejets des extracteurs', 'N', 'Tous matériaux - CT R. 4412-128 4°/NF X43-050', 'N', 1, 5, 0, 1, NULL, '5.00', 1, 'Tous matériaux - CT R. 4412-128 4°/NF X43-050', '4h minimum', '1 au début de la phase de  retrait   1 après tout changement de  filtre THE   1 par semaine par groupe  d’extracteurs', 1, 0),
+(24, 'Mesure d\'ambiance en zone de traitement', 'O', 'Tous matériaux - NF X43-050', 'O', NULL, 5, 0, 0, NULL, NULL, 1, 'Tous matériaux - NF X43-050', 'Pas de durée minimum A définir en fonction de la durée de l’activité Durée définie dans la stratégie', 'selon l’analyse de risques.', 0, 0),
+(25, 'Mesure dans la zone d\'approche du SAS personnel', 'P', 'Tous matériaux - CT R. 4412-128 1°/NF X43-050', 'P', 1, 5, 0, 1, NULL, '5.00', 1, 'Tous matériaux - CT R. 4412-128 1°/NF X43-050', '4h minimum', 'au minimum une fois par semaine', 1, 0),
+(26, 'Mesure en zone de récupération', 'Q', 'Tous matériaux - CT R. 4412-128 2°/NF X43-050', 'Q', 1, 5, 0, 1, NULL, '5.00', 1, 'Tous matériaux - CT R. 4412-128 2°/NF X43-050', '4h minimum', 'selon l’analyse de risques,  au minimum une fois par semaine', 1, 0),
+(27, 'Mesure dans le compartiment vestiaire de l\'unité mobile de décontamination', 'R', 'Tous matériaux - CT R. 4412-128 1°/NF X43-050', 'R', 1, 5, 0, 1, NULL, '5.00', 1, 'Tous matériaux - CT R. 4412-128 1°/NF X43-050', '4h minimum', 'selon l’analyse de risques,  au minimum une fois par semaine', 1, 0),
+(28, 'Mesure en zone d\'approche du SAS déchets', 'S', 'Tous matériaux - CT R. 4412-128 1°/NF X43-050', 'S', 1, 5, 0, 1, NULL, '5.00', 1, 'Tous matériaux - CT R. 4412-128 1°/NF X43-050', '4h minimum', 'selon l’analyse de risques,  au minimum une fois par semaine', 1, 0),
+(29, 'Texte à définir 8', 'AnnexeB_F1', 'Texte à définir 8b', 'Annexe B-FB1', 1, 5, 0, 0, NULL, NULL, 0, '', 'Pas de durée minimum. A définir en fonction de la durée de l\'activité. Durée définie dans la stratégie.', 'selon l\'analyse de risques.', 0, 0),
+(30, 'Texte à définir 9', 'AnnexeB_F2', 'Texte à définir 9b', 'Annexe B-FB2', 1, 5, 0, 0, NULL, NULL, 0, '', 'Pas de durée minimum. A définir en fonction de la durée de l\'activité. Durée définie dans la stratégie.', 'selon l\'analyse de risques.', 0, 0),
+(31, 'Texte à définir 10', 'AnnexeB_F3', 'Texte à définir 10b', 'Annexe B-FB3', 1, 5, 0, 0, NULL, NULL, 0, '', 'Pas de durée minimum. A définir en fonction de la durée de l\'activité. Durée définie dans la stratégie.', 'selon l\'analyse de risques.', 0, 0),
+(32, 'Texte à définir 11', 'AnnexeB_F4', 'Texte à définir 11b', 'Annexe B-FB4', 1, 5, 0, 0, NULL, NULL, 0, '', 'Pas de durée minimum. A définir en fonction de la durée de l\'activité. Durée définie dans la stratégie.', 'selon l\'analyse de risques.', 0, 0),
+(33, 'Texte à définir 12', 'AnnexeB_F5', 'Texte à définir 12b', 'Annexe B-FB5', 1, 5, 0, 0, NULL, NULL, 0, '', 'Pas de durée minimum. A définir en fonction de la durée de l\'activité. Durée définie dans la stratégie.', 'selon l\'analyse de risques.', 0, 0),
+(34, 'Texte à définir 13', 'AnnexeB_F6', 'Texte à définir 13b', 'Annexe B-FB6', 1, 5, 0, 0, NULL, NULL, 0, '', 'Pas de durée minimum. A définir en fonction de la durée de l\'activité. Durée définie dans la stratégie.', 'selon l\'analyse de risques.', 0, 0),
+(35, 'Texte à définir 14', 'AnnexeB_F7', 'Texte à définir 14b', 'Annexe B-FB7', 1, 5, 0, 0, NULL, NULL, 0, '', 'Pas de durée minimum. A définir en fonction de la durée de l\'activité. Durée définie dans la stratégie.', 'selon l\'analyse de risques.', 0, 0),
+(36, 'Texte à définir 15', 'AnnexeB_F8', 'Texte à définir 15b', 'Annexe B-FB8', 1, 5, 0, 0, NULL, NULL, 0, '', 'Pas de durée minimum. A définir en fonction de la durée de l\'activité. Durée définie dans la stratégie.', 'selon l\'analyse de risques.', 0, 0),
+(37, 'Texte à définir 16', 'AnnexeB_F9', 'Texte à définir 16b', 'Annexe B-FB9', 1, 5, 0, 0, NULL, NULL, 0, '', 'Pas de durée minimum. A définir en fonction de la durée de l\'activité. Durée définie dans la stratégie.', 'selon l\'analyse de risques.', 0, 0),
+(38, 'Texte à définir 17', 'AnnexeB_F10', 'Texte à définir 17b', 'Annexe B-FB10', 1, 5, 0, 0, NULL, NULL, 0, '', 'Pas de durée minimum. A définir en fonction de la durée de l\'activité. Durée définie dans la stratégie.', 'selon l\'analyse de risques.', 0, 0),
+(39, 'Texte à définir 18', 'AnnexeB_F12', 'Texte à définir 18b', 'Annexe B-FB12', 1, 5, 0, 0, NULL, NULL, 0, '', 'Pas de durée minimum. A définir en fonction de la durée de l\'activité. Durée définie dans la stratégie.', 'selon l\'analyse de risques.', 0, 0),
+(40, '', 'AnnexeB_F14', 'Texte à définir 19b', 'Annexe B-FB14 (2)', 2, 5, 0, 0, NULL, NULL, 0, '', '24h minimum', '-', 1, 0),
+(41, 'Texte à définir 20', 'AnnexeB_F15', 'Texte à définir 20b', 'Annexe B-FB15 (2)', 2, 5, 0, 0, NULL, NULL, 0, '', '24h minimum', '-', 1, 0),
+(42, 'Texte à définir 21', 'AnnexeB_F16', 'Texte à définir 21b', 'Annexe B-FB16(2)', 2, 5, 0, 0, NULL, NULL, 0, '', '24h minimum', '-', 1, 0),
+(43, 'Texte à définir 22', 'AnnexeB_F17', 'Texte à définir 22b', 'Annexe B-FB17 (1)', 2, 5, 0, 0, NULL, NULL, 0, '', '24h minimum', '-', 1, 0),
+(44, '2ème restitution', 'Y', 'Liste A et B - CSP R. 1334-29-3 NF X43-050\r\nAutres que Liste A et B - NF X43-050', 'Y', 2, 8, 0, 1, '0.30', '5.00', 0, 'Liste A et B - CSP R. 1334-29-3 NF X43-050\r\nAutres que Liste A et B - NF X43-050', '24h minimum', '-', 1, 2),
+(45, 'Mesure en zone avant examen visuel', 'T', 'Tous matériaux - NF X43-050', 'T', NULL, 6, 0, 0, NULL, '5.00', 0, 'Tous matériaux - NF X43-050', '4h minimum', '-', 1, 0),
+(46, 'Mesure libératoire ou 1ère restitution', 'U', 'Tous matériaux - CT R. 4412-140/NF X43-050', 'U', 1, 6, 0, 1, '0.30', NULL, 0, 'Tous matériaux - CT R. 4412-140/NF X43-050', '24h minimum', '-', 1, 1),
+(47, 'Mesure de fin de chantier / extérieur', 'V', 'Tous matériaux', 'V', 1, 6, 0, 0, '0.30', NULL, 0, 'Tous matériaux', '24h minimum', '-', 1, 2),
+(48, 'Mesure avant retrait des MPC en SS4', 'W', 'Tous matériaux -NF X43-050', 'W', NULL, 7, 0, 0, NULL, '5.00', 0, 'Tous matériaux -NF X43-050', 'de 4 à 24h', '', 1, 1),
+(49, 'Mesure de fin de travaux en SS4', 'X', 'Tous matériaux - NF X43-050', 'X', NULL, 7, 0, 0, NULL, '5.00', 0, 'Tous matériaux - NF X43-050', 'de 4 à 24h', '', 1, 1);
+
+
+--
+-- Déchargement des données de la table `outil_technique`
+--
+
+INSERT INTO `outil_technique` (`id`, `nom`) VALUES
+(1, 'Arrachage'),
+(2, 'Balayage'),
+(3, 'Brossage - Grattage manuel'),
+(4, 'Brossage - Grattage mécanisé'),
+(5, 'Carottage - Forage'),
+(6, 'Cassage manuel - Burinage - Piquage - Démolition avec un outil manuel'),
+(7, 'Chemisage - Doublage - Encoffrement - Recouvrement - Rebouchage'),
+(8, 'Décapage - Lustrage'),
+(9, 'Décollage thermique / Décollage électrique'),
+(10, 'Découpage avec outil manuel'),
+(11, 'Découpage pneumatique - Tronçonnage - Perçage - Sciage - Découpage Thermique'),
+(12, 'Démolition par explosion ou par vérinage'),
+(13, 'Dépose par le dessous - Désemboîtage - Déconstruction'),
+(14, 'Dépose par le dessus - Désemboîtage - Déconstruction'),
+(15, 'Fixation par revêtement - Imprégnation'),
+(16, 'Grenaillage - Hydrogommage - Sablage'),
+(17, 'Grignotage / cassage mécanisé - Concassage - Démolition avec un engin mécanisé / déporté'),
+(18, 'Nettoyage - Ramassage - Manutention - Conditionnement'),
+(19, 'Pelletage manuel'),
+(20, 'Ponçage'),
+(21, 'Procédé chimique'),
+(22, 'Prélèvement atmosphérique'),
+(23, 'Prélèvement de matériau'),
+(24, 'Préparation de la zone - Isolement / Confinement / Déconfinement de la zone'),
+(25, 'Rabotage - Rectification - Fraisage'),
+(26, 'Raclage'),
+(27, 'Talutage - Terrassement - Pelletage mécanisé - Bennage'),
+(28, 'Technique THP / UHP - Technique par cryogénie'),
+(29, 'Vissage - Tirage de câble - Réglage');
+
+--
+-- Déchargement des données de la table `produit`
+--
+
+INSERT INTO `produit` (`id`, `nom`, `code`, `description`, `prixUnitaire`, `hasTemps`, `tempsUnitaire`, `uniteTemps`, `isGeneral`, `idCreatedBy`, `idFranchise`, `idType`, `rang`) VALUES
+(1, 'Élaboration de la stratégie', 'STRAT', 'Élaboration de la stratégie (Echanges techniques, visite sur site pour validation des informations Selon le Guide GA X 46-033 de la Norme NF EN ISO 16000-7, et la Norme XP X 43-629)', '100.00', 0, '18.00', 'm', 1, NULL, NULL, 1, 0),
+(2, 'Rédaction Rapport final COFRAC', 'RAPPORT_COFRAC', 'Rédaction Rapport final COFRAC', '100.00', 0, '0.00', '', 1, NULL, NULL, 1, 1),
+(3, 'Mesures d’empoussièrement Environnementales', 'META', 'Mesures d’empoussièrement Environnementales (Prélèvements et analyses META (Microscope Electronique à Transmission) Selon la Norme NF X 43-050)', '160.00', 0, '0.00', '', 1, NULL, NULL, 1, 2),
+(4, 'Mesures d’empoussièrement Environnementales au poste de travail', 'METAOP', 'Mesures d’empoussièrement au poste de travail (Prélèvements et analyses META (SA <= 1 f/l) Selon la Norme NF 43-269 et la Norme NF X 43-050)', '295.00', 0, '0.00', '', 1, NULL, NULL, 1, 3),
+(5, 'Préparation filtres illisibles', 'PREP_FILTRE_ILLI', 'Préparation filtres illisibles', '75.00', 0, '0.00', '', 1, NULL, NULL, 1, 4),
+(6, 'Analyse de Matériaux par MET ou MOLP', 'ANALYSE_MAT', 'Analyse de Matériaux par MET (Microscopie Electronique à Transmission) Selon la norme NF X 43-050 OU Analyse de Matériaux par MOLP (Microscopie Optique à Lumière Polarisée) ', '45.00', 0, '0.00', '', 1, NULL, NULL, 1, 5),
+(7, 'Analyse de poussières sur lingette par MET', 'ANALYSE_POUSS', 'Analyse de poussières sur lingette par MET', '45.00', 0, '0.00', '', 1, NULL, NULL, 1, 6),
+(8, 'Mesures MEST', 'MEST', 'Mesures MEST (Prélèvement et analyse de matières en suspension dans l’eau (rejet d’eaux usées))', '30.00', 0, '0.00', '', 1, NULL, NULL, 1, 7),
+(9, 'Analyse de la qualité de l’adduction d’air respirable', 'Q_ADD_AIR', 'Analyse de la qualité de l’adduction d’air respirable (CO-CO2-Huile et H2O. Présence obligatoire d’une personne de l’entreprise connaissant le fonctionnement du Matériel pendant la prestation)', '220.00', 0, '0.00', '', 1, NULL, NULL, 1, 8),
+(10, 'Mesure complémentaire après échec par polluant à détecter', 'MES_COMP', 'Mesure complémentaire après échec par polluant à détecter', '40.00', 0, '0.00', '', 1, NULL, NULL, 1, 9),
+(11, 'Réalisation de fit test au siège Aléa Contrôles', 'FIT_TEST', 'Réalisation de fit test au siège Aléa Contrôles (Possible sur chantier (Déplacement non inclus))', '80.00', 0, '0.00', '', 1, NULL, NULL, 1, 10),
+(12, 'Délai express 24h', 'ECH_24H', 'Délai 24h par échantillon (Ajouter au tarif analyse, le supplément délais)', '40.00', 0, '0.00', '', 1, NULL, NULL, 5, 11),
+(13, 'Attente sur site', 'ATTENTE', 'Attente sur site (taux horaire)', '45.00', 1, '1.00', 'h', 1, NULL, NULL, 5, 12),
+(14, 'Supplément pour prélèvement', 'SUPP_PRLVT', 'Supplément pour prélèvement par pompe autonome ne nécessitant pas d’alimentation électrique sur chantier', '0.00', 0, '0.00', '', 1, NULL, NULL, 5, 13),
+(15, 'FOMS', 'FOMS', 'FOMS (Distinction fibres OMS / fibres fines d’amiante)', '180.00', 0, '0.00', '', 1, NULL, NULL, 5, 14),
+(16, 'Analyse fibres courtes d\'Amiante', 'AFCA', 'Analyse fibres courtes d\'Amiante', '150.00', 0, '0.00', '', 1, NULL, NULL, 5, 15),
+(17, 'Analyse amiante dans fragments', 'AAFE', 'Analyse amiante dans fragments d’enrobés (Dimensions : 2 * 2 cm)', '90.00', 0, '0.00', '', 1, NULL, NULL, 6, 16),
+(18, 'Analyse amiante sur carotte d’enrobé', 'AACE', 'Analyse amiante sur carotte d’enrobé', '120.00', 0, '0.00', '', 1, NULL, NULL, 6, 17),
+(19, 'HAP dans les enrobés', 'HAPE', 'HAP dans les enrobés', '90.00', 0, '0.00', '', 1, NULL, NULL, 6, 18),
+(20, 'Analyse Plomb', 'APLP', 'Analyse Plomb sur lingettes ou sur écailles de peinture', '50.00', 0, '0.00', '', 1, NULL, NULL, 6, 19),
+(21, 'Analyse amiante dans l’eau', 'AADE', 'Analyse amiante dans l’eau (Délai d’obtention des résultats 5 jours. Échantillonnage 500 ml. (Hors déplacement))', '220.00', 0, '0.00', '', 1, NULL, NULL, 6, 20);
+
+--
+-- Déchargement des données de la table `profil`
+--
+-- Le SET SESSION est important, sinon ça convertit le '0' en '1' pour l'id....
+SET SESSION sql_mode='NO_AUTO_VALUE_ON_ZERO';
+INSERT INTO `profil` (`id`, `nom`, `isVisibleFranchise`, `isInterne`) VALUES
+(0, 'Partagé', 1, 0),
+(1, 'Super Admin', 0, 1),
+(2, 'Admin', 0, 1),
+(3, 'Franchisé', 1, 1),
+(4, 'Technicien', 1, 1),
+(5, 'Professionnel', 1, 0),
+(6, 'Développeur', 0, 1),
+(7, 'Animateur Qualité', 1, 1),
+(8, 'Responsable Laboratoire', 1, 1),
+(9, 'Responsable Technique', 1, 1),
+(10, 'Responsable Production', 1, 1),
+(11, 'Technico-Commercial', 1, 1),
+(12, 'Assistant Administratif', 1, 1),
+(13, 'Siège', 0, 1),
+(14, 'test', 0, 1);
+
+--
+-- Déchargement des données de la table `profil_droit`
+--
+
+INSERT INTO `profil_droit` (`idProfil`, `idDroit`) VALUES
+(1, 1),
+(1, 2),
+(1, 5),
+(1, 7),
+(1, 9),
+(1, 17),
+(1, 22),
+(1, 24),
+(1, 25),
+(1, 26),
+(1, 27),
+(1, 31),
+(1, 34),
+(1, 35),
+(2, 1),
+(2, 21),
+(2, 31),
+(2, 34),
+(2, 35),
+(3, 6),
+(3, 8),
+(3, 10),
+(3, 11),
+(3, 12),
+(3, 18),
+(3, 20),
+(3, 21),
+(3, 29),
+(3, 32),
+(3, 33),
+(3, 34),
+(3, 35),
+(3, 37),
+(4, 38),
+(6, 15),
+(6, 16),
+(6, 25),
+(8, 38),
+(8, 39),
+(10, 38),
+(10, 39),
+(12, 18),
+(13, 30),
+(1, 59),
+(1, 58),
+(2, 56),
+(3, 56),
+(4, 56),
+(13, 56),
+(1, 55),
+(2, 55),
+(3, 55),
+(4, 55),
+(13, 55),
+(1, 54),
+(2, 54),
+(3, 54),
+(4, 54),
+(13, 54),
+(2, 53),
+(3, 53),
+(4, 53),
+(13, 53),
+(1, 48),
+(2, 48),
+(1, 40),
+(2, 40);
+
+
+--
+-- Déchargement des données de la table `qualite`
+--
+
+INSERT INTO `qualite` (`id`, `nom`, `isInterne`) VALUES
+(1, 'Agence Aléa AC', 1),
+(2, 'Agence Immobilière', 0),
+(3, 'Particulier', 0),
+(4, 'Notaire', 0),
+(5, 'Entreprise', 0),
+(6, 'Administrateur De Biens', 0),
+(7, 'Administrateur De Biens Et Syndic De Copropriete', 0),
+(8, 'Architecte', 0),
+(9, 'Avocat', 0),
+(10, 'Banque Et Etablissement Financier', 0),
+(11, 'Diagamter Cabinet', 0),
+(12, 'Cabinet Et Expert Comptables', 0),
+(13, 'Commerces Et Industries (Transactions)', 0),
+(14, 'Conseil Gestion Patrimoine', 0),
+(15, 'Geometre', 0),
+(16, 'Huissier', 0),
+(17, 'Immobilier Entreprise Conseil', 0),
+(18, 'Immobilier Location Saisonniere Temporaire', 0),
+(19, 'Immobilier Lotisseur Amenageur Foncier', 0),
+(20, 'Liquidateur Judiciaire', 0),
+(21, 'Marchand Bien', 0),
+(22, 'Non défini', 0),
+(23, 'Promoteur Constructeur', 0),
+(24, 'Syndic De Copropriete', 0),
+(25, 'Syndicat Professionnel', 0),
+(26, 'Partenaire / Relation', 0),
+(27, 'Partenaire', 0),
+(28, 'Office HLM', 0),
+(29, 'Maître d\'ouvrage ou assistant', 0),
+(30, 'Maître d\'œuvre ', 0),
+(31, 'Coordonnateur SPS', 0),
+(32, 'Diagnostiqueur', 0),
+(33, 'Bailleur social', 0),
+(34, 'Entreprise', 0),
+(35, 'Collectivité territoriale', 0),
+(36, 'Fournisseur', 0),
+(37, 'Partenaire', 0),
+(38, 'Laboratoire', 0),
+(39, 'Autre', 0),
+(40, 'Tuteur / Tutrice', 0);
+
+--
+-- Déchargement des données de la table `statut_commande`
+--
+
+INSERT INTO `statut_commande` (`id`, `nom`, `description`, `ordre`, `isJustificationNecessaire`, `idStatutParent`) VALUES
+(1, 'Devis en saisie', '', 1, 0, NULL),
+(2, 'Devis envoyé', '', 2, 0, NULL),
+(3, 'Devis relancé', '', 3, 0, NULL),
+(4, '--- LABO - Devis en production ---', '', 4, 0, NULL),
+(5, 'LABO - Stratégie à réaliser', '', 1, 0, 4),
+(6, 'LABO - Stratégie validée', '', 2, 0, 4),
+(7, 'LABO - Devis en cours', '', 3, 0, 4),
+(8, 'LABO - Devis envoyé', '', 4, 0, 4),
+(9, 'LABO - Devis relancé', '', 5, 0, 4),
+(10, 'Devis en cours client', '', 5, 0, NULL),
+(11, 'Commande en saisie', '', 6, 0, NULL),
+(12, 'Commande planifiée', '', 7, 0, NULL),
+(13, 'Devis abandonné', '', 8, 1, NULL),
+(14, 'Commande abandonnée', '', 9, 1, NULL);
+
+--
+-- Déchargement des données de la table `travail_humide`
+--
+
+INSERT INTO `travail_humide` (`id`, `nom`) VALUES
+(1, 'Regroupement des types de travail à l\'humide dont le nombre de données est insuffisant pour être évalués séparément'),
+(2, 'Absence de travail à l\'humide'),
+(3, 'Brumisation ou nébulisation dans la zone de travail seule'),
+(4, 'Humidification du matériau par pulvérisation des matériaux et brumisation ou nébulisation'),
+(5, 'Humidification du matériau par pulvérisation des matériaux seule'),
+(6, 'Imprégnation à coeur du matériau et brumisation ou nébulisation dans la zone de travail'),
+(7, 'Imprégnation à coeur du matériau seule'),
+(8, 'Mouillage par inondation des matériaux seule'),
+(9, 'Mouillage par inondation du matériau et brumisation ou nébulisation');
+
+--
+-- Déchargement des données de la table `type_batiment`
+--
+
+INSERT INTO `type_batiment` (`id`, `nom`) VALUES
+(1, 'Tranchée'),
+(2, 'Enveloppe bâtiment'),
+(3, 'Route'),
+(4, 'Intérieur bâtiment'),
+(5, 'Train'),
+(6, 'Aéronef'),
+(7, 'Navire');
+
+--
+-- Déchargement des données de la table `type_contact_chantier`
+--
+
+INSERT INTO `type_contact_chantier` (`id`, `nom`, `code`) VALUES
+(1, 'Rapport à remettre à', 'RAPPORT_A_REMETTRE_A'),
+(2, 'Donneur d\'ordre propriétaire', 'DONNEUR_ORDRE'),
+(3, 'Interlocuteur de chantier', 'INTERLOC_CHANTIER'),
+(4, 'Maître d\'ouvrage', 'MAITRE_OUVRAGE');
+
+--
+-- Déchargement des données de la table `type_contact_devis_commande`
+--
+
+INSERT INTO `type_contact_devis_commande` (`id`, `nom`, `code`, `isInterne`) VALUES
+(1, 'Chargé de clientèle', 'CHARGE_CLIENTELE', 1),
+(2, 'Stratège', 'STRATEGE', 1),
+(3, 'Rédacteur Stratégie', 'REDEACTEUR_STRATEGIE', 1),
+(4, 'Valideur Stratégie', 'VALIDATEUR_STRATEGIE', 1),
+(5, 'Formateur', 'FORMATEUR', 1),
+(6, 'Client', 'CLIENT', 0),
+(7, 'Donneur d’ordre', 'DONNEUR_ORDRE', 0),
+(8, 'Maître d’ouvrage', 'MAITRE_OUVRAGE', 0),
+(9, 'Propriétaire', 'PROPRIETAIRE', 0),
+(10, 'Stagiaire', 'STAGIAIRE', 0),
+(11, 'Prescripteur', 'PRESCRIPTEUR', 0);
+
+--
+-- Déchargement des données de la table `type_facturation`
+--
+
+INSERT INTO `type_facturation` (`id`, `nom`) VALUES
+(1, 'À la date de réalisation'),
+(2, 'À la fin du mois'),
+(3, 'À la fin du mois suivant'),
+(4, 'N jours après la réalisation');
+
+--
+-- Déchargement des données de la table `type_fichier`
+--
+
+INSERT INTO `type_fichier` (`id`, `nom`, `affectable`, `idGroupe`) VALUES
+(1, 'Devis', 1, 1),
+(2, 'Stratégie', 1, 1),
+(3, 'Plan', 1, 1),
+(4, 'Autre', 1, NULL),
+(5, 'PJ_SITE_PRELEVEMENT', 0, 2),
+(6, 'PLAN_BATIMENT', 0, 2),
+(7, 'PDRE (SS3)', 1, 2),
+(8, 'Liste des processus', 1, 2),
+(9, 'Mode opératoire', 1, 2),
+(10, 'Plan d\'Installation Chantier (PIC)', 1, 2),
+(11, 'Planning des informations', 1, 2),
+(12, 'Repérage amiante', 1, 2),
+(13, 'Photos', 1, 2),
+(14, 'Plans', 1, 2),
+(15, 'PDRE (CSP)', 1, 2),
+(16, 'Devis', 1, 4),
+(17, 'Stratégie', 1, 4),
+(18, 'Plan', 1, 4),
+(19, 'IMPORT_LISTE_AMIANTE', 0, 5),
+(20, 'IMPORT_LISTE_ENRICHISSABLE', 0, 5),
+(21, 'Plan de périmètre d\'investigation', 1, 2),
+(22, 'CHANTIER_PLAN_PERIMETRE_BATIMENT', 0, 2),
+(23, 'Ordre Intervention', 1, 2),
+(24, 'TEMPLATE', '0', NULL),
+(25, 'Ordre Intervention Valide', 1, 2),
+(26, 'Stratégie', 1, 2),
+(27, 'Signature', 1, 6),
+(28, 'Plan des prélèvements', 1, 2),
+(29, 'Document attaché', 1, 7);
+
+--
+-- Déchargement des données de la table `type_fichier_groupe`
+--
+
+INSERT INTO `type_fichier_groupe` (`id`, `nom`) VALUES
+(1, 'DEVIS'),
+(2, 'CHANTIER'),
+(3, 'STRATEGIE'),
+(4, 'ACTIVITE'),
+(5, 'IMPORT'),
+(6, 'USER'),
+(7, 'STAGIAIRE');
+
+--
+-- Déchargement des données de la table `type_grille`
+--
+
+INSERT INTO `type_grille` (`id`, `nom`, `refDefaut`) VALUES
+(1, 'Laboratoire', 'TPUBLABO'),
+(2, 'Formation', 'TPUBFORMATION'),
+(3, 'Conseil', 'TPUBCONSEIL'),
+(4, 'BIM', 'TPUBBIM'),
+(5, 'Contrôles', 'TPUBCONTROLES');
+
+--
+-- Déchargement des données de la table `type_objectif`
+--
+
+INSERT INTO `type_objectif` (`id`, `nom`, `code`) VALUES
+(1, 'Code du Travail', 'CT'),
+(2, 'Code de la Santé Publique', 'CSP');
+
+--
+-- Déchargement des données de la table `type_menu`
+--
+INSERT INTO `type_menu` (`id`,`nom`) VALUES
+(1, 'Vide'),
+(2, 'Aléa AC');
+
+--
+-- Déchargement des données de la table `type_produit`
+--
+
+INSERT INTO `type_produit` (`id`, `nom`, `rang`) VALUES
+(1, 'Laboratoire', 0),
+(2, 'Formation', 0),
+(3, 'BIM', 0),
+(4, 'Vérification Electrique', 0),
+(5, 'Divers', 2),
+(6, 'Autres prélèvements', 1),
+(7, 'Personnalisé', 0),
+(8, 'Déplacements', 3);
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- Insertion des codes postaux depuis monDiagamter
+-- MODIFIER le nom de la base du SELECT si besoin
+INSERT INTO `aleaAC`.`code_postal`(`latitude`, `longitude`, `nbhabitant`, `numCP`, `nomCommune`, `nomDepartement`, `numDepartement`, `nomGeofla`, `cpGeofla`)
+SELECT `latitude`, `longitude`, `nbhabitant`, `numCP`, `nomCommune`, `nomDepartement`, `numDepartement`, `nomGeofla`, `cpGeofla`
+FROM `mondiagamter`.`codespostaux`;
+
+
+-- ----------------------------------------
+-- INIT MENU, MENU-PERMISSION
+-- ----------------------------------------
+
+-- phpMyAdmin SQL Dump
+-- version 4.8.5
+-- https://www.phpmyadmin.net/
+--
+-- Hôte : localhost
+-- Généré le :  mar. 07 mai 2019 à 09:47
+-- Version du serveur :  5.5.62-0+deb8u1
+-- Version de PHP :  7.3.2-3+0~20190208150759.31+jessie~1.gbp0912bd
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+--
+-- Base de données :  `aleaACAnh`
+--
+
+--
+-- Déchargement des données de la table `menu-defini`
+--
+
+INSERT INTO `menu-defini` (`id`, `titre`, `name`, `url`, `icone`, `ordreContenuAlpha`, `ordreMenu`, `visible`, `recherche`, `sousTitre`, `idTypeMenu`, `idMenuParent`, `idDroit`) VALUES
+(122, 'Points de Repère', 'FRAN_MENU_POINTS_REPERE', '/points-de-repere', 'fas fa-star-and-crescent', 0, 1, 1, 0, '', 2, NULL, NULL),
+(123, 'Production', 'FRAN_POINTS_REPERE_PRODUCTION', '/points-de-repere/production', 'fas fa-adjust', 0, 4, 1, 1, '', 2, 122, 54),
+(124, 'Management', 'FRAN_POINTS_REPERE_MANAGEMENT', '/points-de-repere/management', 'fas fa-address-book', 0, 3, 1, 1, '', 2, 122, NULL),
+(127, 'Commerce', 'FRAN_POINTS_REPERE_COMMERCE', '/points-de-repere/commerce', 'fas fa-cloud-sun', 0, 2, 1, 0, '', 2, 122, NULL),
+(128, 'Communique', 'FRAN_MENU_COM', '/communique', 'fas fa-satellite-dish', 0, 2, 0, 0, '', 1, NULL, 54),
+(129, 'Informatique', 'FRAN_MENU_INFO', '/informatique', 'fas fa-laptop-code', 0, 4, 1, 0, '', 2, NULL, NULL),
+(130, 'Se former', 'FRAN_MENU_FORMER', '/se-former', 'fas fa-chalkboard-teacher', 0, 5, 1, 0, '', 2, NULL, NULL),
+(131, 'Tutoriels vidéos', 'FRAN_FORMER_TUTO_VIDEO', '/informatique/tutoriels-videos', 'fas fa-ad', 0, 5, 1, 1, 'Apprendre en toute simplicité', 2, 129, NULL),
+(132, 'Formation', 'FRAN_FORMATION', '/se-former/formation', '', 0, 10, 0, 0, '', 2, 130, NULL),
+(133, 'WikiDiag', 'FRAN_MENU_WIKIDIAG', '/wikidiag', 'fab fa-weebly', 0, 6, 1, 0, '', 2, NULL, 56),
+(135, 'Technique', 'FRAN_WIKIDIAG_TECHNIQUE', '/wikidiag/technique', 'fas fa-users-cog', 0, 2, 1, 1, '', 2, 133, NULL),
+(136, 'e-Shop', 'FRAN_MENU_ESHOP', '/e-shop', 'fas fa-dolly', 0, 7, 1, 0, '', 2, NULL, NULL),
+(137, 'Planning des formations', 'FRAN_INFO_PLAN', '/informatique/planning-des-formations', 'fas fa-baby-carriage', 0, 2, 1, 1, 'Se tenir informé des dates de toutes les formations', 2, 129, NULL),
+(138, 'Procédure d\'inscription', 'FRAN_INFO_PRO_INSCRIT', '/informatique/procedure-d-inscription', 'fas fa-align-center', 0, 3, 1, 1, 'Connaitre les modalités d\'inscriptions et télécharger la feuille d\'inscription', 2, 129, NULL),
+(139, 'Nos formations', 'FRAN_INFO_FORMA', '/informatique/nos-formations', 'fas fa-atlas', 0, 4, 1, 1, 'Consulter les fiches de toutes les formations proposées par Diagamter. Vous y trouverez un descriptif des informations, les dates, les coûts...', 2, 129, NULL),
+(140, 'Aides financières', 'FRAN_INFO_AIDE_FINAN', '/informatique/aides-financieres', 'fas fa-database', 0, 5, 1, 1, 'Se tenir au courant des aides financières dont vous pouvez bénéficier', 2, 129, 53),
+(141, 'QCM', 'FRAN_INFO_QCM', '/informatique/qcm', 'fas fa-list-ol', 0, 6, 0, 1, 'Consulter des QCM', 2, 129, 53),
+(142, 'ezaeza', '', '/points-de-repere/ezaeza', 'fas fa-braille', 0, 0, 1, 0, '', 1, 122, NULL),
+(143, 'menu niveau 2', '', '/se-former/menu-niveau-2', 'fas fa-user-times', 0, 0, 1, 0, '', 2, 130, NULL),
+(144, 'menu niveau 3', '', '/se-former/menu-niveau-2/menu-niveau-3', 'fas fa-user-check', 0, 0, 1, 0, '', 2, 143, NULL),
+(145, 'Commerce enfant niveau 1', '', '/points-de-repere/commerce/commerce-enfant-niveau-1', 'fas fa-chess', 0, 0, 1, 0, '', 2, 127, NULL),
+(146, 'sous menu recherche de menu niveau 2', '', '/se-former/menu-niveau-2/sous-menu-recherche-de-menu-niveau-2', 'fas fa-toggle-off', 0, 0, 1, 1, '', 1, 143, 53),
+(147, 'menu niveau 4', '', '/se-former/menu-niveau-2/menu-niveau-3/menu-niveau-4', 'fas fa-bed', 0, 0, 1, 0, '', 2, 144, 53),
+(148, 'points menu enfant niveau 1', '', '/points-de-repere/ezaeza/points-menu-enfant-niveau-1', 'fas fa-donate', 0, 0, 1, 0, '', 2, 142, NULL),
+(149, 'sous menu recherche', '', '/points-de-repere/ezaeza/points-menu-enfant-niveau-1/sous-menu-recherche', 'fas fa-drum-steelpan', 0, 0, 1, 1, '', 2, 148, NULL),
+(153, 'cxbnwbchjwxb', '', '/cxbnwbchjwxb', '', 0, 0, 0, 0, '', 1, NULL, NULL);
+
+INSERT INTO `categorie-menu` (`id`, `titre`, `url`, `ordre`, `idMenu`) VALUES
+(1, 'sous points 1', '/points-de-repere/sous-points-1', 0, 122),
+(2, 'sous points 2', '/points-de-repere/sous-points-2', 0, 122),
+(3, 'sous info 1', '/informatique/sous-info-1', 0, 129),
+(5, 'cate test', '/points-de-repere/ezaeza/points-menu-enfant-niveau-1/sous-menu-recherche/cate-test', 0, 149),
+(11, 'vcxwvccwxv', '/vcxwvccwxv', 0, NULL),
+(12, 'sous point 3', '/points-de-repere/sous-point-3', 0, 122),
+(13, 'sous point  5', '/points-de-repere/sous-point--5', 0, 122),
+(14, 'sous point 4', '/points-de-repere/sous-point-4', 0, 122);
+
+
+INSERT INTO `contenu-menu` (`id`, `expression`, `titre`, `libelleLien`, `header1`, `header2`, `intro`, `ordre`, `metaDescription`, `visible`, `dateAjout`, `dateMisAJour`, `idMenu`, `idDroit`, `idCategorie`, `contenu`, `tag`, `idMiniature`) VALUES
+(2, 'nguyen-article-1', 'nguyen article', 'nguyen article', 'nguyen article', '', 'Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.', 0, 'coucoujkdjzfdsf', 1, '2019-05-14 18:39:58', '2019-06-10 16:30:31', 122, NULL, 2, '<h4 class=\"left\" style=\"color: #505151; background-color: #ffffff; border: none; display: block; width: 100%; margin: 0px -20px; box-shadow: none; padding: 10px 20px; font-size: 1em; font-family: Ubuntu; margin-block-start: 1em; margin-block-end: 1em; margin-inline-start: 0px; margin-inline-end: 0px; font-weight: bold; text-align: center;\"><span style=\"font-weight: bold;\">fsdfdsfs</span></h4>\n<h1 class=\"left\" style=\"text-align: center; margin-top: 0px; display: block; font-size: 2em; margin-block-start: 0.67em; margin-block-end: 0.67em; margin-inline-start: 0px; margin-inline-end: 0px; font-weight: bold; color: #505151; font-family: Ubuntu;\"><span style=\"font-weight: bold;\">nguyen anh nguyen</span></h1>\n<p class=\"left\" style=\"text-align: center;\"><span class=\"example1\" style=\"font-weight: bold; color: #00ff00; font-size: 20px;\" title=\"My custom format\">nguyen anh nguyen</span></p>\n<p class=\"left\" style=\"text-align: center;\"><span style=\"font-weight: bold; font-size: 18pt; color: #808080;\">klklklmklmklm</span></p>\n<p class=\"left\" style=\"text-align: center;\">fsdfdsfsf</p>\n<p class=\"left\" style=\"text-align: center;\">fdsfdsfsfsf</p>\n<p class=\"left\" style=\"text-align: center;\"><span class=\"bold\">fqsfqfdqsf</span></p>\n<h4 class=\"left\" style=\"text-align: center; float: right; margin: 0px 0px 10px 10px;\"><span class=\"bold\">*fdsqfqdsfdqsdfqsf</span></h4>\n<h4 class=\"left\" style=\"text-align: center; color: #ec7123; background-color: #ffffff; border-bottom: 1px solid #ec7123; display: block; width: 100%; margin: 0px 0px 10px 10px; box-shadow: none; padding: 10px 20px; font-size: 1.2em; font-family: Ubuntu; float: right;\"><span class=\"bold\">fdsqfdsqf</span></h4>\n<h4 class=\"left\" style=\"text-align: center; color: #ec7123; background-color: #ffffff; border-bottom: 1px solid #ec7123; display: block; width: 100%; margin: 0px 0px 10px 10px; box-shadow: none; padding: 10px 20px; font-size: 1.2em; font-family: Ubuntu; float: right;\"><span class=\"bold\">fdsqfqsdfsq<br />45645645645645645652541564564564</span></h4>\n<p class=\"left\" style=\"text-align: center;\"><img src=\"http://moxman/fichier/Desert.jpg\" alt=\"\" width=\"449\" height=\"337\" /></p>\n<p class=\"left\" style=\"text-align: right;\">&nbsp;</p>\n<h1 class=\"left\" style=\"text-align: center;\"><span class=\"bold example1\" style=\"font-size: 20px; color: #00ff00;\" title=\"My custom format\"><em>454564564654<span style=\"display: inline-block; border: 1px solid #2276d2; border-radius: 5px; padding: 2px 5px; margin: 0px 2px; color: #2276d2;\">132121312</span></em></span></h1>\n<p style=\"text-align: center;\"><span class=\"bold example1\" style=\"font-size: 20px; color: #00ff00;\" title=\"My custom format\"><em><span style=\"display: inline-block; border: 1px solid #2276d2; border-radius: 5px; padding: 2px 5px; margin: 0px 2px; color: #2276d2;\">454654</span></em></span></p>\n<h1 class=\"left\" style=\"text-align: center;\"><span class=\"bold\" style=\"font-size: 12pt;\"><em>fdqsfqsdfqdzsf12313</em></span></h1>\n<p>&nbsp;</p>\n<h4 style=\"margin: 0px 0px 10px 10px; color: #505151; font-family: Ubuntu; float: right;\"><span class=\"bold\" style=\"font-size: 12pt;\"><em>1231231321231231</em></span></h4>\n<h1 style=\"margin-top: 0px; color: #505151; font-family: Ubuntu;\"><span class=\"bold\"><em>12123123123</em></span></h1>\n<h2 style=\"color: #ec7123; background-color: #ffffff; border-bottom: 1px solid #ec7123; display: block; width: 100%; margin: 0px -20px; box-shadow: none; padding: 10px 20px; font-size: 1.2em;\"><span class=\"bold\" style=\"font-size: 12pt;\"><em>113212132</em></span></h2>\n<p>&nbsp;</p>\n<p class=\"center\"><span class=\"bold\" style=\"font-size: 12pt;\"><em>1231321321231</em></span></p>\n<h2 class=\"left\" style=\"text-align: right; margin: 0px -20px; color: #ec7123; background-color: #ffffff; display: block; width: 100%; box-shadow: none; padding: 10px 20px; font-size: 1.2em;\"><em><strong>ezaeazeae</strong></em></h2>\n<p>&nbsp;</p>\n<h1 class=\"center\" style=\"margin-top: 0px;\"><em><strong>ezaeazeazea</strong></em></h1>\n<p>&nbsp;</p>', '', 50),
+(3, 'article-1-2', 'article 1', 'article 1', 'article 1', '', 'Introduction générale d\'article 1', 0, 'Meta description', 1, '2019-05-15 09:46:56', '2019-06-10 16:32:06', 142, NULL, NULL, '<p style=\"text-align: center;\">nguyen anh nguyen</p>', '', 43),
+(4, 'article-d-information-1', 'Article d\'information', 'Article d\'information', 'Article d\'information', '', 'Intro d\'article d\'information', 0, 'meta1', 1, '2019-05-15 12:17:13', '2019-06-10 15:40:53', 129, NULL, 3, '<p><em><img style=\"float: right; border-width: 2px; margin: 10px;\" src=\"https://www.diagamter.com/monDiagamter/uploads/tinyBrowser/fichiers/images/Laurent-Fichet-Diagamter_173px.jpg\" alt=\"\" width=\"173\" height=\"233\" />A 45 ans, apr&egrave;s seulement huit mois d&rsquo;activit&eacute; en tant que technicien, Laurent Fichet s&rsquo;est retrouv&eacute;, de mani&egrave;re inattendue et compliqu&eacute;e, en position de reprendre le cabinet Diagamter de Morlaix. Artisan dans le b&acirc;timent durant 20 ans avant sa reconversion, il s&rsquo;est associ&eacute; &agrave; un ancien responsable d&rsquo;agence avec qui il avait suivi la m&ecirc;me formation de diagnostiqueur immobilier.</em></p>\n<p><em>&Agrave; force d&rsquo;opini&acirc;tret&eacute;, avec une gestion du cabinet resserr&eacute;e, une &eacute;thique de travail irr&eacute;prochable et l&rsquo;environnement du r&eacute;seau, tous deux ont incontestablement &laquo;&nbsp;sauv&eacute;&nbsp;&raquo; la marque Diagamter sur leur secteur g&eacute;ographique. En doublant le chiffre d&rsquo;affaires de la pr&eacute;c&eacute;dente direction en trois ans.</em></p>\n<p><em>R&eacute;cit d&rsquo;une aventure &eacute;pique, dans laquelle la derni&egrave;re Convention nationale &agrave; Palma de Majorque a jou&eacute; un effet booster &agrave; un moment crucial.</em></p>\n<p>&nbsp;</p>\n<h2>Une transmission pour le moins inattendue et compliqu&eacute;e&hellip;</h2>\n<p>&laquo;&nbsp;Apr&egrave;s un bac Pro Maintenance et quelques petits boulots, la r&eacute;novation de mon premier bien immobilier me permet de d&eacute;couvrir mes dispositions et ma passion pour les m&eacute;tiers du b&acirc;timent. <strong>Durant pr&egrave;s d&rsquo;une vingtaine d&rsquo;ann&eacute;es, je vais cr&eacute;er et diriger des entreprises, sp&eacute;cialis&eacute;es dans le second &oelig;uvre de la construction&hellip;</strong> malgr&eacute; une incapacit&eacute; &agrave; utiliser pleinement mon bras gauche, survenue suite &agrave; un accident.</p>\n<p>En 2014, suite &agrave; mon handicap et dans le cadre d&rsquo;une reconversion, j&rsquo;int&egrave;gre en tant que technicien le cabinet Diagamter de Morlaix, qui existait d&eacute;j&agrave; depuis trois ans. D&rsquo;am&eacute;nageur, je passais &agrave; contr&ocirc;leur de logements, en connaissant les faiblesses du b&acirc;ti. <strong>Huit mois plus tard, alors que j&rsquo;avais c&eacute;d&eacute; ma maison pour me rapprocher de mon lieu de travail, le g&eacute;rant m&rsquo;annonce, le jour m&ecirc;me du d&eacute;m&eacute;nagement, qu&rsquo;il vendait son cabinet pour cr&eacute;er une autre activit&eacute; et me licenciait.</strong> J&rsquo;ai eu besoin de m&rsquo;asseoir pour r&eacute;fl&eacute;chir, car j&rsquo;&eacute;tais attach&eacute; &agrave; ma nouvelle profession&nbsp;&raquo;, se rem&eacute;more Laurent Fichet.</p>\n<p>&nbsp;</p>\n<h2>&laquo;&nbsp;Sauver&nbsp;&raquo; la marque Diagamter sur Morlaix</h2>\n<p>&laquo;&nbsp;<strong>Jusque-l&agrave;, je ne m&rsquo;&eacute;tais pas int&eacute;ress&eacute; &agrave; la gestion du cabinet et j&rsquo;&eacute;tais totalement isol&eacute; de la relation avec les prescripteurs de notre activit&eacute;.</strong> Dans ces deux domaines majeurs de la r&eacute;ussite d&rsquo;une entreprise, la pr&eacute;c&eacute;dente direction n&rsquo;avait pour le moins pas excell&eacute;, ce que je ne savais pas lorsque je me suis pourtant mis en recherche d&rsquo;un associ&eacute; pour reprendre le cabinet.</p>\n<p>Je suis originaire du Pas-de-Calais, issu d&rsquo;une famille de neuf enfants, <strong>o&ugrave; cela fait longtemps qu&rsquo;il faut se battre pour obtenir un job</strong>. Le pire, c&rsquo;est d&rsquo;aller au fond de la mine et de taper avec une pioche, comme mes a&iuml;euls l&rsquo;ont fait. Le reste, ce n&rsquo;est que du bonheur. Je m&rsquo;en suis toujours sorti par le travail par l&rsquo;entrepreneuriat, en acceptant de subir le stress du chiffre d&rsquo;affaires, et &agrave; travers de bonnes rencontres. J&rsquo;ai donc propos&eacute; l&rsquo;association &agrave; Christian M&eacute;vel, avec qui je faisais la route vers Rennes lors de ma formation de diagnostiqueur et qui avait d&rsquo;ailleurs postul&eacute; au cabinet Diagamter de Morlaix, &agrave; deux ans de son d&eacute;part en retraite s&rsquo;il obtenait ses quelques trimestres manquants.</p>\n<p>Nous avons fortement n&eacute;goci&eacute; pour racheter les parts du pr&eacute;c&eacute;dent g&eacute;rant en l&rsquo;auto-finan&ccedil;ant, sans l&rsquo;appui d&rsquo;une banque. Pendant 18 mois, bien que r&eacute;alisant &agrave; deux la production, nous ne nous sommes pas r&eacute;mun&eacute;r&eacute;s. <strong>Tout ch&egrave;que re&ccedil;u pour une mission &eacute;tait d&eacute;pos&eacute; le jour m&ecirc;me &agrave; la banque, afin de pr&eacute;server et constituer notre tr&eacute;sorerie&hellip;</strong></p>\n<p>Christian, qui a &eacute;t&eacute; responsable d&rsquo;agence dans l&rsquo;activit&eacute; des ascenseurs durant sa vie salari&eacute;e, a montr&eacute; ses grandes qualit&eacute;s de gestionnaire&nbsp;: <strong>il a bien analys&eacute; les comptes d&rsquo;exploitation, d&eacute;cel&eacute; les d&eacute;penses superflues</strong> telles que la ligne de fax, <strong>r&eacute;ussi &agrave; faire baisser le loyer du local et mensualiser les charges</strong> &ndash;&nbsp;RSI, v&eacute;hicule, comptable&hellip;&nbsp;-, <strong>mis en place un &eacute;ch&eacute;ancier pour assainir nos dettes et un tableau de bord pour red&eacute;velopper la soci&eacute;t&eacute;</strong>&hellip;&nbsp;&raquo;, souligne Laurent Fichet.</p>\n<p>&nbsp;</p>\n<h2>Un temps dans l&rsquo;incertitude de poursuivre l&rsquo;aventure Diagamter</h2>\n<p>&laquo;&nbsp;De mon c&ocirc;t&eacute;, j&rsquo;ai r&eacute;alis&eacute; le d&eacute;veloppement commercial. Les anciens prescripteurs m&rsquo;offrent toujours le caf&eacute;, mais ne me donnent toujours pas de commandes. <strong>Un notaire m&rsquo;a m&ecirc;me imm&eacute;diatement demand&eacute; de prendre la porte au simple &eacute;nonc&eacute; de notre enseigne&hellip; Aujourd&rsquo;hui, son successeur &agrave; l&rsquo;&eacute;tude notariale commence &agrave; me commander des missions de diagnostic.</strong> Nos prescripteurs actuels sont pratiquement tous diff&eacute;rents de ceux de l&rsquo;ancienne direction. Durant l&rsquo;&eacute;t&eacute;, comme Christian ou moi sommes toujours pr&eacute;sents, nous avons gagn&eacute; des points en r&eacute;alisant des diagnostics en urgence pour des professionnels de l&rsquo;immobilier ne travaillant pas habituellement avec nous.</p>\n<p>C&rsquo;est long de redonner une bonne image &agrave; une marque qui a &eacute;t&eacute;, semble-t-il, localement &eacute;gratign&eacute;e, m&ecirc;me si la personne qui la repr&eacute;sente et ses techniciens pratiquent leur m&eacute;tier avec une &eacute;thique irr&eacute;prochable. Les appels entrants par les Pages Jaunes restent encore aujourd&rsquo;hui un pr&eacute;cieux soutien. <strong>R&eacute;sultat&nbsp;: notre chiffre d&rsquo;affaires l&rsquo;an dernier &eacute;tait sup&eacute;rieur de 50% &agrave; celui de 2015, et avait doubl&eacute; par rapport &agrave; l&rsquo;ancienne direction.</strong></p>\n<p>Dans cette reconstruction, l&rsquo;environnement du r&eacute;seau Diagamter a jou&eacute; un r&ocirc;le majeur. La formation de chef d&rsquo;entreprise franchis&eacute; &agrave; Toulouse, durant laquelle j&rsquo;avais conscience de repartir de z&eacute;ro, m&rsquo;a fait <strong>ressentir d&rsquo;appartenir &agrave; une famille professionnelle</strong>.</p>\n<p>De m&ecirc;me, la premi&egrave;re Convention nationale &agrave; laquelle j&rsquo;ai pu financi&egrave;rement assister, m&rsquo;a fait &eacute;norm&eacute;ment de bien, en particulier gr&acirc;ce aux &eacute;changes avec mes confr&egrave;res franchis&eacute;s, dont il n&rsquo;est ressorti que du positif. <strong>Lorsque je me suis envol&eacute; pour Palma de Majorque, j&rsquo;&eacute;tais en perte de motivation et m&ecirc;me dans l&rsquo;incertitude de poursuivre l&rsquo;aventure Diagamter.</strong> J&rsquo;en suis revenu gonfl&eacute; &agrave; bloc, mon moral n&rsquo;est plus redescendu&nbsp;!&nbsp;&raquo;, sourit Laurent Fichet.</p>\n<p>&nbsp;</p>\n<h2>Des objectifs toujours affich&eacute;s &agrave; c&ocirc;t&eacute; du miroir&hellip;</h2>\n<p>&laquo;&nbsp;Conform&eacute;ment &agrave; notre accord initial, Christian M&eacute;vel est parti en retraite en juillet 2017, intervenant b&eacute;n&eacute;volement pour notre cabinet tout en conservant ses parts. Je suis devenu le seul g&eacute;rant il y a quelques semaines, devant travailler en ce moment jusqu&rsquo;&agrave; 12 ou 13 heures par jour. Maintenant que la tr&eacute;sorerie du cabinet est en place, j&rsquo;ai engag&eacute; le recrutement d&rsquo;un technicien, rencontr&eacute; par hasard, un ind&eacute;pendant dans le jardinage, qui a r&eacute;nov&eacute; des maisons et dispose &eacute;galement d&rsquo;une formation commerciale. <strong>A 35 ans, il entreprend une reconversion dans le diagnostic immobilier, qui est pour lui un m&eacute;tier d&rsquo;avenir. </strong>Il sera accompagn&eacute; par Christian durant son int&eacute;gration. Je songe d&eacute;j&agrave; &agrave; une seconde embauche de technicien. Je repasserai par s&eacute;curit&eacute; mes certifications pour pallier &agrave; des indisponibilit&eacute;s de mon &eacute;quipe.</p>\n<p>Je veux pouvoir me consacrer &agrave; mon r&ocirc;le de chef d&rsquo;entreprise, au sein d&rsquo;un <strong>r&eacute;seau particuli&egrave;rement soud&eacute; dans le Grand Ouest</strong>. Avec Christian M&eacute;vel, &agrave; qui je tire un grand coup de chapeau, nous avons sinc&egrave;rement &laquo;&nbsp;sauv&eacute;&nbsp;&raquo; la marque Diagamter sur Morlaix, et je suis maintenant tr&egrave;s heureux de la porter et la diffuser sur ma r&eacute;gion. Notre comportement d&rsquo;aujourd&rsquo;hui est toujours le r&eacute;sultat de nos exp&eacute;riences d&eacute;j&agrave; v&eacute;cues. <strong>Mes objectifs sont toujours affich&eacute;s &agrave; c&ocirc;t&eacute; du miroir, mais j&rsquo;ai d&eacute;j&agrave; commenc&eacute; &agrave; retirer certains d&rsquo;entre eux que j&rsquo;ai d&eacute;j&agrave; atteints&hellip;</strong>&nbsp;&raquo;, conclut Laurent Fichet.</p>', '', 39),
+(6, 'article-14324', 'Article 1', 'Article 1', 'Article 1', '', '\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor ', 0, 'meta 1', 1, '2019-05-15 14:38:44', '2019-05-29 15:30:38', 146, NULL, NULL, '', '', NULL),
+(7, 'article-de-menu-point', 'Article de menu point', 'Article de menu point', 'Article de menu point', '', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor i', 0, 'meta2', 1, '2019-05-15 14:54:25', '2019-06-04 15:27:37', 148, NULL, NULL, '', '', NULL),
+(8, 'article-de-planning-des-formation', 'Article de planning des formation', 'Article de planning des formation', 'Article de planning des formation', '', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor i', 0, 'meta', 1, '2019-05-15 15:26:01', '2019-06-04 15:27:47', 137, NULL, NULL, '', '', NULL),
+(9, 'article-44', 'Article 44', 'Article 44', 'Article 44', '', '\nNguyen handsome', 0, 'meta322', 1, '2019-05-15 16:11:29', '2019-06-11 09:46:31', 149, NULL, 5, '<p><span style=\"color: #ffffff; background-color: #3366ff;\">nguyen anh nguyen test</span></p>', '', 49),
+(10, 'article-404', 'Article 404', 'Article 404', 'Article 404', '', 'Nguyen is very handsome', 0, 'meta', 1, '2019-05-15 16:14:50', '2019-05-29 12:07:24', 149, NULL, 5, '<h2>Hello everybody</h2>', '', 49),
+(12, 'test-article', 'Test article', 'Test article', 'Test article', '', 'test intro - Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. ', 0, 'meta test', 1, '2019-05-15 16:20:21', '2019-06-04 15:28:06', 143, NULL, NULL, '', '', NULL),
+(13, 'article-115611351', 'Article 115611351', 'Article 115611351', 'Article 115611351', '', 'nguyen test', 0, 'meta ', 1, '2019-05-15 18:02:24', '2019-06-04 15:28:13', 149, NULL, 5, '', '', NULL),
+(14, 'fleur', 'fleur', 'fleur', 'fleur', '', 'fdsfs', 0, 'fsdfsdfgsfd', 1, '2019-05-28 11:59:20', '2019-06-05 16:34:31', 122, NULL, 12, '', '', 40),
+(15, 'fqsdfd', 'fqsdfd', 'fqsdfd', 'fqsdfd', '', 'qsdqds', 0, 'c<wcx<w', 0, '2019-05-28 16:30:57', NULL, 122, NULL, 2, '', '', NULL),
+(16, 'fdsqf', 'fdsqf', 'fdsqf', 'fdsqf', '', 'fsqdf', 0, 'edqfds', 0, '2019-05-28 16:45:03', NULL, 122, NULL, 1, '', '', NULL),
+(17, 'fdqsfd', 'fdqsfd', 'fdqsfd', 'fdqsfd', '', 'fsdqf', 0, 'fdsqfd', 0, '2019-05-28 16:48:36', NULL, 132, NULL, NULL, '', '', NULL),
+(18, 'fdsqf', 'fdsqf', 'fdsqf', 'fdsqf', '', 'fqdsf', 0, 'fqsdfqs', 0, '2019-05-28 17:01:43', NULL, 127, NULL, NULL, '', '', NULL),
+(19, 'fdsqfqs', 'fdsqfqs', 'fdsqfqs', 'fdsqfqs', '', 'fdsqfq', 0, 'fdqsfsqf', 1, '2019-05-28 17:53:17', NULL, 122, NULL, 1, '', '', NULL),
+(20, 'gfdsgfds', 'gfdsgfds', 'gfdsgfds', 'gfdsgfds', 'gf', 'gfdsgs', 0, 'gdsgsg', 1, '2019-05-29 11:26:23', '2019-05-29 11:44:07', 122, NULL, 1, '<h2>Seafood super bon</h2>\n<p><img src=\"http://moxman/fichier/Jellyfish.jpg\" alt=\"\" width=\"200\" height=\"150\" /></p>\n<p>nguyen test coucou hello everyone</p>', '', 41),
+(21, 'alea-controles-recrute-un-amo/moe-amiante-(île-de-france)', 'Aléa Contrôles recrute un AMO/MOE Amiante (Île-de-France)', 'nguyen test tinyCME', 'Aléa Contrôles recrute un AMO/MOE Amiante (Île-de-France)', '', 'Coucou. We will introduce about ourself', 0, 'meta description', 1, '2019-05-29 11:53:09', '2019-06-04 15:28:36', 122, NULL, 13, '<h3 class=\"puce1\" style=\"box-sizing: border-box; font-family: Verdana; line-height: 37px; color: #58554b; margin-top: 15px; margin-bottom: 10px; font-size: 1.3em; background: url(\'../img/puce.png\') 0% 0% / 40px no-repeat; padding-left: 45px; margin-left: 5px; text-align: center;\">Les missions</h3>\n<p style=\"box-sizing: border-box; margin: 0px 51px 10px; color: #58554b; font-family: Verdana; text-align: justify;\">Les&nbsp;<span style=\"box-sizing: border-box; font-weight: bold;\">missions principales</span>&nbsp;consistent &agrave; :</p>\n<ul style=\"box-sizing: border-box; margin: 0px 0px 0px 43px; list-style-type: none; padding: 0px; color: #58554b; font-family: Verdana; text-align: justify;\">\n<ul style=\"box-sizing: border-box; margin: 0px 0px 0px 43px; list-style-type: none; padding: 0px;\">\n<li style=\"box-sizing: border-box; background: url(\'../img/pix-grey.gif\') 4px / 10px no-repeat; margin: 0px; padding-left: 25px;\">mener des&nbsp;<span style=\"box-sizing: border-box; font-weight: bold;\">missions de conseils (AMO, MOE,...)</span>&nbsp;dans le domaine de la&nbsp;<span style=\"box-sizing: border-box; font-weight: bold;\">d&eacute;pollution (amiante, plomb, sols,...) et de la&nbsp;d&eacute;molition</span></li>\n<li style=\"box-sizing: border-box; background: url(\'../img/pix-grey.gif\') 4px / 10px no-repeat; margin: 0px; padding-left: 25px;\"><span style=\"box-sizing: border-box; font-weight: bold;\">accompagner des ma&icirc;tres d\'ouvrages</span>&nbsp;dans le cadre de missions de conseils dans le domaine de la d&eacute;pollution</li>\n<li style=\"box-sizing: border-box; background: url(\'../img/pix-grey.gif\') 4px / 10px no-repeat; margin: 0px; padding-left: 25px;\"><span style=\"box-sizing: border-box; font-weight: bold;\">accompagner des entreprises du BTP</span>&nbsp;dans le cadre de l\'obtention de la certification \"d&eacute;samiantage\"</li>\n<li style=\"box-sizing: border-box; background: url(\'../img/pix-grey.gif\') 4px / 10px no-repeat; margin: 0px; padding-left: 25px;\"><span style=\"box-sizing: border-box; font-weight: bold;\">animer des formations</span>&nbsp;li&eacute;es &agrave; la pr&eacute;vention des risques (amiantes, plomb et autres polluants).</li>\n</ul>\n</ul>\n<p style=\"box-sizing: border-box; margin: 0px 51px 10px; color: #58554b; font-family: Verdana; text-align: justify;\">&nbsp;</p>\n<h3 class=\"puce1\" style=\"box-sizing: border-box; font-family: Verdana; line-height: 37px; color: #58554b; margin-top: 15px; margin-bottom: 10px; font-size: 1.3em; background: url(\'../img/puce.png\') 0% 0% / 40px no-repeat; padding-left: 45px; margin-left: 5px; text-align: justify;\">Le poste</h3>\n<p style=\"box-sizing: border-box; margin: 0px 51px 10px; color: #58554b; font-family: Verdana; text-align: justify;\">Le candidat retenu int&eacute;grera&nbsp;<span style=\"box-sizing: border-box; font-weight: bold;\">l\'&eacute;quipe \"AMO/MOE\" d\'Al&eacute;a Contr&ocirc;les</span>. Il doit poss&eacute;der une&nbsp;<span style=\"box-sizing: border-box; font-weight: bold;\">exp&eacute;rience significative dans le domaine du BTP</span>(&gt; 3 ans) et id&eacute;alement dans le&nbsp;<span style=\"box-sizing: border-box; font-weight: bold;\">d&eacute;samiantage</span>.</p>\n<p style=\"box-sizing: border-box; margin: 0px 51px 10px; color: #58554b; font-family: Verdana; text-align: justify;\">Une&nbsp;<span style=\"box-sizing: border-box; font-weight: bold;\">formation interne</span>&nbsp;aux m&eacute;thodes de travail et au process Qualit&eacute; d\'Al&eacute;a Contr&ocirc;les est pr&eacute;vue.</p>\n<p style=\"box-sizing: border-box; margin: 0px 51px 10px; color: #58554b; font-family: Verdana; text-align: justify;\">Le&nbsp;<span style=\"box-sizing: border-box; font-weight: bold;\">poste est bas&eacute; &agrave; Orly (94)</span>. Des&nbsp;<span style=\"box-sizing: border-box; font-weight: bold;\">d&eacute;placements</span>&nbsp;fr&eacute;quents en &Icirc;le-de-France sont &agrave; pr&eacute;voir et ponctuellement au niveau national.&nbsp;</p>\n<p style=\"box-sizing: border-box; margin: 0px 51px 10px; color: #58554b; font-family: Verdana; text-align: justify;\">&nbsp;</p>\n<h3 class=\"puce1\" style=\"box-sizing: border-box; font-family: Verdana; line-height: 37px; color: #58554b; margin-top: 15px; margin-bottom: 10px; font-size: 1.3em; background: url(\'../img/puce.png\') 0% 0% / 40px no-repeat; padding-left: 45px; margin-left: 5px; text-align: justify;\">L\'entreprise</h3>\n<p style=\"box-sizing: border-box; margin: 0px 51px 10px; color: #58554b; font-family: Verdana; text-align: justify;\">Al&eacute;a Contr&ocirc;les est pr&eacute;sente, &agrave; travers ses agences, sur l\'ensemble du territoire fran&ccedil;ais et intervient ponctuellement &agrave; l\'&eacute;tranger. La culture d\'entreprise est ax&eacute;e sur&nbsp;<span style=\"box-sizing: border-box; font-weight: bold;\">six valeurs fortes</span>, dont la Solidarit&eacute; et l\'Appartenance.&nbsp;<span style=\"box-sizing: border-box; font-weight: bold;\">Convivialit&eacute; et professionnalisme</span>&nbsp;guident notre quotidien.&nbsp;<span style=\"box-sizing: border-box; font-weight: bold;\">Ses collaborateurs sont tous issus du milieu du BTP</span>&nbsp;(ing&eacute;nieurs, conducteurs de travaux, &eacute;conomiste de la construction, ...).</p>\n<p style=\"box-sizing: border-box; margin: 0px 51px 10px; color: #58554b; font-family: Verdana; text-align: justify;\">Pour d&eacute;poser votre dossier de candidature ou poser des question, nous&nbsp;<a style=\"box-sizing: border-box; background-color: transparent; color: #dc6e2b; text-decoration-line: none;\" href=\"mailto:contact@aleacontroles.com\" target=\"_blank\" rel=\"noopener\"><span style=\"box-sizing: border-box; text-decoration-line: underline;\"><span style=\"box-sizing: border-box; font-weight: bold;\">contacter</span></span></a>.</p>\n<p style=\"box-sizing: border-box; margin: 0px 51px 10px; color: #58554b; font-family: Verdana; text-align: justify;\">&nbsp;</p>\n<p style=\"box-sizing: border-box; margin: 0px 51px 10px; color: #58554b; font-family: Verdana;\"><img style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"http://moxman/fichier/Personnage_Casquette_Polo_Gris_Droite_et_regard_250.png\" alt=\"\" width=\"250\" height=\"250\" /></p>', '', 49),
+(22, 'jhgfhfbgfd', 'jhgfhfbgfd', 'jhgfhfbgfd', 'jhgfhfbgfd', '', 'fdqsfq', 0, 'bgcvfcg', 1, '2019-05-29 15:02:56', NULL, 143, NULL, NULL, '<p>bvcvbdxfhgcxfbgcgb</p>', '', NULL),
+(23, '123-321', '123-321', '123-321', '123-321', '', 'fdsqf', 0, 'vcxwvcwx', 1, '2019-05-29 15:09:16', '2019-05-29 15:13:59', 149, NULL, 5, '<h2>Hey yolo</h2>\n<p><img src=\"http://moxman/fichier/Desert.jpg\" alt=\"\" width=\"500\" height=\"375\" /></p>', '', NULL),
+(24, 'hey-yoyo-nguyen-test', 'hey YOYO NGUYEN TeSt', 'hey YOYO NGUYEN TeSt', 'hey YOYO NGUYEN TeSt', '', 'fdsqf', 0, 'fqsfd', 1, '2019-05-29 15:26:28', '2019-06-05 18:15:34', 146, NULL, 14, '<h2>ME TAYLOR SWIFT</h2>\n<p><img src=\"http://moxman/fichier/Desert.jpg\" alt=\"\" width=\"500\" height=\"375\" /></p>', '', 42),
+(25, 'fdsqfqsffqdsfdqsfqsfdqsf', 'fdsqfqsf', 'fdsqfqsf', 'fdsqfqsf', '', 'fqdsf', 0, 'fqdsf', 1, '2019-05-31 17:45:17', '2019-06-06 15:20:26', 122, NULL, 12, '<p><img src=\"http://moxman/fichier/Hydrangeas.jpg\" width=\"1024\" height=\"768\" /></p>', '', 38),
+(26, 'fdsqfqsf', 'fdsqfqsf', 'fdsqfqsf', 'fdsqfqsf', '', 'fqdsf', 0, 'fqdsf', 0, '2019-05-31 17:45:18', NULL, 122, NULL, 12, '', '', NULL),
+(27, 'fdsqfqsf', 'fdsqfqsf', 'fdsqfqsf', 'fdsqfqsf', '', 'fqdsf', 0, 'fqdsf', 0, '2019-05-31 17:45:19', NULL, 122, NULL, 12, '', '', NULL),
+(28, 'fdsqfqsf', 'fdsqfqsf', 'fdsqfqsf', 'fdsqfqsf', '', 'fqdsf', 0, 'fqdsf', 0, '2019-05-31 17:45:20', NULL, 122, NULL, 12, '', '', NULL),
+(29, 'sgfsdgf', 'sgfsdgf', 'sgfsdgf', 'sgfsdgf', '', 'gfdsgds', 0, 'gfdsgfs', 0, '2019-05-31 17:47:36', NULL, 122, NULL, 12, '<p><img src=\"http://moxman/fichier/Hydrangeas.jpg\" width=\"1024\" height=\"768\" /></p>', '', NULL),
+(30, 'fqdsdf', 'fqdsdf', 'fqdsdf', 'fqdsdf', '', 'fsdq', 0, 'fqsd', 0, '2019-05-31 17:48:05', NULL, 122, NULL, 1, '', '', NULL),
+(31, 'fqdsdf', 'fqdsdf', 'fqdsdf', 'fqdsdf', '', 'fsdq', 0, 'fqsd', 0, '2019-05-31 17:49:46', '2019-06-05 16:16:19', 122, NULL, 2, '', '', NULL),
+(32, 'fdsqfsq', 'fdsqfsq', 'fdsqfsq', 'fdsqfsq', '', 'fdsqf', 0, 'fdqsfq', 0, '2019-05-31 17:51:14', NULL, 123, NULL, NULL, '', '', NULL),
+(33, 'fdsqfsq', 'fdsqfsq', 'fdsqfsq', 'fdsqfsq', '', 'fdsqf', 0, 'fdqsfq', 0, '2019-05-31 17:52:28', NULL, 123, NULL, NULL, '', '', NULL),
+(34, 'fdsqf', 'fdsqf', 'fdsqf', 'fdsqf', '', 'fqdsfq', 0, 'fqdsfq', 1, '2019-05-31 17:52:50', NULL, 122, NULL, 2, '<p>f</p>', '', NULL),
+(35, 'fdsqf', 'fdsqf', 'fdsqf', 'fdsqf', '', 'fqdsfq', 0, 'fqdsfq', 1, '2019-05-31 17:53:43', NULL, 122, NULL, 2, '<p>f</p>', '', NULL),
+(36, 'fdsqf', 'fdsqf', 'fdsqf', 'fdsqf', '', 'fqdsfq', 0, 'fqdsfq', 1, '2019-05-31 17:54:15', NULL, 122, NULL, 2, '<p>f</p>', '', NULL),
+(37, 'fdsqf', 'fdsqf', 'fdsqf', 'fdsqf', '', 'fqdsfq', 0, 'fqdsfq', 1, '2019-05-31 17:54:48', NULL, 122, NULL, 2, '<p>f</p>', '', NULL),
+(38, 'cwxcwx', 'cwxcwx', 'cwxcwx', 'cwxcwx', '', 'vcwxvcw', 0, 'vwxcvw', 0, '2019-05-31 17:57:34', NULL, 124, NULL, NULL, '', '', NULL),
+(39, 'cwxcwx', 'cwxcwx', 'cwxcwx', 'cwxcwx', '', 'vcwxvcw', 0, 'vwxcvw', 0, '2019-05-31 18:01:23', NULL, 124, NULL, NULL, '', '', 37),
+(40, 'cwxcwx', 'cwxcwx', 'cwxcwx', 'cwxcwx', '', 'vcwxvcw', 0, 'vwxcvw', 0, '2019-05-31 18:01:44', NULL, 124, NULL, NULL, '', '', 37),
+(41, 'fsdqf', 'fsdqf', 'fsdqf', 'fsdqf', '', 'fqsfd', 0, 'fqsfdqs', 0, '2019-05-31 18:02:37', NULL, 122, NULL, 1, '', '', 49),
+(42, 'fsdqf', 'fsdqf', 'fsdqf', 'fsdqf', '', 'fqsfd', 0, 'fqsfdqs', 0, '2019-05-31 18:07:19', NULL, 122, NULL, 1, '', '', 49),
+(43, 'fsdqf', 'fsdqf', 'fsdqf', 'fsdqf', '', 'fqsfd', 0, 'fqsfdqs', 0, '2019-05-31 18:07:21', NULL, 122, NULL, 1, '', '', 49),
+(44, 'hgfshdfgjdtretergd', 'gfdgds', 'hgfshdfgjdtretergd', 'hgfshdfgjdtretergd', '', 'gsdfgsfdg', 0, 'gfsdgsd', 1, '2019-06-03 08:56:17', '2019-06-05 17:59:22', 122, 55, 2, '<p>gdsgfsdfg</p>', '', 40),
+(45, 'vcxbtsrygsdgfdgsdfg', 'gfdsbvcxbvcbxcbv', 'vcxbtsrygsdgfdgsdfg', 'vcxbtsrygsdgfdgsdfg', '', 'bvxcbxcb', 0, 'bcxbx', 1, '2019-06-03 09:00:16', NULL, 149, 55, 5, '<p>dgfssgdf</p>', '', NULL),
+(46, 'vcxbtsrygsdgfdgsdfg', 'gfdsbvcxbvcbxcbv', 'vcxbtsrygsdgfdgsdfg', 'vcxbtsrygsdgfdgsdfg', '', 'bvxcbxcb', 0, 'bcxbx', 1, '2019-06-03 09:00:25', NULL, 149, 55, 5, '<p>dgfssgdf</p>', '', NULL),
+(47, 'vcxbtsrygsdgfdgsdfgfsdf', 'gfdsbvcxbvcbxcbv', 'vcxbtsrygsdgfdgsdfgfsdf', 'vcxbtsrygsdgfdgsdfgfsdf', '', 'bvxcbxcb', 0, 'bcxbx', 1, '2019-06-03 09:17:47', NULL, 149, 55, 5, '<p>dgfssgdf</p>', '', NULL),
+(48, 'vcxbtsrygsdgfdgsdfgfsdf', 'gfdsbvcxbvcbxcbv', 'vcxbtsrygsdgfdgsdfgfsdf', 'vcxbtsrygsdgfdgsdfgfsdf', '', 'bvxcbxcb', 0, 'bcxbxn', 1, '2019-06-03 09:24:05', NULL, 149, 55, 5, '<p>dgfssgdf</p>', '', NULL),
+(49, 'vcxbtsrygsdgfdgsdfgfsdf', 'gfdsbvcxbvcbxcbv', 'vcxbtsrygsdgfdgsdfgfsdf', 'vcxbtsrygsdgfdgsdfgfsdf', '', 'bvxcbxcb', 0, 'bcxbxn', 1, '2019-06-03 09:29:34', '2019-06-05 17:11:55', 149, 55, 5, '<p>dgfssgdf<img src=\"http://moxman/fichier/Desert.jpg\" width=\"1024\" height=\"768\" /></p>', '', NULL),
+(50, 'vcxbtsrygsdgfdgsdfgfsdf', 'gfdsbvcxbvcbxcbv', 'vcxbtsrygsdgfdgsdfgfsdf', 'vcxbtsrygsdgfdgsdfgfsdf', '', 'bvxcbxcb', 0, 'bcxbxn', 1, '2019-06-03 09:34:59', NULL, 149, 55, 5, '<p>dgfssgdf</p>', '', NULL),
+(51, 'vcxbtsrygsdgfdgsdfgfsdf', 'gfdsbvcxbvcbxcbv', 'vcxbtsrygsdgfdgsdfgfsdf', 'vcxbtsrygsdgfdgsdfgfsdf', '', 'bvxcbxcb', 0, 'bcxbxn', 1, '2019-06-03 09:41:57', NULL, 149, 55, 5, '<p>dgfssgdf</p>', '', NULL),
+(52, 'vcxbtsrygsdgfdgsdfgfsdf', 'gfdsbvcxbvcbxcbv', 'vcxbtsrygsdgfdgsdfgfsdf', 'vcxbtsrygsdgfdgsdfgfsdf', '', 'bvxcbxcb', 0, 'bcxbxn', 1, '2019-06-03 09:44:33', NULL, 149, 55, 5, '<p>dgfssgdf</p>', '', NULL),
+(53, 'fdsqfq', 'fdsqfq', 'fdsqfq', 'fdsqfq', '', 'fdsq', 0, 'gfdsgfds', 0, '2019-06-03 09:47:47', NULL, 149, NULL, 5, '', '', 37),
+(54, 'fdsqfq', 'fdsqfq', 'fdsqfq', 'fdsqfq', '', 'fdsq', 0, 'gfdsgfds', 0, '2019-06-03 09:48:26', NULL, 149, NULL, 5, '', '', 37),
+(55, 'fdsqfq', 'fdsqfq', 'fdsqfq', 'fdsqfq', '', 'fdsq', 0, 'gfdsgfds', 0, '2019-06-03 09:49:18', NULL, 149, NULL, 5, '', '', 37),
+(56, 'fdsqfq', 'fdsqfq', 'fdsqfq', 'fdsqfq', '', 'fdsq', 0, 'gfdsgfds', 0, '2019-06-03 09:50:02', NULL, 149, NULL, 5, '', '', 37),
+(57, 'fdsqfq', 'fdsqfq', 'fdsqfq', 'fdsqfq', '', 'fdsq', 0, 'gfdsgfds', 0, '2019-06-03 09:51:47', NULL, 149, NULL, 5, '', '', 37),
+(58, 'fdsqfq', 'fdsqfq', 'fdsqfq', 'fdsqfq', '', 'fdsq', 0, 'gfdsgfds', 0, '2019-06-03 09:52:48', NULL, 149, NULL, 5, '', '', 37),
+(59, 'gdsfgds', 'gdsfgds', 'gdsfgds', 'gdsfgds', '', 'gfdsgf', 0, 'gfdsg', 0, '2019-06-03 09:55:12', NULL, 149, NULL, 5, '', '', NULL),
+(60, 'gdsfgds', 'gdsfgds', 'gdsfgds', 'gdsfgds', '', 'gfdsgf', 0, 'gfdsg', 0, '2019-06-03 09:55:58', NULL, 149, NULL, 5, '', '', 37),
+(61, 'gdsfgds', 'gdsfgds', 'gdsfgds', 'gdsfgds', '', 'gfdsgf', 0, 'gfdsg', 0, '2019-06-03 09:59:17', NULL, 149, NULL, 5, '', '', 37),
+(62, 'gdsfgds', 'gdsfgds', 'gdsfgds', 'gdsfgds', '', 'gfdsgf', 0, 'gfdsg', 0, '2019-06-03 09:59:48', '2019-06-05 15:33:29', 149, NULL, 5, '', '', 37),
+(63, 'gdsfgds', 'gdsfgds', 'gdsfgds', 'gdsfgds', '', 'gfdsgf', 0, 'gfdsg', 0, '2019-06-03 10:00:57', NULL, 149, NULL, 5, '', '', 37),
+(64, 'gdsfgds', 'gdsfgds', 'gdsfgds', 'gdsfgds', '', 'gfdsgf', 0, 'gfdsg', 0, '2019-06-03 10:01:35', NULL, 149, NULL, 5, '', '', 37),
+(65, 'gdsfgds', 'gdsfgds', 'gdsfgds', 'gdsfgds', '', 'gfdsgf', 0, 'gfdsg', 0, '2019-06-03 10:03:07', NULL, 149, NULL, 5, '', '', 37),
+(66, 'gdsfgds', 'gdsfgds', 'gdsfgds', 'gdsfgds', '', 'gfdsgf', 0, 'gfdsg', 0, '2019-06-03 10:03:47', NULL, 149, NULL, 5, '', '', 37),
+(67, 'gdsfgds', 'gdsfgds', 'gdsfgds', 'gdsfgds', '', 'gfdsgf', 0, 'gfdsg', 0, '2019-06-03 10:05:11', NULL, 149, NULL, 5, '', '', 37),
+(68, 'gdsfgds', 'gdsfgds', 'gdsfgds', 'gdsfgds', '', 'gfdsgf', 0, 'gfdsg', 0, '2019-06-03 10:08:35', NULL, 149, NULL, 5, '', '', 37),
+(69, 'gdsfgds', 'gdsfgds', 'gdsfgds', 'gdsfgds', '', 'gfdsgf', 0, 'gfdsg', 0, '2019-06-03 10:09:51', NULL, 149, NULL, 5, '', '', 37),
+(70, 'gdsfgds', 'gdsfgds', 'gdsfgds', 'gdsfgds', '', 'gfdsgf', 0, 'gfdsg', 0, '2019-06-03 10:10:14', NULL, 149, NULL, 5, '', '', 37),
+(71, 'gdsfgds', 'gdsfgds', 'gdsfgds', 'gdsfgds', '', 'gfdsgf', 0, 'gfdsg', 0, '2019-06-03 10:11:16', NULL, 149, NULL, 5, '', '', 37),
+(72, 'gdsfgds', 'gdsfgds', 'gdsfgds', 'gdsfgds', '', 'gfdsgf', 0, 'gfdsg', 0, '2019-06-03 10:20:45', NULL, 149, NULL, 5, '', '', 37),
+(73, 'gdsfgds', 'gdsfgds', 'gdsfgds', 'gdsfgds', '', 'gfdsgf', 0, 'gfdsg', 0, '2019-06-03 10:23:11', NULL, 149, NULL, 5, '', '', 37),
+(74, 'gdsfgds', 'gdsfgds', 'gdsfgds', 'gdsfgds', '', 'gfdsgf', 0, 'gfdsg', 0, '2019-06-03 10:24:38', NULL, 149, NULL, 5, '', '', 37),
+(75, 'gdsfgds', 'gdsfgds', 'gdsfgds', 'gdsfgds', '', 'gfdsgf', 0, 'gfdsg', 0, '2019-06-03 10:25:30', NULL, 149, NULL, 5, '', '', 37),
+(76, 'gdsfgds', 'gdsfgds', 'gdsfgds', 'gdsfgds', '', 'gfdsgf', 0, 'gfdsg', 0, '2019-06-03 10:27:38', NULL, 149, NULL, 5, '', '', 37),
+(77, 'gdsfgds', 'gdsfgds', 'gdsfgds', 'gdsfgds', '', 'gfdsgf', 0, 'gfdsg', 0, '2019-06-03 10:28:22', NULL, 149, NULL, 5, '', '', 37),
+(78, 'gdsfgds', 'gdsfgds', 'gdsfgds', 'gdsfgds', '', 'gfdsgf', 0, 'gfdsg', 0, '2019-06-03 10:29:12', NULL, 149, NULL, 5, '', '', 37),
+(79, 'gdsfgds', 'gdsfgds', 'gdsfgds', 'gdsfgds', '', 'gfdsgf', 0, 'gfdsg', 0, '2019-06-03 10:33:44', NULL, 149, NULL, 5, '', '', 37),
+(80, 'gdsfgds', 'gdsfgds', 'gdsfgds', 'gdsfgds', '', 'gfdsgf', 0, 'gfdsg', 0, '2019-06-03 10:34:36', NULL, 149, NULL, 5, '', '', 37),
+(81, 'gdsfgds', 'gdsfgds', 'gdsfgds', 'gdsfgds', '', 'gfdsgf', 0, 'gfdsg', 0, '2019-06-03 10:52:16', NULL, 149, NULL, 5, '', '', 37),
+(82, 'gdsfgds', 'gdsfgds', 'gdsfgds', 'gdsfgds', '', 'gfdsgf', 0, 'gfdsg', 0, '2019-06-03 10:55:08', NULL, 149, NULL, 5, '', '', 37),
+(83, 'gdsfgds', 'gdsfgds', 'gdsfgds', 'gdsfgds', '', 'gfdsgf', 0, 'gfdsg', 0, '2019-06-03 10:55:56', NULL, 149, NULL, 5, '', '', 37),
+(84, 'gdsfgds', 'gdsfgds', 'gdsfgds', 'gdsfgds', '', 'gfdsgf', 0, 'gfdsg', 0, '2019-06-03 10:59:50', NULL, 149, NULL, 5, '', '', 37),
+(85, 'gdsfgds', 'gdsfgds', 'gdsfgds', 'gdsfgds', '', 'gfdsgf', 0, 'gfdsg', 0, '2019-06-03 11:06:14', NULL, 149, NULL, 5, '', '', 37),
+(86, 'gdsfgds', 'gdsfgds', 'gdsfgds', 'gdsfgds', '', 'gfdsgf', 0, 'gfdsg', 0, '2019-06-03 11:09:40', NULL, 149, NULL, 5, '', '', 37),
+(87, 'gdsfgds', 'gdsfgds', 'gdsfgds', 'gdsfgds', '', 'gfdsgf', 0, 'gfdsg', 0, '2019-06-03 11:10:16', NULL, 149, NULL, 5, '', '', 37),
+(88, 'gdsfgds', 'gdsfgds', 'gdsfgds', 'gdsfgds', '', 'gfdsgf', 0, 'gfdsg', 0, '2019-06-03 11:22:53', NULL, 149, NULL, 5, '', '', 37),
+(89, 'rzer', 'rzer', 'rzer', 'rzer', '', 'tsdgf', 0, 'gdsfgsd', 0, '2019-06-03 11:28:57', NULL, 149, NULL, 5, '', '', NULL),
+(90, 'rzer', 'rzer', 'rzer', 'rzer', '', 'tsdgf', 0, 'gdsfgsd', 0, '2019-06-03 11:31:55', NULL, 149, NULL, 5, '', '', NULL),
+(91, 'rzer', 'rzer', 'rzer', 'rzer', '', 'tsdgf', 0, 'gdsfgsd', 0, '2019-06-03 11:32:31', NULL, 149, NULL, 5, '', '', NULL),
+(92, 'rzer', 'rzer', 'rzer', 'rzer', '', 'tsdgf', 0, 'gdsfgsd', 0, '2019-06-03 11:37:07', NULL, 149, NULL, 5, '', '', 37),
+(93, 'rzer', 'rzer', 'rzer', 'rzer', '', 'tsdgf', 0, 'gdsfgsd', 0, '2019-06-03 11:37:11', NULL, 149, NULL, 5, '', '', NULL),
+(94, 'rzer', 'rzer', 'rzer', 'rzer', '', 'tsdgf', 0, 'gdsfgsd', 0, '2019-06-03 11:38:07', NULL, 149, NULL, 5, '', '', NULL),
+(95, 'rzer', 'rzer', 'rzer', 'rzer', '', 'tsdgf', 0, 'gdsfgsd', 0, '2019-06-03 11:41:35', NULL, 149, NULL, 5, '', '', NULL),
+(96, 'rzer', 'rzer', 'rzer', 'rzer', '', 'tsdgf', 0, 'gdsfgsd', 0, '2019-06-03 11:41:43', NULL, 149, NULL, 5, '', '', 37),
+(97, 'rzer', 'rzer', 'rzer', 'rzer', '', 'tsdgf', 0, 'gdsfgsd', 0, '2019-06-03 11:41:46', NULL, 149, NULL, 5, '', '', NULL),
+(98, 'rzer', 'rzer', 'rzer', 'rzer', '', 'tsdgf', 0, 'gdsfgsd', 0, '2019-06-03 11:42:00', NULL, 149, NULL, 5, '', '', NULL),
+(99, 'nguyen-create-contenu-menu', 'nguyen create contenu menu', 'nguyen create contenu menu', 'nguyen create contenu menu', '', 'nguyen create contenu menu', 0, 'nguyen create contenu menu', 0, '2019-06-03 11:43:35', NULL, 122, NULL, 12, '', '', 44),
+(100, 'nguyen-create-contenu-menu', 'nguyen create contenu menu', 'nguyen create contenu menu', 'nguyen create contenu menu', '', 'nguyen create contenu menu', 0, 'nguyen create contenu menu', 0, '2019-06-03 11:44:42', '2019-06-05 17:18:56', 122, NULL, 12, '<p><img src=\"http://moxman/fichier/Desert.jpg\" width=\"1024\" height=\"768\" /></p>', '', 49),
+(101, 'nguyen-create-contenu-menu', 'nguyen create contenu menu', 'nguyen create contenu menu', 'nguyen create contenu menu', '', 'nguyen create contenu menu', 0, 'nguyen create contenu menu', 0, '2019-06-03 11:46:15', NULL, 149, NULL, 5, '', '', 49),
+(102, 'nguyen-create-contenu-menu', 'nguyen create contenu menu', 'nguyen create contenu menu', 'nguyen create contenu menu', '', 'nguyen create contenu menu', 0, 'nguyen create contenu menu', 0, '2019-06-03 11:47:18', NULL, 130, NULL, NULL, '', '', 49),
+(103, 'nguyen-create-contenu-menu', 'nguyen create contenu menu', 'nguyen create contenu menu', 'nguyen create contenu menu', '', 'nguyen create contenu menu', 0, 'nguyen create contenu menu', 0, '2019-06-03 11:49:55', NULL, 130, NULL, NULL, '', '', 49),
+(104, 'nguyen-create-contenu-menufdsffdsf', 'nguyen create contenu menu', 'nguyen create contenu menu', 'nguyen create contenu menu', '', 'nguyen create contenu menu', 5, 'nguyen create contenu menuytry dadaz', 0, '2019-06-03 11:52:44', '2019-06-03 14:36:26', 149, NULL, 5, '', '', 49),
+(107, 'test-function-create-bulk', 'test function create bulk', 'test function create bulk', 'test function create bulk', '', 'fdqsfdfdsqf', 0, 'fdqsf', 0, '2019-06-03 15:00:37', '2019-06-03 15:04:54', 149, NULL, 5, '', '', NULL),
+(108, 'test-', 'test ', 'test ', 'test ', '', 'fdqsfs', 0, 'fdsq', 0, '2019-06-03 15:05:19', '2019-06-05 16:03:55', 149, NULL, 5, '', '', NULL),
+(109, 'test-bulk-fonction', 'test bulk fonction', 'test bulk fonction', 'test bulk fonction', '', 'fdqsfs', 0, 'fdsq', 0, '2019-06-03 15:08:02', NULL, 149, NULL, 5, '', '', NULL),
+(110, '7987987987', '7987987987', '7987987987', '7987987987', '', '6545', 0, '456456', 0, '2019-06-04 09:48:03', NULL, 149, NULL, 5, '', '', NULL),
+(111, 'them-article', 'them article', 'them article', 'them article', '', 'fdqsf', 0, 'fqsdfq', 0, '2019-06-04 11:27:18', NULL, 149, NULL, 5, '', '', NULL),
+(112, 'nguyen-test-', 'nguyen test ', 'nguyen test ', 'nguyen test ', '', 'fdsqf', 0, 'fqsdfq', 0, '2019-06-05 15:26:23', NULL, 149, NULL, 5, '', '', NULL),
+(113, 'nguyen-test-encore', 'nguyen test encore', 'nguyen test encore', 'nguyen test encore', '', 'fqdsf', 0, 'fdqsf', 0, '2019-06-05 15:28:04', NULL, 149, NULL, 5, '', '', NULL),
+(114, 'nguyen-test-encore', 'nguyen test encore', 'nguyen test encore', 'nguyen test encore', '', 'fqdsf', 0, 'fdqsf', 0, '2019-06-05 15:28:04', NULL, 149, NULL, 5, '', '', NULL),
+(115, 'test-sous-point', 'test sous point', 'test sous point', 'test sous point', '', 'sdfdsqf', 0, 'dfqsdf', 0, '2019-06-05 16:19:28', '2019-06-05 17:09:48', 122, NULL, 13, '', '', NULL),
+(116, 'test-mimi', 'test mimi', 'test mimi', 'test mimi', '', 'fdqsfqsf', 0, 'fqdsf', 0, '2019-06-05 17:51:47', NULL, 122, NULL, 1, '<p>fdqsf</p>', '', 38),
+(117, 'test-ajoute-article-index', 'test ajoute article index', 'test ajoute article index', 'test ajoute article index', '', 'gfdgsfgsdg', 0, 'gfdsgdsgs', 1, '2019-06-07 11:32:15', '2019-06-07 11:32:26', 149, NULL, 5, '', '', NULL),
+(118, 'lkjljlkjl', 'lkjljlkjl', 'lkjljlkjl', 'lkjljlkjl', '', 'lkjlkjl', 0, 'ljkljkl', 1, '2019-06-07 12:05:40', NULL, 122, NULL, 1, '<p><em>dsqdqsdqsdqsdqsdqsd</em></p>', '', 41),
+(119, 'test-123456', 'test 123456', 'test 123456', 'test 123456', '', 'fqsdfsq', 0, 'fqdsfdsq', 0, '2019-06-10 11:24:39', NULL, 122, NULL, 2, '<h2 style=\"color: #ec7123; background-color: #ffffff; border-bottom: 1px solid #ec7123; display: block; width: 100%; margin: 0px -20px; box-shadow: none; padding: 10px 20px; font-size: 1.2em; font-family: Ubuntu;\">1231456456</h2>\n<p class=\"center\"><span class=\"bold\">fdsfdsfdsfsfs</span></p>', '', NULL),
+(120, 'test-123456', 'test 123456', 'test 123456', 'test 123456', '', 'fqsdfsq', 0, 'fqdsfdsq', 1, '2019-06-10 11:24:41', '2019-06-10 11:29:57', 122, NULL, 2, '<h2 style=\"color: #ec7123; background-color: #ffffff; border-bottom: 1px solid #ec7123; display: block; width: 100%; margin: 0px -20px; box-shadow: none; padding: 10px 20px; font-size: 1.2em; font-family: Ubuntu;\">1231456456</h2>\n<p class=\"center\"><span class=\"bold\" style=\"font-weight: bold;\">fdsfdsfdsfsfs</span></p>', '', NULL),
+(121, 'fdsqfqsf', 'fdsqfqsf', 'fdsqfqsf', 'fdsqfqsf', '', 'fqsdfqsf', 0, 'fqdsfq', 1, '2019-06-10 11:37:15', '2019-06-10 11:55:58', 122, NULL, 2, '<h1 style=\"margin-top: 0px; color: #505151; font-family: Ubuntu;\">fqsdfqsfqsd</h1>\n<h3 style=\"width: 100%; color: #ec7123; border-bottom: none; font-size: 1em; margin: 10px -20px 0px; padding: 10px 20px; font-family: Ubuntu;\">fdqsfdqsfdqsdfqsf</h3>', '', NULL),
+(122, 'nguyen-anh-nguyen', 'nguyen anh nguyen', 'nguyen anh nguyen', 'nguyen anh nguyen', '', 'fdsqfqs', 0, 'fdsqfsq', 1, '2019-06-10 12:15:51', '2019-06-10 12:27:22', 122, NULL, 14, '<p style=\"text-align: right;\"><em>fdsqfqsdfqsdfqsf</em></p>', '', NULL),
+(123, '165165', '165165', '165165', '165165', '', 'fdqsf', 0, 'qsfqdsf', 0, '2019-06-10 14:41:26', NULL, 122, NULL, 1, '<p style=\"text-align: center;\"><span style=\"text-decoration: line-through;\"><strong><em><span style=\"text-decoration: underline;\">fdsqfqdsfqdsfqsfdqsf</span></em></strong></span></p>', '', 38),
+(124, '165165', '165165', '165165', '165165', '', 'fdqsf', 0, 'qsfqdsf', 1, '2019-06-10 14:41:35', NULL, 122, NULL, 1, '<p style=\"text-align: center;\"><span style=\"text-decoration: line-through;\"><strong><em><span style=\"text-decoration: underline;\">fdsqfqdsfqdsfqsfdqsf</span></em></strong></span></p>', '', 38),
+(125, 'trete', 'trete', 'trete', 'trete', '', 'trete', 0, 'tret', 1, '2019-06-10 15:25:58', NULL, 149, NULL, 5, '<h2 style=\"color: #ec7123; background-color: #ffffff; border-bottom: 1px solid #ec7123; display: block; width: 100%; margin: 0px -20px; box-shadow: none; padding: 10px 20px; font-size: 1.2em; text-align: center;\">tertertertet</h2>', '', NULL),
+(126, '123456', '123456', '123456', '123456', '', '89+8+98', 0, '887897', 1, '2019-06-10 15:41:44', NULL, 129, NULL, 3, '<p style=\"text-align: center;\"><em><strong>fsqdfqsdfqsdfqsfqsdfq</strong></em></p>', '', NULL);
+
+
+
+-- ----------------------------------------
+-- INIT ADMIN (USERS, FRANCHISES, PROFILS)
+-- ----------------------------------------
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+INSERT INTO `utilisateur` (`id`, `nom`, `prenom`, `raisonSociale`, `mobile`, `login`, `motDePasse`, `loginGoogleAgenda`, `isInterne`, `isSuspendu`, `idFranchisePrincipale`, `isHabilite`, `niveauHabilitation`, `dateValiditeHabilitation`, `idCreatedBy`, `idCivilite`, `idQualite`, `idFonction`, `idAdresse`, `idUtilisateurParent`, `tokenResetPassword`, `dateDemandeResetPassword`, `dateResetPassword`, `ipResetPassword`) VALUES
+(2, 'COMPANY', 'Yohan-Kevin', '', '', 'yohan-kevin.company@diagamter.com', '$2a$05$Eb5skxPSDASfRX8qmZeyOOf3.5a/AULKY/KeZlmXEiucS71Gi3aN.', '', 1, 0, 1, 1, 2, '1970-01-01', NULL, 2, 1, 3, 1, NULL, NULL, NULL, '2019-03-11 10:44:58', '::1'),
+(3, 'COLOMER', 'Nicolas', '', '', 'nicolas.colomer@diagamter.com', '$2a$05$CeMT23hOP1gbVBI3SQeQ1O9k2w6qwqbcjTKW7ZVgVBoN7hj0KERFu', '', 0, 0, 1, 1, 2, '1970-01-01', NULL, 2, 15, 1, 2, NULL, NULL, NULL, NULL, NULL),
+(11, 'LARROUMETS', 'Damien', '', '', 'damien.larroumets@diagamter.com', '$2a$05$9.zt5/eH7K6onnFMGTedVuA..3aelAsMu5jTZYFEGEl0YbXHLVOZC', '', 1, 0, 1, 0, 2, '1970-01-01', NULL, 2, 39, 15, 3, NULL, NULL, NULL, NULL, NULL),
+(12, 'PEREZ', 'Hugo', '', '', 'hugo.perez@diagamter.com', '$2a$05$JFtRqHIMBCk76VtRFpgyjeBbZ5EqmHe.dzj54lKUyfjmc83OeysiS', '', 1, 0, 1, 0, 1, '1970-01-01', 2, 2, 39, 17, 4, NULL, NULL, NULL, NULL, NULL),
+(13, 'MOUSTIER', 'yohann', '', '', 'yohann.moustier@diagamter.com', '$2a$05$2pM5XiFZc2P2AR8dOvWWTOU9HRtodJf0t9WnIasl70zRWS5l5wUM2', '', 1, 0, 1, 0, 2, '1970-01-01', 2, 2, 10, 9, 5, NULL, NULL, NULL, NULL, NULL);
+
+INSERT INTO `franchise` (`id`, `numeroContrat`, `raisonSociale`, `statutJuridique`, `rcs`, `siret`, `naf`, `nomPrenomSignature`, `numeroTVA`, `compagnieAssurance`, `adresseCompagnieAssurance`, `numeroContratRCP`, `numeroAgrementASN`, `dateValiditeAssurance`, `montantAnnuelGaranti`, `pourcentTVADefaut`, `isSortieReseau`, `datePremiereSignature`, `dateSignatureContratEnCours`, `dateFinContratEnCours`, `dateDemarrage`, `dateSortieReseau`, `trigramme`) VALUES
+(1, 9999, 'Franchise Dev', 'SAS', '', '', '987', '', '', 'AXA', '2 rue des patates, 31200 Toulouse', 'P01236547987', '420', '2019-02-27', '200 000 €o
+', '20.0', 0, '2019-02-06', '2019-02-07', '1970-01-01', '2019-02-09', '1970-01-01', 'FGD');
+
+INSERT INTO `utilisateur_profil` (`idUtilisateur`, `idProfil`, `idFranchise`) VALUES
+(2, 1, 1),
+(3, 1, 1),
+(11, 1, 1),
+(12, 1, 1),
+(13, 1, 1),
+(3, 2, 1),
+(12, 2, 1),
+(2, 3, 1),
+(11, 3, 1),
+(2, 6, 1),
+(11, 6, 1),
+(13, 6, 1),
+(2, 13, 1),
+(11, 13, 1);
+
+-- ALTER TABLE `zone_intervention` ADD `zoneInterventionId` INT NULL AFTER `idPIC`;
+
+SET FOREIGN_KEY_CHECKS=1;
+COMMIT;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+
+
+

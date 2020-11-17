@@ -1,0 +1,57 @@
+@import "variables";
+
+:host {
+  width: 80%;
+}
+.combo-container {
+  // position: fixed;
+  z-index: 9;
+}
+
+.input-control {
+  width: 100%;
+}
+
+.data-container {
+  /*border-left: 1px solid black;*/
+  /*border-bottom: 1px solid black;*/
+  /*border-right: 1px solid black;*/
+  display: block;
+  position: absolute;
+  min-height: 50px;
+  max-height: 200px;
+  overflow-y: auto;
+  top: 30px;
+  color: $couleurTexte;
+  border: solid 1px $couleurBorderInput;
+  background-color: $couleurFondInput;
+  width: 46%;
+  font-family: Ubuntu;
+  font-size: 16px;
+  z-index: 999;
+}
+.data-list {
+  cursor: pointer;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  height: 35px;
+  padding: 0 10px;
+  padding-top: 15px;
+}
+.drop-down {
+  // border: 1px solid grey;
+  // width: 196px;
+}
+
+.drop-down-button {
+  border: 0;
+  background: none;
+  margin-left: -25px;
+  cursor: pointer;
+  color: $couleurTexte;
+}
+
+.highlight, .data-list:hover {
+  background: #308DFC;
+  color: #FFF;
+}

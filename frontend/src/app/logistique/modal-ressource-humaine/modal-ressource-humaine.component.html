@@ -1,0 +1,9 @@
+<div class="content" (clickOutside)="emitClose.emit()" [delayClickOutsideInit]="true">
+  <i class="fas fa-times btn-close" (click)="emitClose.emit()"></i>
+  <app-liste-ressource-humaine
+          [modal]="true"
+          [ressourceHumainesAjoutees]="ressourceHumainesAjoutees"
+          [idBureau]="idBureau"
+          [rendezVous]="rendezVous"
+          (emitRessourceHumaine)="emitRessourceHumaine.emit($event)"></app-liste-ressource-humaine>
+</div>

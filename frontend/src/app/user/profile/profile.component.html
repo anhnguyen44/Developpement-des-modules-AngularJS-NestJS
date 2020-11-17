@@ -1,0 +1,107 @@
+<div class="content">
+    <h2>Informations</h2>
+  <div class="bloc">
+    <form [formGroup]="informationsForm" (ngSubmit)="onSubmitInformations()">
+      <div class="formgroup">
+        <label>Civilité</label>
+        <select formControlName="civilite" [ngClass]="{ 'invalid': submittedInformations && f.civilite.errors }"
+          [compareWith]="compareFn" tabindex="1">
+          <option *ngFor="let civilit of listeCivilite;let i = index" [ngValue]="civilit">{{civilit.nom}}</option>
+        </select>
+      </div>
+      <div class="formgroup" formGroupName="adresseUser">
+        <label>Adresse</label>
+        <input formControlName="adresse" [ngClass]="{ 'invalid': submittedInformations && fAdresse.adresse.errors }"
+          tabindex="7">
+      </div>
+
+      <div class="formgroup">
+        <label>Nom</label>
+        <input formControlName="nom" [ngClass]="{ 'invalid': submittedInformations && f.nom.errors }"
+          oninput="this.value = this.value.toUpperCase()" tabindex="2">
+      </div>
+      <div class="formgroup" formGroupName="adresseUser">
+        <label>Complément adresse</label>
+        <input formControlName="complement"
+          [ngClass]="{ 'invalid': submittedInformations && fAdresse.complement.errors }" tabindex="8">
+      </div>
+
+      <div class="formgroup">
+        <label>Prenom</label>
+        <input formControlName="prenom" [ngClass]="{ 'invalid': submittedInformations && f.prenom.errors }"
+          tabindex="3">
+      </div>
+
+      <div class="formgroup" formGroupName="adresseUser">
+        <label>Code Postal</label>
+        <!-- <input formControlName="cp" [ngClass]="{ 'invalid': submittedInformations && fAdresse.cp.errors }" tabindex="8"> -->
+        <app-cp-ville [isRechercheVille]="false" [parentForm]="adresseForm" [internalFormControlName]="'cp'" (emitCP)="setCP($event)" [tabindex]="9"></app-cp-ville>
+      </div>
+      <div class="formgroup" formGroupName="adresseUser">
+        <label>Téléphone</label>
+        <input formControlName="telephone" [ngClass]="{ 'invalid': submittedInformations && fAdresse.telephone.errors }"
+          tabindex="4">
+      </div>
+      <div class="formgroup" formGroupName="adresseUser">
+        <label>Ville</label>
+        <!-- <input formControlName="ville" [ngClass]="{ 'invalid': submittedInformations && fAdresse.ville.errors }"
+          oninput="this.value = this.value.toUpperCase()" tabindex="9"> -->
+          <app-cp-ville [isRechercheVille]="true" [parentForm]="adresseForm" [internalFormControlName]="'ville'" (emitCP)="setCP($event)"  [tabindex]="10"></app-cp-ville>
+      </div>
+      <div class="formgroup">
+        <label>Mobile</label>
+        <input formControlName="mobile" [ngClass]="{ 'invalid': submittedInformations && f.mobile.errors }"
+          tabindex="5">
+      </div>
+      <div class="formgroup">
+        <label>Raison Sociale</label>
+        <input formControlName="raisonSociale"
+          [ngClass]="{ 'invalid': submittedInformations && f.raisonSociale.errors }" tabindex="11">
+      </div>
+      <div class="formgroup" formGroupName="adresseUser">
+        <label>Fax</label>
+        <input formControlName="fax" [ngClass]="{ 'invalid': submittedInformations && fAdresse.fax.errors }"
+          tabindex="6">
+      </div>
+      <div class="formgroup" formGroupName="adresseUser">
+        <label>Email de contact</label>
+        <input formControlName="email" [ngClass]="{ 'invalid': submittedInformations && fAdresse.email.errors }"
+          tabindex="12">
+      </div>
+      <div class="action">
+        <button class="button" type="submit" tabindex="13">Valider</button>
+      </div>
+    </form>
+  </div>
+
+
+  <h2>Identifiants</h2>
+  <div class="bloc">
+    <form [formGroup]="identifiantsForm" (ngSubmit)="onSubmitIdentifiants()">
+      <div class="formgroup">
+        <label>Login</label>
+        <div>{{user?.login}}</div>
+      </div>
+      <div class="formgroup">
+        <label>Mot de passe</label>
+        <input type="password" formControlName="motDePasse"
+          [ngClass]="{ 'invalid': submittedIdentifiants && fIdentifiants.motDePasse.errors }" tabindex="16">
+      </div>
+
+      <div class="formgroup">
+        <label>Login Google Agenda</label>
+        <input formControlName="loginGoogleAgenda"
+          [ngClass]="{ 'invalid': submittedIdentifiants && fIdentifiants.loginGoogleAgenda.errors }" tabindex="15">
+      </div>
+      <div class="formgroup">
+        <label>Confirmation</label>
+        <input type="password" formControlName="motDePasseConfirmation"
+          [ngClass]="{ 'invalid': submittedIdentifiants && fIdentifiants.motDePasseConfirmation.errors }" tabindex="17">
+      </div>
+
+      <div class="action">
+        <button class="button" type="submit" tabindex="18">Valider</button>
+      </div>
+    </form>
+  </div>
+</div>

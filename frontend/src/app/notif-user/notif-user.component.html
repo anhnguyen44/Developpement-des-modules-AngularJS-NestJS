@@ -1,0 +1,51 @@
+<div class="content">
+  <div class="content">
+    <div class="bloc">
+      <div class="action" *ngIf="notifications && notifications.length > 0">
+        <button type="button" class="button" (click)="markAsRead()">
+          <i class="fas fa-check-double"></i>Tout marquer comme lu
+        </button>
+      </div>
+      <div class="table" *ngIf="notifications">
+        <app-header-table [headers]="headers" [querybuild]="queryBuild" (emitQueryBuild)="setQueryBuild($event)">
+        </app-header-table>
+        <div class="content">
+          <div class="row" *ngFor="let notification of notifications; let index = index">
+            <div class="grow0">
+              <div class="labelTable">Lu</div>
+              <span>
+                <i *ngIf="!notification.vu" (click)="markAsRead(notification)" class="fas fa-circle bullet"></i>
+                <i *ngIf="notification.vu" class="far fa-circle bullet"></i>
+              </span>
+            </div>
+            <div class="grow0">
+                <div class="labelTable">Importance</div>
+                <span>
+                  <i *ngIf="notification.importance === 0" class="fas fa-angle-double-down" style="color: #677AE3;"></i>
+                  <i *ngIf="notification.importance === 1" class="fas fa-angle-down" style="color: #677AE3;"></i>
+                  <i *ngIf="notification.importance === 2" class="fas fa-grip-lines"></i>
+                  <i *ngIf="notification.importance === 3" class="fas fa-angle-up" style="color: #E0B448;"></i>
+                  <i *ngIf="notification.importance === 4" class="fas fa-angle-double-up" style="color: #E46781;"></i>
+                </span>
+              </div>
+            <div class="grow4">
+              <div class="labelTable">Notification</div>
+              <span [innerHTML]="notification.contenu | safeHtml"></span>
+            </div>
+            <div>
+              <div class="labelTable">Date d'envoi</div>
+              <span>{{notification.dateEnvoi | date:'EEE dd HH:mm'}}</span>
+            </div>
+            <div class="action">
+              <i *ngIf="notification.lien && notification.lien.length > 0" class="fas fa-eye" (click)="gotoDetails(notification.lien, false)"></i>
+              <i *ngIf="notification.lien && notification.lien.length > 0" class="fas fa-external-link-alt" (click)="gotoDetails(notification.lien, true)"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="action" *ngIf="!notifications || notifications.length === 0">
+        Vous n'avez aucune notification pour l'instant.
+      </div>
+    </div>
+  </div>
+</div>

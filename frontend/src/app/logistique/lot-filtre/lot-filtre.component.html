@@ -1,0 +1,126 @@
+<app-menu-logistique></app-menu-logistique>
+<div class="content">
+  <div class="bloc">
+    <div class="formgroup">
+      <label>Référence</label>
+      <div *ngIf="lotFiltre?.id; else newFiltre">{{lotFiltre.ref}}</div>
+      <ng-template #newFiltre>
+        Nouveau lot de filtre
+      </ng-template>
+    </div>
+  </div>
+  <h2>
+    Information lot de filtre
+  </h2>
+  <div class="bloc">
+    <form [formGroup]="lotFiltreForm" (ngSubmit)="onSubmit(lotFiltreForm)" *ngIf="lotFiltre">
+      <div class="formgroup full">
+        <label>Agence</label>
+        <select *ngIf="!lotFiltre.dateEnvoi" formControlName="bureau" [compareWith]="compare"
+                [ngClass]="{ 'invalid': lotFiltreForm['controls'].bureau.errors && submited}">
+          <option *ngFor="let bureau of bureaux" [ngValue]="bureau">{{bureau.nom}} - {{bureau.nomCommercial}}</option>
+        </select>
+        <div *ngIf="lotFiltre.dateEnvoi">{{lotFiltreForm.get('bureau').value.nom}}</div>
+      </div>
+      <div class="formgroup">
+        <label>Référence</label>
+        {{franchise?.trigramme}}-<input *ngIf="!lotFiltre.dateEnvoi" type="text" formControlName="ref"
+               [ngClass]="{ 'invalid': lotFiltreForm['controls'].ref.errors && submited}">
+        <div *ngIf="lotFiltre.dateEnvoi">{{lotFiltreForm.get('ref').value}}</div>
+      </div>
+      <div class="formgroup">
+        <label>Type de filtre</label>
+        <select *ngIf="!lotFiltre.dateEnvoi" formControlName="idTypeFiltre" [compareWith]="compare">
+          <option *ngFor="let idTypeFiltre of keys" [value]="idTypeFiltre">{{enumTypeFiltre[idTypeFiltre]}}</option>
+        </select>
+        <div *ngIf="lotFiltre.dateEnvoi">{{enumTypeFiltre[lotFiltreForm.get('idTypeFiltre').value]}}</div>
+      </div>
+
+      <div class="action">
+        <button *ngIf="!lotFiltre.dateEnvoi" class="button" type="submit">Valider</button>
+        <div class="button" (click)="envoyerBlanc()" *ngIf="lotFiltre.id && !lotFiltre.dateEnvoi">Envoyer blanc</div>
+        <div class="button" (click)="receptionBlanc()" *ngIf="!lotFiltre.dateReception && lotFiltre.dateEnvoi">Valider blanc</div>
+        <div class="button" (click)="genererPlancheEtiquette()" *ngIf="lotFiltre.isConforme">Générer les étiquettes</div>
+      </div>
+    </form>
+  </div>
+  <h2 *ngIf="lotFiltre && lotFiltre.dateReception">Information du blanc</h2>
+  <div class="bloc" *ngIf="lotFiltre && lotFiltre.dateReception">
+    <div class="formgroup">
+      <label>Numéro PV</label>
+      <div>{{lotFiltre.numeroPV}}</div>
+    </div>
+    <div class="formgroup">
+      <label>Date réception</label>
+      <div>{{lotFiltre.dateReception | date: 'dd/MM/yyyy'}}</div>
+    </div>
+    <div class="formgroup">
+      <label>Fraction par filtre</label>
+      <div>{{lotFiltre.fractFiltre}}</div>
+    </div>
+    <div class="formgroup">
+      <label>Surface filtre secondaire</label>
+      <div>{{lotFiltre.surfaceFiltreSecondaire}}</div>
+    </div>
+    <div class="formgroup">
+      <label>Surface ouverture grille</label>
+      <div>{{lotFiltre.surfaceOuvertureGrille}}</div>
+    </div>
+    <div class="formgroup">
+      <label>Nombre de grille examinées</label>
+      <div>{{lotFiltre.nombreGrilleExam}}</div>
+    </div>
+    <div class="formgroup">
+      <label>Nombre ouverture lues</label>
+      <div>{{lotFiltre.nombreOuvertureGrillesLues}}</div>
+    </div>
+    <div class="formgroup">
+      <label>Nombre fibres comptées</label>
+      <div>{{lotFiltre.nombreFibresComptees}}</div>
+    </div>
+    <div class="formgroup">
+
+    </div>
+    <div class="formgroup">
+      <label>Résultat</label>
+      <div>{{lotFiltre.resultat}}</div>
+    </div>
+    <div class="formgroup">
+      <label>Observation filtre origine (en %)</label>
+      <div>{{lotFiltre.observationFiltre}}</div>
+    </div>
+    <div class="formgroup" *ngIf="lotFiltre">
+      <label>Conformité</label>
+      <div>
+        <span *ngIf="lotFiltre.isConforme"><i class="fas fa-check"></i></span>
+        <span *ngIf="!lotFiltre.isConforme"><i class="fas fa-times"></i></span>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="lotFiltre && lotFiltre.isConforme" class="bloc">
+    <h3>Liste filtres</h3>
+    <div class="table">
+      <div class="table">
+        <div class="header">
+          <div class="row">
+            <div>Ref</div>
+            <div>Affecté</div>
+            <div>Utilisé</div>
+            <div class="action">Action</div>
+          </div>
+        </div>
+        <div class="content">
+          <div class="row" *ngFor="let filtre of lotFiltre.filtres">
+            <div>{{filtre.ref}}</div>
+            <div><span *ngIf="filtre.idChantier"><i class="fas fa-check"></i></span></div>
+            <div><span *ngIf="(filtre.affectationsPrelevement && filtre.affectationsPrelevement.length > 0) || filtre.isBlanc"><i class="fas fa-check"></i></span></div>
+            <div class="action">
+              <i *ngIf="!filtre.idChantier && !filtre.idPrelevement" (click)="deleteFiltre(filtre)" class="fas fa-trash"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-modal-blanc-lot-filtre *ngIf="modalBlancLotFiltre" [lotFiltre]="lotFiltre" (emitClose)="closeModalBlancLotFiltre()"></app-modal-blanc-lot-filtre>

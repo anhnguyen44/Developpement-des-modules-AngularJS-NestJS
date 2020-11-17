@@ -1,0 +1,58 @@
+<div class="content" (clickOutside)='close()' [delayClickOutsideInit]="true" [excludeBeforeClick]=true [exclude]="'app-notification'">
+  <i class="fas fa-times btn-close" (click)="close()" ></i>
+  <h2>Génération des documents de stagiaires</h2>
+  <div class="bloc">
+    <form>
+      <!-- <div class="formgroup full">
+        <input type="checkbox">
+        <label></label>
+        <button>Générer</button>
+      </div> -->
+      <div class="formgroup full">
+        <!-- <input type="checkbox"> -->
+        <label>Chevalets</label>
+        <button class="button" (click)="generateDocumentLingesCoches('chevalet')">Générer</button>
+      </div>
+      <div class="formgroup full">
+        <!-- <input type="checkbox"> -->
+        <label>Feuille émargement de présence en générale</label>
+        <button class="button" (click)="generateDocumentLingesCoches('feuilleEmargement')">Générer</button>
+      </div>
+      <div class="formgroup full">
+        <!-- <input type="checkbox"> -->
+        <label>Registre Entrée - Sortie de Zone par vacation</label>
+        <button class="button" (click)="generateDocumentLingesCoches('RegistreEntreeSortie')">Générer</button>
+      </div>
+      <div class="formgroup full">
+        <!-- <input type="checkbox"> -->
+        <label>Evaluation qualité</label>
+        <button class="button" (click)="generateDocumentLingesCoches('evaluationQualite')">Générer</button>
+      </div>
+      <div class="formgroup full">
+        <!-- <input type="checkbox"> -->
+        <label>Attestation de fin de formation</label>
+        <button class="button" (click)="generateDocumentLingesCoches('attesFin')">Générer</button>  
+      </div>
+      <div class="formgroup full">
+        <!-- <input type="checkbox"> -->
+        <label>Attestation de présence</label>
+        <button class="button" (click)="generateDocumentLingesCoches('attesPresence')">Générer</button>
+      </div>
+      <div class="formgroup full">
+        <!-- <input type="checkbox"> -->
+        <label>Attestation de compétence</label>
+        <!-- Si vous voulez charger des information à première page ==> attesCompretanceV2 change to attesCompetenceV1 -->
+        <button class="button" (click)="generateDocumentLingesCoches('attesCompetenceV2')">Générer</button>
+      </div>
+      <div class="formgroup full">
+        <!-- <input type="checkbox"> -->
+        <label>Convocation de stagiaire</label>
+        <button class="button" (click)="generateDocumentLingesCoches('convocationStagiaire')">Générer</button>
+      </div>
+      <!-- <div class="formgroup full">
+        <label>Convention de stage par entreprise (non coché)</label>
+        <button class="button" (click)="generateDocumentParEntreprise('conventionEntreprise')">Générer</button>
+      </div> -->
+    </form>
+  </div>
+</div>

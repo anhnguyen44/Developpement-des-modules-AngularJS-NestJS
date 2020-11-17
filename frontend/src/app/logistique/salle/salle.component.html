@@ -1,0 +1,45 @@
+<app-menu-logistique></app-menu-logistique>
+<div class="content">
+  <div class="bloc">
+    <div class="formgroup">
+      <label>Référence</label>
+      <div *ngIf="salle?.id; else newFiltre">{{salle.ref}}</div>
+      <ng-template #newFiltre>
+        Nouvelle Salle
+      </ng-template>
+    </div>
+  </div>
+  <h2>
+    Information salle
+  </h2>
+  <div class="bloc">
+    <form [formGroup]="salleForm" (ngSubmit)="onSubmit(salleForm)">
+      <div class="formgroup full">
+        <label>Agence</label>
+        <select formControlName="bureau" [compareWith]="compare"
+                [ngClass]="{ 'invalid': salleForm['controls'].bureau.errors && submited}">
+          <option *ngFor="let bureau of bureaux" [ngValue]="bureau">{{bureau.nom}} - {{bureau.nomCommercial}}</option>
+        </select>
+      </div>
+      <div class="formgroup">
+        <label>Libellé</label>
+        <input type="text" formControlName="libelle" [ngClass]="{ 'invalid': salleForm['controls'].libelle.errors && submited}">
+      </div>
+      <div class="formgroup">
+        <label>Référence</label>
+        <input type="text" formControlName="ref" [ngClass]="{ 'invalid': salleForm['controls'].ref.errors && submited}">
+      </div>
+      <div class="formgroup">
+        <label>Place</label>
+        <input type="number" formControlName="place" [ngClass]="{ 'invalid': salleForm['controls'].place.errors && submited}">
+      </div>
+      <div class="formgroup">
+        <label>Place</label>
+        <input type="color" formControlName="couleur">
+      </div>
+      <div class="action">
+        <button class="button" type="submit">Valider</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,45 @@
+<div class="content" (clickOutside)="close($event)" [delayClickOutsideInit]="true">
+    <i class="fas fa-times btn-close" (click)="close($event)"></i>
+    <h2>Création d'une nouvelle stratégie</h2>
+    <div class="bloc">
+        <form (ngSubmit)="onSubmit()" [formGroup]="formMoments">
+            <div class="formgroup">
+                <label>Type</label>
+                <div>
+                    <input type="radio" name="typeStrategie" value="SPATIALE" [(ngModel)]="typeStrategie" (change)="setObjectifsToDisplay()" [ngModelOptions]="{standalone: true}"> Spatiale
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="radio" name="typeStrategie" value="SUIVI" [(ngModel)]="typeStrategie" (change)="setObjectifsToDisplay()" [ngModelOptions]="{standalone: true}"> Suivi
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="radio" name="typeStrategie" value="AUTRE" [(ngModel)]="typeStrategie" (change)="setObjectifsToDisplay()" [ngModelOptions]="{standalone: true}"> Autre (libre)
+                </div>
+            </div>
+            <div class="formgroup">
+                <label>Référence</label>
+                <div><input type="text" style="width: 100px;" [(ngModel)]="strategie.reference" [ngModelOptions]="{standalone: true}" required /></div>
+            </div>
+            <div class="formgroup">
+                <label *ngIf="typeStrategie !== 'AUTRE'">
+                    Phases
+                </label>
+                <ul style="list-style: none; padding: 0;" *ngIf="typeStrategie === 'SPATIALE' || typeStrategie === 'AUTRE'">
+                    <li *ngFor="let moment of listeMomentsSpatiale"><input type="checkbox" [formControlName]="moment.code" (change)="setObjectifsToDisplay()"> {{moment.nom}}</li>
+                </ul>
+                <ul style="list-style: none; padding: 0;" *ngIf="typeStrategie === 'SUIVI' || typeStrategie === 'AUTRE'">
+                    <li *ngFor="let moment of listeMomentsSuivi"><input type="checkbox" [formControlName]="moment.code" (change)="setObjectifsToDisplay()"> {{moment.nom}}</li>
+                </ul>
+            </div>
+            <div class="formgroup">
+                <label>Objectifs disponibles</label>
+                <div *ngIf="nbPhaseSelected() === 0">Veuillez sélectionner au moins une phase</div>
+                <div *ngIf="nbPhaseSelected() > 0">
+                    <ul>
+                        <li *ngFor="let obj of objectifsDisponibles"><b>{{obj.lettre}}</b> - {{obj.nom}}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="action">
+                <button class="button" type="submit">Valider</button>
+            </div>
+        </form>
+    </div>
+</div>

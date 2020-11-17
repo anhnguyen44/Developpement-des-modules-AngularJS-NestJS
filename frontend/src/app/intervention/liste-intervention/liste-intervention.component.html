@@ -1,0 +1,78 @@
+<app-recherche [queryBuild]="queryBuild" [champDeRecherches]="champDeRecherches" (emitQueryBuild)="setQueryBuild($event)"></app-recherche>
+<div class="content">
+
+  <div class="full" *ngIf="chantier && chantier.ordreInterventionGlobal">
+    <h2>Documents</h2>
+    <div class="bloc">
+      <div class="formgroup">
+        <label>OI global</label>
+        <div>
+          <span class="link" (click)="telecharge(chantier.ordreInterventionGlobal)">{{chantier.ordreInterventionGlobal.nom}}</span>
+        </div>
+        <div class="smallAction">
+          <i class="fas fa-download"
+             (click)="telecharge(chantier.ordreInterventionGlobal)"></i>
+        </div>
+      </div>
+      <div class="formgroup">
+        <label>OI global signé</label>
+        <div>
+          <span class="link" *ngIf="chantier.ordreInterventionGlobalSigne" (click)="telecharge(chantier.ordreInterventionGlobalSigne)">{{chantier.ordreInterventionGlobalSigne.nom}}</span>
+        </div>
+        <i class="fas fa-download"
+           *ngIf="chantier.ordreInterventionGlobalSigne"
+           (click)="telecharge(chantier.ordreInterventionGlobalSigne)"></i>
+        <i class="fas fa-upload" (click)="openModalFichier()"></i>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="bloc">
+    <div class="table">
+      <div class="action">
+        <div class="right">
+
+          <div class="arrowDown" *ngIf="chantier">
+            <i class="fas fa-level-up-alt fa-rotate-180"></i>
+          </div>
+          <select *ngIf="chantier" [(ngModel)]="statutCible">
+            <option *ngFor="let key of keys" [value]="key" [label]="enumStatutIntervention[key] | enum"></option>
+          </select>
+          <i *ngIf="chantier" class="fas fa-check-circle" [class.success-text]="statutCible" style="padding-top: 5px;" (click)="changeStatut()"></i>
+
+          <div *ngIf="chantier" (click)="generateFullOI(idParent)"><i class="fas fa-print"></i>Générer OI Global</div>
+          <div *ngIf="chantier" (click)="envoyerMail()"><i class="far fa-envelope"></i>Envoyer OI Global</div>
+
+        </div>
+        <div class="left">
+          <div *ngIf="idParent && application === 'chantier'" (click)="goToNew()"><i class="fas fa-plus"></i> Créer</div>
+        </div>
+      </div>
+      <app-header-table [headers]="headers" [checkbox]="chantier" [allSelected]="isAllChecked()" (emitSetAllChecked)="checkAll($event)" [querybuild]="queryBuild" (emitQueryBuild)="setQueryBuild($event)"></app-header-table>
+      <div class="content">
+        <div class="row" *ngFor="let intervention of interventions" (dblclick)="goTo(intervention)">
+          <div class="grow0" *ngIf="chantier"><div class="labelTable"></div><input type="checkbox" [(ngModel)]="intervention.checked"></div>
+          <div><div class="labelTable">Ref</div>{{intervention.id}}</div>
+          <div><div class="labelTable">Libellè</div>{{intervention.libelle}}</div>
+          <div><div class="labelTable">Statut</div>{{enumStatutIntervention[intervention.idStatut] | enum}}</div>
+          <div><div class="labelTable">Date validation</div><span *ngIf="intervention.dateValidation">{{intervention.dateValidation | date:'dd-MM-yyyy'}}</span></div>
+          <div><div class="labelTable">Rang</div>{{intervention.rang}}</div>
+          <div class="action"><i class="fas fa-pencil-alt" (click)="goTo(intervention)"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-modal-fichier
+        *ngIf="modalFichier"
+        [idParent]="chantier.id"
+        [application]="'chantier'"
+        [TypeFichier]="typeFichier"
+        (emitFichier)="setOrdreInterventionValide($event)"
+        (emitClose)="closeModalFichier()"
+        [@fadeIn] [@fadeOut]
+></app-modal-fichier>
+
+<app-modal-mail *ngIf="mail" [mail]="mail" (emitClose)="setCloseMail()" [@fadeIn] [@fadeOut]></app-modal-mail>

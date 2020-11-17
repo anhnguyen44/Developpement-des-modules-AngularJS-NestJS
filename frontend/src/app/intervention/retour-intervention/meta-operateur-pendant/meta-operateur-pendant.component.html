@@ -1,0 +1,160 @@
+<div class="full" *ngIf="prelevement.zoneIntervention.milieu === 0 || prelevement.zoneIntervention.milieu === 2">
+    <div class="conditions">
+        <div class="headerCondition">
+            <label>Condition Ambiante</label>
+            <div>Temp°</div>
+            <div>Pression</div>
+            <div>Humidité</div>
+        </div>
+        <div class="conditionContent">
+            <label>Pendant</label>
+            <div>
+                <input type="number" [(ngModel)]="prelevement.conditionTemperaturePendant" (ngModelChange)="checkPrelevement()" *ngIf="isEditable">
+                <span *ngIf="!isEditable">{{prelevement.conditionTemperaturePendant}}</span>
+            </div>
+            <div>
+                <input type="number" [(ngModel)]="prelevement.conditionPressionPendant" (ngModelChange)="checkPrelevement()" *ngIf="isEditable">
+                <span *ngIf="!isEditable">{{prelevement.conditionPressionPendant}}</span>
+            </div>
+            <div>
+                <input type="number" [(ngModel)]="prelevement.conditionHumiditePendant" (ngModelChange)="checkPrelevement()" *ngIf="isEditable">
+                <span *ngIf="!isEditable">{{prelevement.conditionHumiditePendant}}</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="full" *ngIf="prelevement.zoneIntervention.milieu === 1 || prelevement.zoneIntervention.milieu === 2">
+    <div class="meteoWrapper">
+        <label>Métèo</label>
+        <div class="meteo meteoHeader">
+            <div class="pluis">
+                <div>
+                    <i class="fas fa-sun"></i>
+                </div>
+                <div>
+                    <i class="fas fa-tint"></i>
+                </div>
+                <div>
+                    <i class="fas fa-tint"></i>
+                    <i class="fas fa-tint"></i>
+                </div>
+                <div>
+                    <i class="fas fa-tint"></i>
+                    <i class="fas fa-tint"></i>
+                    <i class="fas fa-tint"></i>
+                </div>
+            </div>
+            <div>Dir. vent</div>
+            <div>Vit. vent</div>
+            <div>Temp.</div>
+            <div>Humi.</div>
+            <div>Pres.</div>
+        </div>
+    </div>
+    <div class="meteoWrapper">
+        <label>Pendant</label>
+        <div class="meteo">
+            <div class="pluis">
+                <div>
+                    <input type="radio" name="pluiePendant" [value]="enumPluie.AUCUNE" [(ngModel)]="prelevement.pluiePendant" (ngModelChange)="checkPrelevement()" *ngIf="isEditable">
+                    <span *ngIf="!isEditable"><i *ngIf="prelevement.pluiePendant === enumPluie.AUCUNE" class="fas fa-check"></i></span>
+                </div>
+                <div>
+                    <input type="radio" name="pluiePendant" [value]="enumPluie.FAIBLE" [(ngModel)]="prelevement.pluiePendant" (ngModelChange)="checkPrelevement()" *ngIf="isEditable">
+                    <span *ngIf="!isEditable"><i *ngIf="prelevement.pluiePendant === enumPluie.FAIBLE" class="fas fa-check"></i></span>
+                </div>
+                <div>
+                    <input type="radio" name="pluiePendant" [value]="enumPluie.MOYENNE" [(ngModel)]="prelevement.pluiePendant" (ngModelChange)="checkPrelevement()" *ngIf="isEditable">
+                    <span *ngIf="!isEditable"><i *ngIf="prelevement.pluiePendant === enumPluie.MOYENNE" class="fas fa-check"></i></span>
+                </div>
+                <div>
+                    <input type="radio" name="pluiePendant" [value]="enumPluie.FORTE" [(ngModel)]="prelevement.pluiePendant" (ngModelChange)="checkPrelevement()" *ngIf="isEditable">
+                    <span *ngIf="!isEditable"><i *ngIf="prelevement.pluiePendant === enumPluie.FORTE" class="fas fa-check"></i></span>
+                </div>
+            </div>
+            <div>
+                <select [(ngModel)]="prelevement.directionVentPendant" (ngModelChange)="checkPrelevement()" *ngIf="isEditable">
+                    <option value="N">N</option>
+                    <option value="NO">NO</option>
+                    <option value="O">O</option>
+                    <option value="SO">SO</option>
+                    <option value="S">S</option>
+                    <option value="SE">SE</option>
+                    <option value="E">E</option>
+                    <option value="NE">NE</option>
+                </select>
+                <span *ngIf="!isEditable">{{prelevement.directionVentPendant}}</span>
+            </div>
+            <div>
+                <input type="number" [(ngModel)]="prelevement.vistesseVentPendant" (ngModelChange)="checkPrelevement()" *ngIf="isEditable">
+                <span *ngIf="!isEditable">{{prelevement.vistesseVentPendant}}</span>
+            </div>
+            <div>
+                <input type="number" [(ngModel)]="prelevement.temperaturePendant" (ngModelChange)="checkPrelevement()" *ngIf="isEditable">
+                <span *ngIf="!isEditable">{{prelevement.temperaturePendant}}</span>
+            </div>
+            <div>
+                <input type="number" [(ngModel)]="prelevement.humiditePendant" (ngModelChange)="checkPrelevement()" *ngIf="isEditable">
+                <span *ngIf="!isEditable">{{prelevement.humiditePendant}}</span>
+            </div>
+            <div>
+                <input type="number" [(ngModel)]="prelevement.pressionPendant" (ngModelChange)="checkPrelevement()" *ngIf="isEditable">
+                <span *ngIf="!isEditable">{{prelevement.pressionPendant}}</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="form">
+    <div class="formgroup full">
+        <label>Moyen de protection</label>
+        <div>
+            <div *ngIf="">{{enumProtectionRespiratoire[prelevement.processusZone.idAppareilsProtectionRespiratoire]}}</div>
+            <div *ngIf="captageAspirationSource">{{captageAspirationSource}}</div>
+            <div *ngIf="travailHumide">{{travailHumide}}</div>
+        </div>
+    </div>
+    <div class="formgroup full">
+        <label>Taches</label>
+        <div>
+            <div *ngFor="let tache of taches">{{tache}}</div>
+        </div>
+    </div>
+    <div class="formgroup full">
+        <label>Méthode</label>
+        <div *ngIf="mpca">{{mpca}}</div>
+    </div>
+    <div class="formgroup full">
+        <label>Materiaux</label>
+        <div *ngIf="outilTechnique">{{outilTechnique}}</div>
+    </div>
+</div>
+<div class="affectation" *ngFor="let affectationPrelevement of prelevement.affectationsPrelevement">
+    <div class="form">
+        <div class="formgroup">
+            <label>Pompe</label>
+            <div>{{affectationPrelevement?.pompe?.libelle}}</div>
+        </div>
+        <div class="formgroup">
+            <label>Filtre</label>
+            <div>{{affectationPrelevement?.filtre?.ref}}</div>
+        </div>
+        <div class="formgroup">
+            <label>Opérateur</label>
+            <div>{{affectationPrelevement?.operateurChantier?.nom}} -
+                {{affectationPrelevement?.operateurChantier?.prenom}}
+            </div>
+        </div>
+        <div class="formgroup">
+            <label>Position</label>
+            <select [(ngModel)]="affectationPrelevement.idPosition" (ngModelChange)="checkPrelevement();" *ngIf="isEditable">
+                <option *ngFor="let idPosition of keys" [value]="idPosition">{{enumPosition[idPosition] | enum}}</option>
+            </select>
+            <div *ngIf="!isEditable">{{enumPosition[affectationPrelevement.idPosition]}}</div>
+        </div>
+        <div class="formgroup full" *ngIf="isEditable && affectationPrelevement.commentaire">
+            <label>Commentaire</label>
+            <textarea [(ngModel)]="affectationPrelevement.commentaire" *ngIf="isEditable"></textarea>
+            <div *ngIf="!isEditable">{{affectationPrelevement.commentaire}}</div>
+        </div>
+    </div>
+</div>

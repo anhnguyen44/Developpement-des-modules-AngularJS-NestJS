@@ -1,0 +1,4 @@
+<div class="content" (clickOutside)="close($event)" [delayClickOutsideInit]="true">
+  <i class="fas fa-times btn-close" (click)="close($event)"></i>
+  <app-liste-devis-commande [isModal]="true" (emitDevisCommande)="setDevisCommande($event)"></app-liste-devis-commande>
+</div>

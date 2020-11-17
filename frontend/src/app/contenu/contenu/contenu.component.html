@@ -1,0 +1,5 @@
+<div class="bloc contenu" *ngIf="contenuAffi">
+  <h1>{{contenuAffi.header1}}</h1>
+  <div class="ckeditorContenu" [innerHTML]="contenuAffi.contenu | safeHtml"></div>
+</div>
+

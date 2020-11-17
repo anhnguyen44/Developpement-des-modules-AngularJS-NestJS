@@ -1,0 +1,3 @@
+export const PASSWORD_CRYPTOGRAPHER_TOKEN =
+        'PASSWORD_CRYPTOGRAPHER_TOKEN'
+export const HASHING_ALGORITHM = 'bcrypt';

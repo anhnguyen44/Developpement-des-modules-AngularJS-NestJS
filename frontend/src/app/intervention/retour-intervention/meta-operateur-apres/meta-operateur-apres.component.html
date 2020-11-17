@@ -1,0 +1,273 @@
+<div class="form">
+  <div class="formgroup" *ngIf="isEditable">
+    <input type="checkbox" [(ngModel)]="prelevement.isPrelevementMateriaux" (click)="prelevementMateriaux($event)"> Prélèvement Matériaux
+  </div>
+  <div class="formgroup" *ngIf="!isEditable && prelevement.idPrelevementMateriaux">
+    <label>Prelevement Materiaux</label>
+    <div *ngIf="prelevementMat">{{prelevementMat.reference}}</div>
+  </div>
+</div>
+<div class="full" *ngIf="prelevement.zoneIntervention.milieu === 0 || prelevement.zoneIntervention.milieu === 2">
+  <div class="conditions">
+    <div class="headerCondition">
+      <label>Condition Ambiante</label>
+      <div>Temp°</div>
+      <div>Pression</div>
+      <div>Humidité</div>
+    </div>
+    <div class="conditionContent">
+      <label>Apres</label>
+      <div>
+        <input type="number" [(ngModel)]="prelevement.conditionTemperatureApres" (ngModelChange)="checkPrelevement()" *ngIf="isEditable">
+        <span *ngIf="!isEditable">{{prelevement.conditionTemperatureApres}}</span>
+      </div>
+      <div>
+        <input type="number" [(ngModel)]="prelevement.conditionPressionApres" (ngModelChange)="checkPrelevement()" *ngIf="isEditable">
+        <span *ngIf="!isEditable">{{prelevement.conditionPressionApres}}</span>
+      </div>
+      <div>
+        <input type="number" [(ngModel)]="prelevement.conditionHumiditeApres" (ngModelChange)="checkPrelevement()" *ngIf="isEditable">
+        <span *ngIf="!isEditable">{{prelevement.conditionHumiditeApres}}</span>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="full" *ngIf="prelevement.zoneIntervention.milieu === 1 || prelevement.zoneIntervention.milieu === 2">
+  <div class="meteoWrapper">
+    <label>Métèo</label>
+    <div class="meteo meteoHeader">
+      <div class="pluis">
+        <div>
+          <i class="fas fa-sun"></i>
+        </div>
+        <div>
+          <i class="fas fa-tint"></i>
+        </div>
+        <div>
+          <i class="fas fa-tint"></i>
+          <i class="fas fa-tint"></i>
+        </div>
+        <div>
+          <i class="fas fa-tint"></i>
+          <i class="fas fa-tint"></i>
+          <i class="fas fa-tint"></i>
+        </div>
+      </div>
+      <div>Dir. vent</div>
+      <div>Vit. vent</div>
+      <div>Temp.</div>
+      <div>Humi.</div>
+      <div>Pres.</div>
+    </div>
+  </div>
+  <div class="meteoWrapper">
+    <label>Apres</label>
+    <div class="meteo">
+      <div class="pluis">
+        <div>
+          <input type="radio" name="pluieApres" [value]="enumPluie.AUCUNE" [(ngModel)]="prelevement.pluieApres" (ngModelChange)="checkPrelevement()" *ngIf="isEditable">
+          <span *ngIf="!isEditable"><i *ngIf="prelevement.pluieApres === enumPluie.AUCUNE" class="fas fa-check"></i></span>
+        </div>
+        <div>
+          <input type="radio" name="pluieApres" [value]="enumPluie.FAIBLE" [(ngModel)]="prelevement.pluieApres" (ngModelChange)="checkPrelevement()" *ngIf="isEditable">
+          <span *ngIf="!isEditable"><i *ngIf="prelevement.pluieApres === enumPluie.FAIBLE" class="fas fa-check"></i></span>
+        </div>
+        <div>
+          <input type="radio" name="pluieApres" [value]="enumPluie.MOYENNE" [(ngModel)]="prelevement.pluieApres" (ngModelChange)="checkPrelevement()" *ngIf="isEditable">
+          <span *ngIf="!isEditable"><i *ngIf="prelevement.pluieApres === enumPluie.MOYENNE" class="fas fa-check"></i></span>
+        </div>
+        <div>
+          <input type="radio" name="pluieApres" [value]="enumPluie.FORTE" [(ngModel)]="prelevement.pluieApres" (ngModelChange)="checkPrelevement()" *ngIf="isEditable">
+          <span *ngIf="!isEditable"><i *ngIf="prelevement.pluieApres === enumPluie.FORTE" class="fas fa-check"></i></span>
+        </div>
+      </div>
+      <div>
+        <select [(ngModel)]="prelevement.directionVentApres" (ngModelChange)="checkPrelevement()" *ngIf="isEditable">
+          <option value="N">N</option>
+          <option value="NO">NO</option>
+          <option value="O">O</option>
+          <option value="SO">SO</option>
+          <option value="S">S</option>
+          <option value="SE">SE</option>
+          <option value="E">E</option>
+          <option value="NE">NE</option>
+        </select>
+        <span *ngIf="!isEditable">{{prelevement.directionVentApres}}</span>
+      </div>
+      <div>
+        <input type="number" [(ngModel)]="prelevement.vistesseVentApres" (ngModelChange)="checkPrelevement()" *ngIf="isEditable">
+        <span *ngIf="!isEditable">{{prelevement.vistesseVentApres}}</span>
+      </div>
+      <div>
+        <input type="number" [(ngModel)]="prelevement.temperatureApres" (ngModelChange)="checkPrelevement()" *ngIf="isEditable">
+        <span *ngIf="!isEditable">{{prelevement.temperatureApres}}</span>
+      </div>
+      <div>
+        <input type="number" [(ngModel)]="prelevement.humiditeApres" (ngModelChange)="checkPrelevement()" *ngIf="isEditable">
+        <span *ngIf="!isEditable">{{prelevement.humiditeApres}}</span>
+      </div>
+      <div>
+        <input type="number" [(ngModel)]="prelevement.pressionApres" (ngModelChange)="checkPrelevement()" *ngIf="isEditable">
+        <span *ngIf="!isEditable">{{prelevement.pressionApres}}</span>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="affectation" *ngFor="let affectationPrelevement of prelevement.affectationsPrelevement">
+  <div class="form">
+    <div class="formgroup">
+      <label>Pompe</label>
+      <div>{{affectationPrelevement?.pompe?.libelle}}</div>
+    </div>
+    <div class="formgroup">
+      <label>Filtre</label>
+      <div>{{affectationPrelevement?.filtre?.ref}}</div>
+    </div>
+    <div class="formgroup">
+      <label>Opérateur</label>
+      <div>{{affectationPrelevement?.operateurChantier?.nom}} -
+        {{affectationPrelevement?.operateurChantier?.prenom}}
+      </div>
+    </div>
+    <div class="formgroup noMobile">
+
+    </div>
+    <div class="formgroup">
+      <label>Debitmétre</label>
+      <select [(ngModel)]="affectationPrelevement.idDebitmetre" (change)="checkPrelevement()" *ngIf="isEditable">
+        <option *ngFor="let debitmetre of debitmetres" [value]="debitmetre.id">{{debitmetre.libelle}}</option>
+      </select>
+      <div *ngIf="!isEditable">{{affectationPrelevement.debitmetre.libelle}}</div>
+    </div>
+    <div class="formgroup noMobile">
+
+    </div>
+    <div class="formgroup" *ngIf="isEditable">
+      <label>Date fin</label>
+      <input type="date" [(ngModel)]="affectationPrelevement.dateFin" (change)="parseDateHeure(affectationPrelevement)">
+    </div>
+    <div class="formgroup" *ngIf="isEditable">
+      <label>Heure fin</label>
+      <input type="time" [(ngModel)]="affectationPrelevement.heureFin" (change)="parseDateHeure(affectationPrelevement)">
+    </div>
+    <div class="formgroup full" *ngIf="!isEditable">
+      <label>Date fin</label>
+      <div><div>Le {{affectationPrelevement.dateHeureFin | date :'dd MMMM yyyy'}} à {{affectationPrelevement.dateHeureFin | date :'hh:mm'}}</div></div>
+    </div>
+    <div class="formgroup" *ngIf="calcDuree(affectationPrelevement)">
+      <label>Durée</label>
+      <div>{{calcDuree(affectationPrelevement)}}</div>
+    </div>
+    <div class="formgroup noMobile">
+
+    </div>
+    <div class="formgroup">
+      <label>Débit final 1</label>
+      <input type="number" [(ngModel)]="affectationPrelevement.debitFinal1" (change)="calcDebitFinal(affectationPrelevement)" *ngIf="isEditable">
+      <div *ngIf="!isEditable">{{affectationPrelevement.debitFinal1}}</div>
+    </div>
+    <div class="formgroup">
+      <label>Débit final 2</label>
+      <input type="number" [(ngModel)]="affectationPrelevement.debitFinal2" (change)="calcDebitFinal(affectationPrelevement)" *ngIf="isEditable">
+      <div *ngIf="!isEditable">{{affectationPrelevement.debitFinal2}}</div>
+    </div>
+    <div class="formgroup">
+      <label>Débit final 3</label>
+      <input type="number" [(ngModel)]="affectationPrelevement.debitFinal3" (change)="calcDebitFinal(affectationPrelevement)" *ngIf="isEditable">
+      <div *ngIf="!isEditable">{{affectationPrelevement.debitFinal3}}</div>
+    </div>
+    <div class="formgroup">
+      <label>Débit final initial</label>
+      <div><span *ngIf="affectationPrelevement.debitMoyenFinal">{{affectationPrelevement.debitMoyenFinal}}</span></div>
+    </div>
+    <div class="formgroup" *ngIf="affectationPrelevement.debitMoyenFinal && affectationPrelevement.debitMoyenInitial">
+      <label>Ecart relatif</label>
+      <div>{{((affectationPrelevement.debitMoyenFinal - affectationPrelevement.debitMoyenInitial / affectationPrelevement.debitMoyenInitial) * 100).toFixed(3)}} %</div>
+    </div>
+    <div class="formgroup" *ngIf="calcDuree(affectationPrelevement) && affectationPrelevement.debitMoyenFinal && affectationPrelevement.debitMoyenInitial">
+      <label>Volume</label>
+      <div>{{calcVolume(affectationPrelevement)}} L</div>
+    </div>
+    <div class="formgroup full">
+      <label>Conformité</label>
+      <div>
+        <span *ngIf="(affectationPrelevement.debitMoyenFinal - affectationPrelevement.debitMoyenInitial / affectationPrelevement.debitMoyenInitial) < 0.05">Conforme</span>
+        <span *ngIf="(affectationPrelevement.debitMoyenFinal - affectationPrelevement.debitMoyenInitial / affectationPrelevement.debitMoyenInitial) > 0.05">Non conforme</span>
+      </div>
+    </div>
+    <div class="formgroup full" *ngIf="isEditable && affectationPrelevement.commentaire">
+      <label>Commentaire</label>
+      <textarea [(ngModel)]="affectationPrelevement.commentaire" *ngIf="isEditable"></textarea>
+      <div *ngIf="!isEditable">{{affectationPrelevement.commentaire}}</div>
+    </div>
+  </div>
+</div>
+<div class="form" *ngIf="isEditable && prelevement.isFicheExposition">
+  <div class="formgroup full">
+    <input type="checkbox" [(ngModel)]="prelevement.isFicheExposition"> Fiche exposition
+  </div>
+  <div class="formgroup" *ngIf="prelevement.isFicheExposition">
+    <label>Heure début</label>
+    <input type="time">
+  </div>
+  <div class="formgroup" *ngIf="prelevement.isFicheExposition">
+    <label>Heure fin</label>
+    <input type="time">
+  </div>
+</div>
+<h3>Expositions</h3>
+<div class="exposition" *ngFor="let exposition of prelevement.fichesExposition">
+  <div class="form">
+    <div class="form">
+      <div class="formgroup full">
+        <label>Technicien</label>
+        <select [(ngModel)]="exposition.ressourceHumaine" (change)="checkPrelevement()" [compareWith]="compare">
+          <option *ngFor="let technicien of techniciens" [ngValue]="technicien">
+            {{technicien.utilisateur.prenom}} - {{technicien.utilisateur.nom}}
+          </option>
+        </select>
+      </div>
+      <div class="formgroup">
+        <label>Date</label>
+        <input type="date" [ngModel]="exposition.date | date:'yyyy-MM-dd'" (ngModelChange)="exposition.date = $event">
+      </div>
+      <div class="formgroup">
+        <label>Durée</label>
+        <input type="number" [(ngModel)]="exposition.duree" (change)="checkPrelevement()">
+      </div>
+      <div class="formgroup">
+        <label>Risque et nuisance</label>
+        <select [(ngModel)]="exposition.idRisqueNuisance" (change)="checkPrelevement()">
+          <option *ngFor="let keyRisqueNuisance of keysRisqueNuisance" [value]="keyRisqueNuisance">{{enumRisqueNuisance[keyRisqueNuisance] | enum}}</option>
+        </select>
+      </div>
+      <div class="formgroup" *ngIf="exposition.idRisqueNuisance == enumRisqueNuisance.AUTRE">
+        <label>Autre risque et nuisance</label>
+        <input type="text" [(ngModel)]="exposition.autreRisqueNuisance" (change)="checkPrelevement()">
+      </div>
+      <div class="formgroup noMobile" *ngIf="exposition.idRisqueNuisance != enumRisqueNuisance.AUTRE">
+
+      </div>
+      <div class="formgroup">
+        <label>EPI</label>
+        <select [(ngModel)]="exposition.idEPI" (change)="checkPrelevement()">
+          <option *ngFor="let keyEpi of keysEPI" [value]="keyEpi">{{enumEPI[keyEpi] | enum}}</option>
+        </select>
+      </div>
+      <div class="formgroup" *ngIf="exposition.idEPI == enumEPI.AUTRE">
+        <label>Autre EPI</label>
+        <input type="text" [(ngModel)]="exposition.autreEPI" (change)="checkPrelevement()">
+      </div>
+      <div class="formgroup noMobile" *ngIf="exposition.idEPI != enumEPI.AUTRE">
+
+      </div>
+    </div>
+  </div>
+  <div class="actionExposition" *ngIf="isEditable">
+    <i class="fas fa-trash pointer" (click)="deleteExposition(exposition)"></i>
+  </div>
+</div>
+<div class="button" (click)="addExposition()">
+  Ajout fiche exposition
+</div>
+

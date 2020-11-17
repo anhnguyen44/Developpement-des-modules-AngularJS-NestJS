@@ -1,0 +1,19 @@
+
+<div class="content" (clickOutside)="close()" [delayClickOutsideInit]="true" [excludeBeforeClick]=true [exclude]="'app-notification'">
+    <i class="fas fa-times btn-close" (click)="close()"></i> 
+    <h2>Ajout d'une domaine de competence</h2>
+    <div class="bloc">
+      <div class="formgroup">
+          <label>Nom de compétence</label>
+          <input type="text" [(ngModel)]="domaineCompetence.nom">
+      </div>
+      <div class="formgroup">
+          <label>Description de compétence</label>
+          <input type="text" [(ngModel)]="domaineCompetence.description">
+      </div>
+      <div class="action">
+        <div class="button" (click)="ajoutCompetence()">Valider</div>
+      </div>
+    </div>
+  </div>
+  

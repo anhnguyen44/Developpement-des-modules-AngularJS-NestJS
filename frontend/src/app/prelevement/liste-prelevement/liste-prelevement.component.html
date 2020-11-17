@@ -1,0 +1,49 @@
+<app-recherche [champDeRecherches]="champDeRecherches" [queryBuild]="queryBuild" (emitQueryBuild)="setQueryBuild($event)"></app-recherche>
+<div class="bloc">
+  <div class="table">
+    <div class="action">
+      <div class="left">
+
+        <div class="arrowDown">
+          <i class="fas fa-level-up-alt fa-rotate-180"></i>
+        </div>
+        <select *ngIf="!modal" [(ngModel)]="statutCible">
+          <option *ngFor="let key of keys" [value]="key" [label]="enumStatutPrelevement[key] | enum"></option>
+        </select>
+        <i *ngIf="!modal "class="fas fa-check-circle" [class.success-text]="statutCible" style="padding-top: 5px;" (click)="changeStatut()"></i>
+
+
+        <div *ngIf="modal" (click)="sendPrelevements()">
+          <i class="fas fa-link"></i> Attacher
+        </div>
+      </div>
+      <div class="right" *ngIf="!modal">
+        <i class="fas fa-file-excel"></i>
+        <div *ngIf="canCreate" (click)="goToNew()" class="nofocus">
+          <i class="fas fa-plus"></i> Créer
+        </div>
+      </div>
+    </div>
+    <app-header-table [headers]="headers" [querybuild]="queryBuild" [checkbox]="true" [allSelected]="isAllChecked()" (emitQueryBuild)="setQueryBuild($event)" (emitSetAllChecked)="checkAll($event)"></app-header-table>
+    <div class="content">
+      <div class="row" *ngFor="let prelevement of prelevements" (dblclick)="goToDetail(prelevement)">
+        <div class="grow0"><input type="checkbox" [(ngModel)]="prelevement.checked"></div>
+        <div><div class="labelTable">Ref</div>{{prelevement.reference}}</div>
+        <div><div class="labelTable">Chantier</div>{{prelevement.chantier?.nomChantier}}</div>
+        <div><div class="labelTable">Objectif</div>{{prelevement.objectif?.lettre}}</div>
+        <div><div class="labelTable">Fréquence</div>{{(prelevement.echantillonnage?.frequenceParSemaine === 0 || prelevement.echantillonnage?.frequenceParSemaine === null) ? 'N/A' : prelevement.echantillonnage?.frequenceParSemaine + '/semaine'}}</div>
+        <div *ngIf="!modal"><div class="labelTable">Type</div>{{enumTypePrelevement[prelevement.idTypePrelevement] | enum}}</div>
+        <div *ngIf="!modal"><div class="labelTable">Statut</div>{{enumStatutPrelevement[prelevement.idStatutPrelevement] | enum}}</div>
+        <div class="action">
+          <i class="fas fa-trash" *ngIf="!modal && prelevement.idStatutPrelevement === enumStatutPrelevement.EN_ATTENTE" (click)="deletePrelevement(prelevement)"></i>
+          <i class="fas" [ngClass]="modal ? 'fa-link' : 'fa-pencil-alt'" (click)="goToDetail(prelevement)"></i>
+        </div>
+      </div>
+      <app-pagination
+              [queryBuild]="queryBuild"
+              [nbObjets]="nbObjets"
+              (emitQueryBuild)="setQueryBuild($event)"
+      ></app-pagination>
+    </div>
+  </div>
+</div>

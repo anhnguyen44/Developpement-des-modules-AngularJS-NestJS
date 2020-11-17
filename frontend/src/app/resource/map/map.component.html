@@ -1,0 +1,6 @@
+<div [ngStyle]="cssStyle" leaflet [leafletOptions]="options" *ngIf="options" (leafletMapReady)="onMapReady($event)"></div>
+<div *ngIf="caption.length > 0" id="legend-container">
+    <div *ngFor="let leg of caption" [style.backgroundImage]="'url(' + leg.iconPath + ')'" [style.backgroundRepeat]="'no-repeat'">
+        <span>{{leg.description}}</span>
+    </div>
+</div>

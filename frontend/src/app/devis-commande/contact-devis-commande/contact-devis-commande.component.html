@@ -1,0 +1,54 @@
+<app-menu-devis-commande></app-menu-devis-commande>
+<div class="content">
+  <div class="bloc">
+    <div class="formgroup">
+      <label>Référence</label>
+      <div *ngIf="devisCommande?.id; else newDevis">{{devisCommande?.id}}</div>
+      <ng-template #newDevis>
+        Nouveau Devis
+      </ng-template>
+    </div>
+    <div class="formgroup" *ngIf="devisCommande?.id">
+      <label>Version</label>
+      <div>{{devisCommande?.version}}</div>
+      <div *ngIf="!devisCommande.versionFigee && isDevis" [class.disable]="devisCommande.isModifie"  class="button small" (click)="figeDevis()"><i class="fas fa-lock-open"></i></div>
+      <div *ngIf="devisCommande.versionFigee || !isDevis" [class.disable]="!isDevis" class="button small" (click)="figeDevis()"><i class="fas fa-lock"></i></div>
+    </div>
+  </div>
+  <div class="bloc">
+      <div class="table">
+        <div class="action">
+          <div class="left"></div>
+          <div class="right">
+            <div (click)="openModalContact()">
+              <i class="fas fa-plus"></i> Ajouter
+            </div>
+          </div>
+        </div>
+        <div class="header">
+          <div class="row">
+            <div>Nom</div>
+            <div>Prenom</div>
+            <div>Type</div>
+            <div class="action"></div>
+          </div>
+        </div>
+        <div class="content">
+          <div class="row" *ngFor="let contactDevisCommande of devisCommande?.contactDevisCommandes">
+            <div>{{contactDevisCommande.contact.nom}}</div>
+            <div>{{contactDevisCommande.contact.prenom}}</div>
+            <div>{{contactDevisCommande.typeContactDevisCommande.nom}}</div>
+            <div class="action"><i *ngIf="contactDevisCommande.idTypeContactDevisCommande !== enumTypeContactDevisCommande.CLIENT" (click)="deleteInterlocuteur(contactDevisCommande)" class="fas fa-trash"></i></div>
+          </div>
+        </div>
+      </div>
+
+    <div class="action">
+      <div class="button" (click)="confirmerCommande()" *ngIf="isDevis">Confirmer la commande</div>
+    </div>
+  </div>
+</div>
+
+<app-modal-client *ngIf="modalClient" [modalClient]="modalClient" [isContactSeul]="true" (emitContactDevisCommande)="setContactDevisCommande($event)" (emitClose)="closeModalClient()" [@fadeIn] [@fadeOut]></app-modal-client>
+
+

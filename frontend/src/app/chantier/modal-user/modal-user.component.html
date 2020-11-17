@@ -1,0 +1,5 @@
+<div class="content" (clickOutside)="close()" [delayClickOutsideInit]="true">
+  <i class="fas fa-times btn-close" (click)="close()"></i>
+  <app-utilisateur-liste-chantier [isModal]=true [isSuperAdmin]=false (emitUtilisateur)="setUtilisateur($event)"></app-utilisateur-liste-chantier>
+</div>
+

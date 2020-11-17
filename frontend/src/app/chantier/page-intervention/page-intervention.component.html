@@ -1,0 +1,39 @@
+<app-menu-chantier
+        [isNewInter]="isNew"
+        [intervention]="intervention">
+</app-menu-chantier>
+<app-liste-intervention
+        *ngIf="type === 'liste'"
+        [idParent]="idParent"
+        [application]="application"
+        [redirectPath]="redirectPath">
+</app-liste-intervention>
+<app-intervention
+        [intervention]="intervention"
+        [isNew]="isNew"
+        [idChantier]="idParent"
+        [redirectPath]="redirectPath"
+        *ngIf="type === 'information' && (isNew || (intervention && intervention.id))">
+</app-intervention>
+<app-preparation-intervention
+        [intervention]="intervention"
+        [redirectPath]="redirectPath"
+        *ngIf="type === 'preparation' && intervention && intervention.id">
+</app-preparation-intervention>
+<app-depart-intervention
+        [intervention]="intervention"
+        [redirectPath]="redirectPath"
+        *ngIf="type === 'depart-terrain' && intervention && intervention.id">
+</app-depart-intervention>
+<app-page-retour-intervention
+        [intervention]="intervention"
+        [redirectPath]="redirectPath"
+        *ngIf="type === 'retour-terrain' && intervention && intervention.id">
+
+</app-page-retour-intervention>
+
+<app-historique
+        *ngIf="intervention && intervention.id && type === 'historique'"
+        [application]="'intervention'"
+        [idParent]="intervention.id">
+</app-historique>

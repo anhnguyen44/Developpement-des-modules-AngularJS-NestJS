@@ -1,0 +1,95 @@
+<form [formGroup]="processusZoneForm">
+    <div formArrayName="listeGES" class="listeGES">
+        <div class="affectation-ges"
+            *ngFor="let affectation of processusZoneForm.get('listeGES')?.controls; let i2 = index; let last = last"
+            [formGroupName]="i2" class="affectation-ges">
+            <div class="content-affectation-ges">
+                <div class="dateHeureDebut">
+                    <div class="formgroup">
+                        <label>Référence</label>
+                        <input type="text" formControlName="nom" />
+                    </div>
+                    <div class="formgroup">
+                        <label>Nb pompes</label>
+                        <input type="number" min="0" formControlName="nbPompes" />
+                    </div>
+                </div>
+                <div class="dateHeureDebut">
+                    <div class="formgroup">
+                        <label>Nb filtres</label>
+                        <input type="number" min="0" formControlName="nbFiltres" />
+                    </div>
+                    <!-- <div class="formgroup">
+                        <label>Nb opérateurs en GES</label>
+                        <input type="number" min="0" formControlName="nbOperateursTerrain">
+                    </div> -->
+                </div>
+                <!-- <div class="dateHeureDebut">
+                    <div class="formgroup">
+                        <label>Phase opérationnelle</label>
+                        <select formControlName="phaseOperationnelle" (change)="changePhase(i2, $event)"
+                            [compareWith]="compareEnum">
+                            <option [ngValue]="enumPhaseOperationnelle.Installation">Installation</option>
+                            <option [ngValue]="enumPhaseOperationnelle.Retrait">Retrait</option>
+                            <option [ngValue]="enumPhaseOperationnelle.Repli">Repli</option>
+                        </select>
+                    </div>
+                </div> -->
+                <div class="operateur-tache-affectation-ges">
+                    <div class="tache-affectation-ges">
+                        <div class="selection-tache-affectation-ges">
+                            <div class="formgroup full">
+                                <label>Tâches</label>
+                                <div class="taches">
+                                    <div class="select-tache">
+                                        <!-- <select [(ngModel)]="selectedTache[i2]" [ngModelOptions]="{standalone: true}"
+                                            *ngIf="listeTachesInstallation && listeTachesInstallation.length && processusZoneForm.get('listeGES')!.controls![i2]!.get('phaseOperationnelle')!.value == enumPhaseOperationnelle.Installation">
+                                            <option *ngFor="let tache of listeTachesInstallation" [ngValue]="tache">
+                                                {{tache.nom}}
+                                            </option>
+                                        </select>
+                                        <select [(ngModel)]="selectedTache[i2]" [ngModelOptions]="{standalone: true}"
+                                            *ngIf="listeTachesRetrait && listeTachesRetrait.length && processusZoneForm.get('listeGES')!.controls![i2]!.get('phaseOperationnelle')!.value == enumPhaseOperationnelle.Retrait">
+                                            <option *ngFor="let tache of listeTachesRetrait" [ngValue]="tache">
+                                                {{tache.nom}}
+                                            </option>
+                                        </select>
+                                        <select [(ngModel)]="selectedTache[i2]" [ngModelOptions]="{standalone: true}"
+                                            *ngIf="listeTachesRepli && listeTachesRepli.length && processusZoneForm.get('listeGES')!.controls![i2]!.get('phaseOperationnelle')!.value == enumPhaseOperationnelle.Repli">
+                                            <option *ngFor="let tache of listeTachesRepli" [ngValue]="tache">
+                                                {{tache.nom}}
+                                            </option>
+                                        </select> -->
+                                        <select [(ngModel)]="selectedTache[i2]" [ngModelOptions]="{standalone: true}"
+                                            *ngIf="listeTachesTotale && listeTachesTotale.length">
+                                            <option *ngFor="let tache of listeTachesTotale" [ngValue]="tache">
+                                                {{tache.nom}}
+                                            </option>
+                                        </select>
+                                        <div class="p8">
+                                            <i class="fas fa-plus-circle" *ngIf="canEdit"
+                                                (click)="addTacheProcessus(affectation, selectedTache[i2])"></i>
+                                        </div>
+                                    </div>
+                                    <div class="list-taches">
+                                        <div class="tache" *ngFor="let tache of affectation.get('taches').value">
+                                            <div>{{tache.nom}}</div>
+                                            <div class="p8">
+                                                <i class="sub fas fa-unlink" *ngIf="canEdit"
+                                                    (click)="removeTacheProcessus(affectation, tache)"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sub action-affectation-ges">
+                <!-- <i *ngIf="last && canEdit" (click)="addGES()" class="sub fas fa-plus-circle"></i>
+                <i class="sub fas fa-trash" *ngIf="!last && canEdit" (click)="removeGES(affectation.value)"></i> -->
+            </div>
+        </div>
+    </div>
+</form>

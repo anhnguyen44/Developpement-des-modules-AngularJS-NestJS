@@ -1,0 +1,83 @@
+@import "../../../../variables";
+:host {
+  display: flex;
+  width: 100%;
+}
+.table .header {
+  display: flex;
+  align-items: center;
+}
+
+.table .header *,
+.table .row *{
+  flex-grow: 1;
+}
+
+.table input {
+  height: auto;
+  margin-bottom: 0;
+}
+
+.recherche {
+  display: flex;
+}
+
+.recherche>* {
+  flex-grow: 1;
+  margin-right: 20px;
+}
+
+.recherche>*:last-child {
+  margin-right: 0;
+}
+
+
+.bouton i.fas, .bouton i.fa {
+  /* S'il y a une icône FontAwesome, on rajoute un padding*/
+  padding-right: .5em;
+}
+
+.roundbutton {
+  padding-left: 1em;
+  border: none;
+  background: none;
+  font-size: 1em;
+}
+
+.btn-add {
+  color: seagreen;
+  cursor: pointer;
+}
+
+.btn-remove {
+  color: red;
+  cursor: pointer;
+}
+
+.listeProfil{
+  width: 48%;
+}
+
+.listeProfil>div{
+  padding: 8px 0px;
+}
+
+.listeProfil>div>div{
+  text-align: left;
+  width: 95.5%;
+  display: inline-block;
+}
+
+#tblicones{
+  position: absolute;
+  width: 500px;
+  height: 400px;
+  background-color: black;
+  z-index: 1;
+}
+
+@media (max-width: 640px) {
+  :host{
+    flex-wrap: wrap;
+  }
+}

@@ -1,0 +1,183 @@
+<!-- <div class="content" (clickOutside)="close($event)" [delayClickOutsideInit]="true"> -->
+<div class="content">
+    <i class="fas fa-times btn-close" (click)="close($event)"></i>
+    <h2 *ngIf="!processusZone.id">Ajout d'un lien Processus/Zone</h2>
+    <h2 *ngIf="processusZone.id">Modification d'un lien Processus/Zone</h2>
+    <div class="bloc">
+        <form (ngSubmit)="onSubmit()" [formGroup]="informationsForm">
+            <div class="formgroup full">
+                <label>Processus/Phase opérationnelle</label>
+                <!-- <input type="text" formControlName="resultatConnu" /> -->
+
+                <select formControlName="processus"
+                    [ngClass]="{ 'invalid': submittedInformations && f.processus.errors }" [compareWith]="compare">
+                    <option *ngFor="let proc of listeProcessus" [ngValue]="proc">{{proc.libelle}}</option>
+                </select>
+                <i class="fas fa-plus-circle btn-plus" (click)="openModalProcessus = true" *ngIf="canEdit"></i>
+
+            </div>
+
+            <div *ngIf="processusZone && processusZone.idProcessus && processusZone.processus" class="formgroup full">
+                <label>Détails du processus</label>
+                <div>
+                    <div><b>Description : </b> {{processusZone.processus.description}}</div>
+                    <div>
+                        <span><b>Type bâtiment : </b> {{currentTypeBatiment?.nom}}</span><br />
+                        <span><b>MPCA : </b> {{currentMPCA?.nom}}</span><br />
+                        <span><b>Technique de retrait : </b> {{currentOutilTechnique?.nom}}</span><br />
+                        <span><b>Travail humide : </b> {{currentTravailHumide?.nom}}</span><br />
+                        <span><b>Captage/Aspiration à la source : </b> {{currentCaptageAspirationSource?.nom}}</span>
+                    </div>
+                    <div>
+                        <span *ngIf="processusZone.processus.isProcessusCyclique"><b>Cyclique : </b> <i
+                                class="fas fa-check"></i> &nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <span *ngIf="!processusZone.processus.isProcessusCyclique"><b>Cyclique : </b> <i
+                                class="fas fa-times"></i> &nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <span><b>T<sub>min</sub> : </b> {{processusZone.processus.tmin}} &nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <span><b>T<sub>satA</sub> : </b> {{processusZone.processus.tsatA}}</span>
+                    </div>
+                    <div *ngIf="processusZone.processus">
+                        <table>
+                            <tr *ngIf="listeTachesInstallation && listeTachesInstallation.length">
+                                <td>Phase d'installation</td>
+                                <td>
+                                    <ul>
+                                        <li *ngFor="let ti of listeTachesInstallation">{{ti.nom}}</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr *ngIf="listeTachesRetrait && listeTachesRetrait.length">
+                                <td>Phase de retrait</td>
+                                <td>
+                                    <ul>
+                                        <li *ngFor="let tret of listeTachesRetrait">{{tret.nom}}</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr *ngIf="listeTachesRepli && listeTachesRepli.length">
+                                <td>Phase de repli</td>
+                                <td>
+                                    <ul>
+                                        <li *ngFor="let trep of listeTachesRepli">{{trep.nom}}</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="formgroup">
+                <label>Type de chantier</label>
+                <!-- <input type="text" formControlName="resultatConnu" /> -->
+                <select formControlName="typeChantier"
+                    [ngClass]="{ 'invalid': submittedInformations && f.typeChantier.errors }"
+                    [compareWith]="compareEnum">
+                    <option [value]="enumTypeChantier.TEST">Test</option>
+                    <option [value]="enumTypeChantier.VALIDATION">Validation</option>
+                    <option [value]="enumTypeChantier.SURVEILLANCE">Surveillance</option>
+                </select>
+            </div>
+            <div class="formgroup">
+                <label>Type d'analyse des prélèvements</label>
+                <div>
+                    <select formControlName="typeAnalyse"
+                        [ngClass]="{ 'invalid': submittedInformations && f.typeAnalyse.errors }"
+                        [compareWith]="compareEnum">
+                        <option [value]="enumTypeAnalysePrelevement.CONJOINT">Analyse conjointe</option>
+                        <option [value]="enumTypeAnalysePrelevement.SOUS_GROUPE">Analysé par sous-groupes</option>
+                        <option [value]="enumTypeAnalysePrelevement.SEPARE">Echantillons analysés séparément</option>
+                    </select>
+                </div>
+            </div>
+            <div class="formgroup">
+                <label>Empoussièrement général attendu</label>
+                <!-- <input type="text" formControlName="resultatConnu" /> -->
+                <select formControlName="idEmpoussierementGeneralAttendu"
+                    [ngClass]="{ 'invalid': submittedInformations && f.idEmpoussierementGeneralAttendu.errors }"
+                    [compareWith]="compareEnum">
+                    <option [value]="enumEmpoussierementGeneral.FAIBLE">Faible</option>
+                    <option [value]="enumEmpoussierementGeneral.MOYEN">Moyen</option>
+                    <option [value]="enumEmpoussierementGeneral.FORT">Fort</option>
+                    <option [value]="enumEmpoussierementGeneral.INCONNU">Inconnu</option>
+                </select>
+            </div>
+
+            <div class="formgroup">
+                <label>Appareils de protection respiratoire</label>
+                <!-- <input type="text" formControlName="resultatConnu" /> -->
+                <select formControlName="idAppareilsProtectionRespiratoire"
+                    [ngClass]="{ 'invalid': submittedInformations && f.idAppareilsProtectionRespiratoire.errors }"
+                    [compareWith]="compareEnum">
+                    <option [value]="enumAppareilsProtectionRespiratoire.AUCUN">Aucun</option>
+                    <option [value]="enumAppareilsProtectionRespiratoire.VA">VA</option>
+                    <option [value]="enumAppareilsProtectionRespiratoire.AA">AA</option>
+                </select>
+            </div>
+
+            <div class="formgroup">
+                <label>Nombre de séquence par jour</label>
+                <div>
+                    <input type="number" min="0" formControlName="nombreVacationsJour"
+                        [ngClass]="{ 'invalid': submittedInformations && f.nombreVacationsJour.errors }" />
+                </div>
+            </div>
+
+            <div class="formgroup">
+                <label>Nombre de jours</label>
+                <div>
+                    <input type="number" min="0" formControlName="nombreJours"
+                        [ngClass]="{ 'invalid': submittedInformations && f.nombreJours.errors }" />
+                </div>
+            </div>
+
+            <div class="formgroup">
+                <label>Durée d'une séquence (minutes)</label>
+                <div>
+                    <input type="number" min="0" formControlName="dureeSequence"
+                        [ngClass]="{ 'invalid': submittedInformations && f.dureeSequence.errors }" />
+                </div>
+            </div>
+
+            <div class="formgroup">
+                <label>Nb opérateurs en GES</label>
+                <div>
+                    <input type="number" min="0" formControlName="nombreOperateurs"
+                        [ngClass]="{ 'invalid': submittedInformations && f.nombreOperateurs.errors }" />
+                </div>
+            </div>
+
+            <div class="formgroup">
+                <label>T<sub>satP</sub></label>
+                <div>
+                    <input type="number" min="0" formControlName="tsatP"
+                        [ngClass]="{ 'invalid': submittedInformations && f.tsatP.errors }" />
+                </div>
+            </div>
+
+            <div class="formgroup">
+                <label>T<sub>r</sub></label>
+                <div>
+                    <input type="number" min="0" formControlName="tr"
+                        [ngClass]="{ 'invalid': submittedInformations && f.tr.errors }" />
+                </div>
+            </div>
+
+            <h3>Séquence unitaire retenue<span style="float: right; cursor: pointer;"
+                    (click)="afficheGES = !afficheGES; $event.preventDefault(); $event.stopPropagation();"><i
+                        class="fas fa-chevron-down" *ngIf="!afficheGES"></i>
+                    <i class="fas fa-chevron-up" *ngIf="afficheGES"></i></span></h3>
+            <app-ges-processus-zone *ngIf="processusZone && processusZone.processus && afficheGES"
+                [processusZone]="processusZone" (emitListeGES)="setListeGES($event)" [canEdit]="canEdit">
+            </app-ges-processus-zone>
+
+            <div class="action" *ngIf="canEdit">
+                <button class="button" type="submit">Valider</button>
+            </div>
+        </form>
+    </div>
+</div>
+<app-modal-processus
+    *ngIf="chantier && chantier.client && chantier.client.compteContacts && chantier.client.compteContacts.idCompte && openModalProcessus"
+    [isNew]="true" [idCompte]="chantier.client.compteContacts.idCompte" (emitClose)="openModalProcessus = false"
+    (emitProcessus)="addProcessus($event)"></app-modal-processus>

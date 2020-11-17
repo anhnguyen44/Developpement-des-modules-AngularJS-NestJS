@@ -1,0 +1,76 @@
+<app-menu-admin-contenu></app-menu-admin-contenu>
+<div class="content">
+  <h2>Nouveau Menu</h2>
+  <div class="bloc">
+    <form [formGroup]="menuForm" (ngSubmit)="onSubmitMenu()">
+      <div class="formgroup">
+          <label>Titre *</label>
+          <input type="text" formControlName="titre" [ngClass]="{ 'invalid': submitedMenu && f.titre.errors }" tabindex="0" (input)="urlMenu=titreToUrl($event.target.value)">
+      </div>
+      <div class="formgroup">
+        <label>Menu parent</label>
+        <select formControlName="menuParent" *ngIf="listeMenuNonRecher" [ngClass]="{ 'invalid': submitedMenu && f.menuParent?.errors }" tabindex="1" (change)='setUrlMenuParent()' [compareWith]="compareFn">
+          <option value=''></option>
+          <option *ngFor='let menu of listeMenuNonRecher;let i = index' [ngValue]="menu">{{menu.titre}} ({{menu.name}})</option>
+        </select>
+      </div>
+      <div class="formgroup">
+         <label>Type *</label>
+         <select formControlName="type" [ngClass]="{ 'invalid': submitedMenu && f.type?.errors }" tabindex="0" [compareWith]="compareFn">
+           <option *ngFor="let type of listeTypeMenu;let i = index" [ngValue]="type">{{type.nom}}</option>
+         </select>
+      </div>
+      <div class="formgroup">
+        <label>Icone</label>
+        <input type="text" formControlName="icone" [ngClass]="{ 'invalid': submitedMenu && f.icone.errors }" disabled style="cursor: not-allowed !important;" tabindex="0">
+      <!-- <div></div> -->
+      <div class="smallAction">
+        <i class="fas fa-pencil-alt" (click)="openModalIcone()"></i>
+      </div>
+      </div>
+      <div class="formgroup">
+        <label>URL *</label>
+        <input type="text" formControlName="url" [ngClass]="{ 'invalid': submitedMenu && f.url.errors }" tabindex="1" style="cursor: not-allowed !important;" value="{{urlMenu}}" disabled>
+      </div>
+      <div class="formgroup">
+          <label>Recherche</label>
+          <input type="checkbox" formControlName="recherche" [ngClass]="{ 'invalid': submitedMenu && f.recherche.errors }" tabindex="0">
+      </div>
+      <div class="formgroup">
+        <label>Name</label>
+        <input type="text" formControlName="name" [ngClass]="{ 'invalid': submitedMenu && f.name.errors }" tabindex="1">
+      </div>
+      <div class="formgroup">
+        <label>Ordre contenu alphabétique</label>
+        <input type="checkbox" formControlName="ordreContenuAlpha" [ngClass]="{ 'invalid': submitedMenu && f.ordreContenuAlpha.errors }" tabindex="1">
+      </div>
+      <div class="formgroup">
+        <label>Sous-titre</label>
+        <input type="text" formControlName="sousTitre" [ngClass]="{ 'invalid': submitedMenu && f.sousTitre.errors }" tabindex="2">
+    </div>
+      <div class="formgroup">
+          <label>Visible</label>
+          <input type="checkbox" formControlName="visible" [ngClass]="{ 'invalid': submitedMenu && f.visible.errors }" tabindex="0">
+      </div>
+      <div class="formgroup">
+        <label>Ordre menu</label>
+        <input type="number" min="1" max="6" formControlName="ordreMenu" [ngClass]="{ 'invalid': submitedMenu && f.ordreMenu.errors }" tabindex="1">
+    </div>
+      <h3>Permissions</h3>
+      
+        <div class="formgroup full">
+          <label>Droits de permissions</label>
+          <select formControlName="droitsForMenu" [ngClass]="{ 'invalid': submitedMenu && f.droitsForMenu?.errors }" [compareWith]="compareFn">
+            <option value="null">Tous</option>
+            <option *ngFor='let droit of listeDroit;let i = index' [ngValue]="droit">{{droit.nom}}</option>
+          </select>
+          <!-- <button type="submit" class="roundbutton nofocus"><i class="fas fa-plus-circle right btn-add"></i></button> -->
+        </div>
+      <div class="action">
+        <button class="button" type="submit" tabindex="13">Valider</button>
+      </div>      
+    </form>
+  </div>
+</div>
+<app-modal-icone *ngIf="modalIcone" [test]="test1" (emitIcone)="setIcone($event)" [listeIcone]="listeIcone"></app-modal-icone>
+

@@ -1,0 +1,77 @@
+<app-menu-chantier [disableOnglets]="disableOngletsMenu"></app-menu-chantier>
+<div class="content">
+  <div class="bloc">
+    <div class="formgroup">
+      <label>Référence</label>
+      <div *ngIf="chantier?.id; else newChantier">{{chantier?.id}}</div>
+      <ng-template #newChantier>
+        Nouveau Chantier
+      </ng-template>
+    </div>
+    <div class="formgroup">
+      <label>Nom du chantier</label>
+      <input type="text" [ngModel]="chantier?.nomChantier" (ngModelChange)="chantier.nomChantier = $event; isModified = true" [ngModelOptions]="{standalone: true}" [ngClass]="{ 'invalid': submitted && !chantier.nomChantier}">
+    </div>
+  </div>
+  <h2>
+    Informations client
+  </h2>
+  <div class="bloc">
+    <form (ngSubmit)="onSubmit()">
+      <div class="formgroup full">
+        <label>Client</label>
+        <input type="text" [ngModel]="intituleClient" (ngModelChange)="intituleClient = $event; isModified = true" [ngModelOptions]="{standalone: true}" [ngClass]="{ 'invalid': submitted && !chantier.client}"><i
+          class="fas fa-user-plus" (click)="openModalClient()"></i>
+      </div>
+      <div class="formgroup full" *ngIf="grilleTarifs && grilleTarifs.length > 0">
+        <label>Tarifs spécifiques associés</label>
+        <div>
+          <ul class="list-align-form checkmark-min">
+            <li *ngFor="let grilleTarif of grilleTarifs"><b>{{grilleTarif.reference}}</b> de type
+              {{enumTypeDevis[grilleTarif.idTypeGrille]}}</li>
+          </ul>
+        </div>
+      </div>
+      <div class="formgroup full" *ngIf="intituleClient">
+        <label>Maître d'ouvrage</label>
+        <input type="text" [ngModel]="intituleMaitreOuvrage" (ngModelChange)="intituleMaitreOuvrage = $event; isModified = true" [ngModelOptions]="{standalone: true}"><i
+          class="fas fa-user-plus" (click)="openModalMaitreOuvrage()"></i>
+      </div>
+      <h3>Intervenants du chantier</h3>
+      <div class="formgroup full">
+        <label>Chargé de clientèle</label>
+        <select [ngModel]="chantier?.chargeClient" (ngModelChange)="chantier.chargeClient = $event; isModified = true" [compareWith]="compare" [ngClass]="{ 'invalid': submitted && !chantier.chargeClient}" [ngModelOptions]="{standalone: true}">
+          <option *ngFor="let userCommercial of listeChargeClientele" [ngValue]="userCommercial">{{userCommercial.civilite?.abbrev}}
+            {{userCommercial.nom}} {{userCommercial.prenom}}</option>
+        </select>
+      </div>
+      <div class="formgroup full">
+        <label>Rédacteur stratégie</label>
+        <select [ngModel]="chantier?.redacteurStrategie" (ngModelChange)="chantier.redacteurStrategie = $event; isModified = true" [compareWith]="compare" [ngClass]="{ 'invalid': submitted && !chantier.redacteurStrategie}" [ngModelOptions]="{standalone: true}">
+            <option *ngFor="let userRedac of listeRedacStrat" [ngValue]="userRedac">{{userRedac.civilite?.abbrev}}
+              {{userRedac.nom}} {{userRedac.prenom}}</option>
+          </select>
+      </div>
+      <div class="formgroup full">
+        <label>Valideur stratégie</label>
+        <select [ngModel]="chantier?.valideurStrategie" (ngModelChange)="chantier.valideurStrategie = $event; isModified = true" [compareWith]="compare" [ngClass]="{ 'invalid': submitted && !chantier.valideurStrategie}" [ngModelOptions]="{standalone: true}">
+            <option *ngFor="let userValid of listeValidStrat" [ngValue]="userValid">{{userValid.civilite?.abbrev}}
+              {{userValid.nom}} {{userValid.prenom}}</option>
+          </select>
+      </div>
+      <h3></h3>
+      <div class="formgroup full">
+        <label>Commentaire</label>
+        <textarea [ngModel]="chantier?.commentaire" (ngModelChange)="chantier.commentaire = $event; isModified = true"  [ngModelOptions]="{standalone: true}"></textarea>
+      </div>
+      <div class="action">
+        <button class="button">Valider</button>
+      </div>
+    </form>
+  </div>
+</div>
+<app-modal-client-chantier *ngIf="modalClient" [modalClient]="modalClient" (emitClientWithTarif)="setClient($event)"
+  (emitClose)="closeModalClient()" [@fadeIn] [@fadeOut]></app-modal-client-chantier>
+<app-modal-client-chantier *ngIf="modalMaitreOuvrage" [isOnlyContact]=true [queryBuildContact]="queryBuildContact"
+  [modalClient]="modalMaitreOuvrage" (emitClientWithTarif)="setMaitreOuvrage($event)"
+  (emitClose)="closeModalMaitreOuvrage()" [@fadeIn] [@fadeOut]></app-modal-client-chantier>

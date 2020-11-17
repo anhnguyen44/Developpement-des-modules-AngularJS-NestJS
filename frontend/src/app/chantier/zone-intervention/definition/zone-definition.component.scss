@@ -1,0 +1,85 @@
+@import "variables";
+:host{
+  display: flex;
+  width: 100%;
+}
+
+
+.onglet {
+  display: flex;
+  width: 100%;
+}
+
+.onglet div{
+  flex-grow: 2;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  background-color: $couleurFondBloc;
+  border-top: solid 2px $couleurFondBoutton;
+  border-left: solid 2px $couleurFondBoutton;
+  border-right: solid 2px $couleurFondBoutton;
+}
+
+.onglet .contact {
+  border-top-left-radius: 0;
+}
+
+.onglet .compte {
+  border-top-right-radius: 0;
+}
+
+.onglet div.active {
+  background-color: $couleurFondBoutton;
+  cursor: default;
+  flex-grow: 4;
+  cursor: default;
+}
+
+.onglet div.active:hover {
+  background-color: $couleurFondBoutton;
+}
+
+.onglet div:not(.active) {
+  color: $couleurTexte;
+  background-color: $couleurFondBloc;
+}
+
+.onglet > div:not(.compte):not(.contact) {
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}
+
+.onglet div:hover{
+  background-color: $couleurFondBouttonActive;
+  color: white;
+}
+
+.btn-plus {
+  color: green; position: relative; margin-left: 1em;
+}
+
+
+td {
+  border-bottom: solid 1px orange;
+  padding: .8em 0 .8em .8em;
+}
+
+td > input {
+  width: 100%
+}
+
+.warning {
+  background-color: #FFF3CD;
+  color: #856404;
+  padding: 10px;
+}
+
+@media(max-width: 640px) {
+  :host{
+    flex-wrap: wrap;
+  };
+  .button {
+    padding: 0;
+    width: 25%;
+  }
+}

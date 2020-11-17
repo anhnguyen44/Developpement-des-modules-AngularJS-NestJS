@@ -1,0 +1,10 @@
+:host {
+  min-width: 230px;
+  margin-right: 20px;
+}
+
+@media (max-width: 640px) {
+  :host{
+    flex-wrap: wrap;
+  }
+}

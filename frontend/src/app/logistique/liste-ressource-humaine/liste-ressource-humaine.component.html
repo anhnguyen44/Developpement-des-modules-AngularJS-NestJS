@@ -1,0 +1,43 @@
+<app-menu-logistique *ngIf="!modal"></app-menu-logistique>
+<div class="content">
+  <app-recherche [champDeRecherches]="champDeRecherches" [queryBuild]="queryBuild" (emitQueryBuild)="setQueryBuild($event)"></app-recherche>
+  <div class="bloc">
+    <div class="table">
+      <div class="action">
+        <div class="left">
+
+        </div>
+        <div class="right">
+          <i class="fas fa-file-excel"></i>
+          <div [routerLink]="['/logistique', 'ressource-humaine', 'ajouter']" class="nofocus">
+            <i class="fas fa-plus"></i> Créer
+          </div>
+        </div>
+      </div>
+      <app-header-table [headers]="headers" [querybuild]="queryBuild" (emitQueryBuild)="setQueryBuild($event)"></app-header-table>
+      <div class="content">
+        <div class="row" *ngFor="let ressourceHumaine of ressourceHumaines" (dblclick)="goToDetail(ressourceHumaine)" [class.affecte]="rendezVous && ressourceHumaine.rendezVousRessourceHumaines.length > 0">
+          <div><div class="labelTable">Nom</div>{{ressourceHumaine.utilisateur.nom}} {{ressourceHumaine.utilisateur.prenom}}</div>
+          <div><div class="labelTable">Bureau</div>{{ressourceHumaine.bureau.nom}} - {{ressourceHumaine.bureau.nomCommercial}}</div>
+          <div>
+            <div class="labelTable">Fonctions</div>
+            <span>
+              <span *ngFor="let fonc of ressourceHumaine.fonctions; last as isLast">{{fonc.fonction?.nom}}
+                <span *ngIf="!isLast">, </span>
+              </span>
+            </span>
+          </div>
+          <div class="action">
+            <i *ngIf="!modal" class="fas fa-pencil-alt" (click)="goToDetail(ressourceHumaine)"></i>
+            <i *ngIf="modal" class="fas fa-link" (click)="goToDetail(ressourceHumaine)"></i>
+          </div>
+        </div>
+        <app-pagination
+                [queryBuild]="queryBuild"
+                [nbObjets]="nbObjets"
+                (emitQueryBuild)="setQueryBuild($event)"
+        ></app-pagination>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<div class="content" (clickOutside)="close()" [delayClickOutsideInit]="true">
+    <i class="fas fa-times btn-close" (click)="close()"></i>
+    <h2>Abandon devis/commande</h2>
+    <div class="bloc">
+        <form (ngSubmit)="onSubmit()">
+            <div class="formgroup full">
+                <label>Raison de l'abandon</label>
+                <select name="motif" [(ngModel)]="infos.motif">
+                    <option *ngFor="let motif of listeMotifs" [ngValue]="motif">{{motif.nom}}</option>
+                </select>
+            </div>
+            <div class="formgroup full">
+                <label>Commentaires</label>
+                <textarea name="commentaire" [(ngModel)]="infos.commentaire"></textarea>
+            </div>
+            <div class="action">
+                <button class="button" type="submit">Valider</button>
+            </div>
+        </form>
+    </div>
+</div>

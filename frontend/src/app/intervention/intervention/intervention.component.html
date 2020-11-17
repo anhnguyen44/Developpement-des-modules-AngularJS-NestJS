@@ -1,0 +1,225 @@
+<div class="content">
+    <div class="bloc">
+        <div class="formgroup">
+            <label>Réfèrence</label>
+            <div *ngIf="intervention?.id; else pasInterventionRef">{{intervention?.id}}</div>
+            <ng-template #pasInterventionRef>Nouvelle intervention</ng-template>
+        </div>
+        <div class="formgroup">
+            <label>Statut</label>
+            <div *ngIf="intervention?.id; else pasInterventionStatut">
+                {{enumStatutIntervention[intervention.idStatut]}}
+            </div>
+            <ng-template #pasInterventionStatut>SAISIE</ng-template>
+        </div>
+    </div>
+    <h2>Information</h2>
+    <div class="bloc">
+        <form [formGroup]="interventionForm" (ngSubmit)="onSubmit(interventionForm)">
+            <div class="formgroup full">
+                <label>Bureau</label>
+                <select formControlName="idBureau"
+                        [compareWith]="compare"
+                        [ngClass]="{ 'invalid': interventionForm['controls']!.idBureau!.errors && submited }"
+                        *ngIf="isEditable; else noEditBureau"
+                >
+                    <option *ngFor="let bureau of bureaux" [value]="bureau.id">{{bureau.nom}} - {{bureau.nomCommercial}}</option>
+                </select>
+                <ng-template #noEditBureaux>{{intervention.bureau.nom}} - {{intervention.bureau.nomCommercial}}</ng-template>
+            </div>
+            <div class="formgroup">
+                <label>Libellé</label>
+                <input type="text"
+                       formControlName="libelle"
+                       [ngClass]="{ 'invalid': interventionForm['controls']!.libelle!.errors && submited }"
+                       *ngIf="isEditable; else noEditLibelle"
+                >
+                <ng-template #noEditLibelle>{{intervention.libelle}}</ng-template>
+            </div>
+            <div class="formgroup">
+                <label>Rang</label>
+                <input type="number" formControlName="rang" *ngIf="isEditable; else noEditRang">
+                <ng-template #noEditRang>{{intervention.rang}}</ng-template>
+            </div>
+            <div class="formgroup" formGroupName="rendezVous" *ngIf="isEditable">
+                <label>Date début</label>
+                <input type="date" formControlName="dateDebut" (change)="parseDateDebut()"
+                       [ngClass]="{ 'invalid': interventionForm['controls'].rendezVous['controls']!.dateDebut!.errors && submited }">
+            </div>
+            <div class="formgroup" formGroupName="rendezVous" *ngIf="isEditable">
+                <label>Heure début</label>
+                <input type="time" formControlName="heureDebut" (change)="parseDateDebut()"
+                       [ngClass]="{ 'invalid': interventionForm['controls'].rendezVous['controls']!.heureDebut!.errors && submited }">
+            </div>
+            <div class="formgroup" formGroupName="rendezVous" *ngIf="isEditable">
+                <label>Date fin</label>
+                <input type="date" formControlName="dateFin" (change)="parseDateFin()"
+                       [ngClass]="{ 'invalid': interventionForm['controls'].rendezVous['controls']!.dateFin!.errors && submited }">
+            </div>
+            <div class="formgroup" formGroupName="rendezVous" *ngIf="isEditable">
+                <label>Heure fin</label>
+                <input type="time" formControlName="heureFin" (change)="parseDateFin()"
+                       [ngClass]="{ 'invalid': interventionForm['controls'].rendezVous['controls']!.heureFin!.errors && submited }">
+            </div>
+            <div class="formgroup full" *ngIf="!isEditable">
+                <label>Date intervention</label>
+                <div>
+                    Du {{intervention.rendezVous.dateHeureDebut | date: 'dd MMMM yyyy'}} à {{intervention.rendezVous.dateHeureDebut | date: 'HH:mm'}}
+                    au {{intervention.rendezVous.dateHeureFin | date: 'dd MMMM yyyy'}} à {{intervention.rendezVous.dateHeureFin | date: 'HH:mm'}}
+                </div>
+            </div>
+            <div class="formgroup full" *ngIf="isEditable">
+                <label>Commentaire</label>
+                <textarea formControlName="commentaire"></textarea>
+            </div>
+            <div class="formgroup full" *ngIf="!isEditable && intervention.commentaire">
+                <label>Commentaire</label>
+                {{intervention.commentaire}}
+            </div>
+
+
+            <h3>Site d'intervention</h3>
+            <div class="formgroup full">
+                <label>Site d'intervention</label>
+                <select formControlName="idSiteIntervention" *ngIf="isEditable; else noEditSiteIntervention"
+                        [compareWith]="compare"
+                        (change)="changeSiteIntervention()"
+                        [ngClass]="{ 'invalid': interventionForm['controls']!.idSiteIntervention!.errors && submited }"
+                >
+                    <option *ngFor="let siteIntervention of siteInterventions" [value]="siteIntervention.id">
+                        {{siteIntervention.nom}}
+                    </option>
+                </select>
+                <ng-template #noEditSiteIntervention>
+                    {{intervention.siteIntervention.nom}}
+                </ng-template>
+            </div>
+            <div class="formgroup" *ngIf="interventionForm.get('idSiteIntervention')!.value">
+                <label>Adresse</label>
+                <div>{{interventionForm.get('siteIntervention').get('adresse').get('adresse').value}}</div>
+            </div>
+            <div class="formgroup" *ngIf="interventionForm.get('idSiteIntervention')!.value">
+                <label>Code postal</label>
+                <div>{{interventionForm.get('siteIntervention').get('adresse').get('cp').value}}</div>
+            </div>
+            <div class="formgroup" *ngIf="interventionForm.get('idSiteIntervention')!.value">
+                <label>Complément</label>
+                <div>{{interventionForm.get('siteIntervention').get('adresse').get('complement').value}}</div>
+            </div>
+            <div class="formgroup" *ngIf="interventionForm.get('idSiteIntervention')!.value">
+                <label>Ville</label>
+                <div>{{interventionForm.get('siteIntervention').get('adresse').get('ville').value}}</div>
+            </div>
+
+            <app-map *ngIf="listePoints && listePoints.length > 0" [center]="listePoints[0]" [markers]="listePoints" [caption]="caption"></app-map>
+
+            <h3 *ngIf="interventionForm!.get('ordreIntervention')!.get('id')!.value">Documents</h3>
+            <div class="formgroup" *ngIf="interventionForm!.get('ordreIntervention')!.get('id')!.value">
+                <label>Ordre d'intervention</label>
+                <div (click)="telecharge(interventionForm.get('ordreIntervention').value)">
+          <span class="link">
+            {{interventionForm.controls.ordreIntervention.get('nom').value}}.{{interventionForm.controls.ordreIntervention.get('extention').value}}
+          </span>
+                </div>
+                <div class="smallAction">
+                    <i class="fas fa-download"
+                       (click)="telecharge(interventionForm.controls.ordreIntervention.get('keyDl').value)"></i>
+                </div>
+            </div>
+            <div class="formgroup" *ngIf="interventionForm!.get('ordreIntervention')!.get('id')!.value">
+                <label>Ordre d'intervention validé</label>
+                <div *ngIf="interventionForm.get('ordreInterventionValide').get('id').value"
+                     (click)="telecharge(interventionForm.get('ordreInterventionValide').value)"
+                >
+          <span class="link">
+            {{interventionForm.controls.ordreInterventionValide.get('nom').value}}.{{interventionForm.controls.ordreInterventionValide.get('extention').value}}
+          </span>
+                </div>
+                <div class="smallAction">
+                    <i class="fas fa-download"
+                       *ngIf="interventionForm.get('ordreInterventionValide').get('id').value"
+                       (click)="telecharge(interventionForm.controls.ordreInterventionValide.get('keyDl').value)"></i>
+                    <i class="fas fa-upload" *ngIf="isEditable" (click)="openModalFichier()"></i>
+                </div>
+            </div>
+
+            <h3>Prélèvements</h3>
+            <div class="table">
+                <div class="action">
+                    <div class="left"></div>
+                    <div class="right">
+                        <div *ngIf="interventionForm.get('idStatut')!.value <= enumStatutIntervention.VALIDE || (canCreateInter && isEditable)" (click)="openModalPrelevement('new')"><i class="fas fa-plus"></i>Ajouter nouveau</div>
+                        <div *ngIf="interventionForm.get('idStatut')!.value <= enumStatutIntervention.VALIDE || (canCreateInter && isEditable)" (click)="openModalPrelevement('liste')"><i class="fas fa-link"></i>Ajouter depuis chantier
+                        </div>
+                    </div>
+                </div>
+                <div class="header">
+                    <div class="row">
+                        <div>Ref</div>
+                        <div>Objectif</div>
+                        <div>Type Prélèvement</div>
+                        <div class="action" *ngIf="interventionForm.get('idStatut')!.value <= enumStatutIntervention.VALIDE || (canCreateInter && isEditable)">
+                            Action
+                        </div>
+                    </div>
+                </div>
+                <div class="content" formArrayName="prelevements">
+                    <div class="row"
+                         *ngFor="let prelevement of interventionForm?.get('prelevements')?.controls; let i = index"
+                         [formGroupName]="i">
+                        <div><div class="labelTable">Ref</div>{{prelevement.get('reference').value}}</div>
+                        <div><div class="labelTable">Objectif</div>{{prelevement.get('objectif').get('lettre').value}}</div>
+                        <div><div class="labelTable">Type</div>{{enumTypePrelevement[prelevement.get('idTypePrelevement').value] | enum}}</div>
+
+                        <div class="action" *ngIf="interventionForm.get('idStatut').value <= enumStatutIntervention.VALIDE || (canCreateInter && isEditable)">
+                            <i class="fas fa-unlink" (click)="removePrelevement(prelevement)"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action" *ngIf="isEditable">
+                <button class="button">Valider</button>
+                <div class="button" (click)="generateOI(interventionForm)">Générer l'ordre d'intervention</div>
+                <div class="button" (click)="envoyerMail(interventionForm)">
+                    Envoyer par mail
+                </div>
+                <div class="button" (click)="openModalOrigineValidation()"
+                     *ngIf="interventionForm.get('idStatut')!.value < enumStatutIntervention.VALIDE">
+                    Validation par le client
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<app-modal-prelevement
+        *ngIf="modalPrelevement"
+        [typeModal]="typeModalPrelevement"
+        [application]="'chantier'"
+        [idParent]="interventionForm.get('idChantier')?.value"
+        [idChantier]="interventionForm.get('idChantier')?.value"
+        [intervention]="interventionForm.value"
+        [nonPreleve]="true"
+        (emitClose)="closeModalPrelevement()"
+        (emitPrelevements)="setPrelevements($event)"
+        [@fadeIn] [@fadeOut]
+></app-modal-prelevement>
+<app-modal-fichier
+        *ngIf="modalFichier"
+        [idParent]="interventionForm.get('idChantier').value"
+        [application]="'chantier'"
+        [TypeFichier]="typeFichier"
+        (emitFichier)="setOrdreInterventionValide($event)"
+        (emitClose)="closeModalFichier()"
+        [@fadeIn] [@fadeOut]
+></app-modal-fichier>
+
+<app-modal-mail *ngIf="mail" [mail]="mail" (emitClose)="setCloseMail()" [@fadeIn] [@fadeOut]></app-modal-mail>
+
+<app-modal-origine-validation
+        *ngIf="modalOrigineValidation"
+        (emitClose)="closeModalValidation()"
+        (emitIdOrigineValidation)="setOrigineValidation($event)"
+        [@fadeIn] [@fadeOut]
+></app-modal-origine-validation>
+

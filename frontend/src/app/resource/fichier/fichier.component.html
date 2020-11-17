@@ -1,0 +1,39 @@
+<div class="bloc">
+  <div class="table">
+    <div class="action">
+      <div class="left">
+
+      </div>
+      <div class="right">
+        <div (click)="openModal()" class="nofocus">
+          <i class="fas fa-plus"></i> Ajouter
+        </div>
+      </div>
+    </div>
+    <div class="header">
+      <div class="row">
+        <div>Nom</div>
+        <div>Ext</div>
+        <div>Date</div>
+        <div *ngIf="!TypeFichier">Type</div>
+        <div *ngIf="TypeFichier">Commentaire</div>
+        <div class="action">Actions</div>
+      </div>
+    </div>
+    <div class="content">
+      <div class="row" *ngFor="let fichier of fichiers">
+        <div><div class="labelTable">Nom</div><span>{{fichier.nom}}</span></div>
+        <div><div class="labelTable">Ext</div><span>{{fichier.extention}}</span></div>
+        <div><div class="labelTable">Date</div><span>{{fichier.date | date : 'dd-MM-yyyy'}}</span></div>
+        <div *ngIf="!TypeFichier"><div class="labelTable">Type</div><span>{{fichier.typeFichier?.nom}}</span></div>
+        <!-- <div *ngIf="TypeFichier"><div class="labelTable">Commentaire</div><span>{{fichier.commentaire}}</span></div> -->
+        <div *ngIf="TypeFichier"><div class="labelTable">Commentaire</div><textarea [(ngModel)]="fichier.commentaire" [ngModelOptions]="{standalone: true}" (focusout)="updateComment(fichier)"></textarea></div>
+        <div class="action">
+          <i class="fas fa-download" (click)="getFichier(fichier)"></i>
+          <i class="fas fa-trash delete-link" (click)="deleteFichier(fichier)"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-modal-fichier *ngIf="modalAjouter" [idParent]="idParent" [groupeTypeFicher]="groupeTypeFicher" [TypeFichier]="TypeFichier" [application]="application" (emitFichier)="setFichier($event)" (emitClose)="modalAjouter = false"></app-modal-fichier>

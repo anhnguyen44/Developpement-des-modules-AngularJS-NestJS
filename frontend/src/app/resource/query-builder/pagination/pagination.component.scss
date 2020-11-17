@@ -1,0 +1,35 @@
+@import "../../../../variables";
+:host{
+  width: 100%;
+}
+
+.pagination {
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.pagination>* {
+  margin-left: 10px;
+}
+
+i {
+  font-size: 1.5em;
+  cursor: pointer;
+}
+
+i.disable {
+  color: $couleurFondBouttonDisable;
+  cursor: unset;
+}
+
+.parPage {
+  display: flex;
+  align-items: center;
+}
+
+.parPage>div {
+  white-space: nowrap;
+  margin-right: 10px;
+}

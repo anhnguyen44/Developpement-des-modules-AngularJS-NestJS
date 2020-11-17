@@ -1,0 +1,42 @@
+<h2>Recherche</h2>
+<div class="bloc">
+  <div class="recherche" *ngIf="typeRecherche === 'simple'">
+    <div class="inputSearch">
+      <input type="text" [(ngModel)]="rechercheSimple" [formControl]="rechercheSimpleField" (keyup.enter)="rechercher()"><i (click)="emptySimple()" *ngIf="rechercheSimple" class="fas fa-times" [@fadeIn] [@fadeOut]></i>
+    </div>
+    <div class="button" (click)="rechercher()">
+      <i class="fas fa-search"></i> Trouver
+    </div>
+    <div class="button" *ngIf="canCreate" (click)="createNouveau()">
+      <i class="fas fa-plus"></i> Ajouter Nouveau
+    </div>
+  </div>
+  <div class="rechercheAvance" *ngIf="typeRecherche === 'complexe'">
+      <div class="formgroup" *ngFor="let champDeRecherche of champDeRecherches">
+        <label>{{champDeRecherche.label}}</label>
+        <input *ngIf="champDeRecherche.type === 'text'" (keyup.enter)="rechercher()" type="text" [(ngModel)]="champDeRecherche.value">
+        <select *ngIf="champDeRecherche.type === 'list'" [(ngModel)]="champDeRecherche.value">
+            <option value="undefined"></option>
+            <option *ngFor="let objet of champDeRecherche.list" [value]="objet.id">{{objet.nom}}</option>
+        </select>
+        <select *ngIf="champDeRecherche.type === 'enum'" [(ngModel)]="champDeRecherche.value">
+            <option value="undefined"></option>
+            <option *ngFor="let objet of champDeRecherche.list" [value]="objet.id">{{objet.nom | enum}}</option>
+        </select>
+        <input *ngIf="champDeRecherche.type === 'checkbox'" type="checkbox" [(ngModel)]="champDeRecherche.value" (change)="changeCheckbox($event, champDeRecherche)">
+      </div>
+  </div>
+  <div class="action" *ngIf="typeRecherche === 'complexe'">
+    <div class="button" (click)="emptyComplexe()">Réinitialiser</div>
+    <div class="button" (click)="rechercher()">
+      <i class="fas fa-search"></i> Trouver
+    </div>
+    <div class="button" *ngIf="canCreate" (click)="createNouveau()">
+      <i class="fas fa-plus"></i> Ajouter Nouveau
+    </div>
+  </div>
+  <div class="avance" *ngIf="isRechercheComplexe">
+    <div class="link" (click)="changeTypeRecherche('complexe')" *ngIf="typeRecherche === 'simple'"><i class="fas fa-search-plus"></i>Recherche avancée</div>
+    <div class="link" (click)="changeTypeRecherche('simple')" *ngIf="typeRecherche === 'complexe'"><i class="fas fa-search-minus"></i>Recherche simple</div>
+  </div>
+</div>

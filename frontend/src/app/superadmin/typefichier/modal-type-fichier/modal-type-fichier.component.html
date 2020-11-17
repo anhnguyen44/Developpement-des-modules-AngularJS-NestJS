@@ -1,0 +1,23 @@
+<div class="content">
+  <i class="fas fa-times btn-close" (click)="close()"></i>
+  <h2>Ajout d'un fichier</h2>
+  <div class="bloc">
+    <div class="formgroup">
+      <label>Type à ajouter</label>
+      <input type="text" [(ngModel)]="typeFichier.nom">
+    </div>
+    <div class="formgroup">
+      <label>Affectable</label>
+      <input type="checkbox" [(ngModel)]="typeFichier.affectable">
+    </div>
+    <div class="formgroup">
+      <label>Goupe</label>
+      <select name="groupe" [(ngModel)]="typeFichier.groupe" [compareWith]="compareFn">
+        <option *ngFor="let groupe of listeGroupes" [ngValue]="groupe">{{groupe.nom}}</option>
+    </select>
+    </div>
+    <div class="action">
+      <div class="button" (click)="ajoutTypeFichier()">Valider</div>
+    </div>
+  </div>
+</div>

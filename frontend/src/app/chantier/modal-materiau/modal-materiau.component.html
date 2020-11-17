@@ -1,0 +1,127 @@
+<div class="content" (clickOutside)="close($event)" [delayClickOutsideInit]="true">
+    <i class="fas fa-times btn-close" (click)="close($event)"></i>
+    <h2>Ajout d'un matériau à la Zone</h2>
+    <div class="bloc">
+        <app-selecteur-materiau [currentMateriau]="materiauZone.materiau" [canEdit]="canEdit"
+            [currentMateriauAutre]="materiauZone.materiauAutre" (emitMateriau)="setMateriau($event)"
+            (emitMateriauAutre)="setMateriauAutre($event)"></app-selecteur-materiau>
+
+        <h3>Informations &nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" [ngModel]="informationsIsNC"
+                (ngModelChange)="onChangeNC($event)" /> Non communiqué
+        </h3>
+        <form (ngSubmit)="onSubmit()" [formGroup]="informationsForm" *ngIf="!informationsIsNC; else infosNC">
+
+
+
+
+            <div class="formgroup">
+                <label>&Eacute;tat de dégradation</label>
+                <select [disabled]="!canEdit" formControlName="etatDegradation"
+                    [ngClass]="{ 'invalid': submittedInformations && f.etatDegradation.errors }"
+                    [compareWith]="compareEnum">
+                    <option [value]="enumEtatDegradation.NON_DEGRADE.valueOf()">Non dégradé</option>
+                    <option [value]="enumEtatDegradation.DEGRADE.valueOf()">Dégradé</option>
+                    <option [value]="enumEtatDegradation.NC.valueOf()">Non communiqué</option>
+                </select>
+            </div>
+
+            <div class="formgroup">
+                <label>&Eacute;tendue des dégradations</label>
+                <select [disabled]="!canEdit" formControlName="etendueDegradation"
+                    [ngClass]="{ 'invalid': submittedInformations && f.etendueDegradation.errors }"
+                    [compareWith]="compareEnum">
+                    <option [value]="enumEtendueDegradation.Ponctuelle.valueOf()">Ponctuelle</option>
+                    <option [value]="enumEtendueDegradation.Generalisee.valueOf()">Généralisée</option>
+                    <option [value]="enumEtendueDegradation.NC.valueOf()">Non communiqué</option>
+                </select>
+            </div>
+
+            <app-liste nomListe="CommentaireDegradation" label="Commentaire" [parentForm]="informationsForm"
+                *ngIf="isPatchValueDone" internalFormControlName="commentaireDegradation" [tabIndex]="9"
+                style="width: 100%;" (emitListe)="listeCommentaireDegradation = $event;" [disabled]="!canEdit">
+            </app-liste>
+
+
+
+
+
+            <div class="formgroup">
+                <label>Protection</label>
+                <select [disabled]="!canEdit" formControlName="moyenProtection"
+                    [ngClass]="{ 'invalid': submittedInformations && f.moyenProtection.errors }"
+                    [compareWith]="compareEnum" (change)="onChangeProtection()">
+                    <option [value]="enumProtection.Aucune">Aucune</option>
+                    <option [value]="enumProtection.Encoffrement">Encoffrement</option>
+                    <option [value]="enumProtection.Impregnation">Impregnation</option>
+                    <option [value]="enumProtection.NC">Non communiqué</option>
+                </select>
+            </div>
+
+            <div class="formgroup" *ngIf="shouldEtacheiteEdit; else etancheiteNonApplicable">
+                <label>&Eacute;tanchéité</label>
+                <select [disabled]="!canEdit" formControlName="etancheiteProtection"
+                    [ngClass]="{ 'invalid': submittedInformations && f.etancheiteProtection.errors }"
+                    [compareWith]="compareEnum">
+                    <option [value]="enumProtection.NON_APPLICABLE">N/A</option>
+                    <option [value]="enumProtection.Bonne">Bonne</option>
+                    <option [value]="enumProtection.Degradee">Dégradée</option>
+                    <option [value]="enumProtection.NC">Non communiqué</option>
+                </select>
+            </div>
+            <ng-template #etancheiteNonApplicable>
+                <div class="formgroup">
+                    <label>&Eacute;tanchéité</label>
+                    <div>Non Applicable</div>
+                </div>
+            </ng-template>
+
+
+            <app-liste nomListe="CommentaireProtectionZoneIntervention" label="Commentaire" [disabled]="!canEdit"
+                [parentForm]="informationsForm" *ngIf="isPatchValueDone" internalFormControlName="commentaireProtection"
+                [tabIndex]="12" style="width: 100%;" (emitListe)="listeCommentaireProtectionEtancheite = $event;">
+            </app-liste>
+
+            <div class="formgroup full">
+                <label>Résultat connu</label>
+                <!-- <input type="text" formControlName="resultatConnu" /> -->
+                <select [disabled]="!canEdit" formControlName="resultatConnu"
+                    [ngClass]="{ 'invalid': submittedInformations && f.resultatConnu.errors }"
+                    [compareWith]="compareEnum">
+                    <option [value]="null"></option>
+                    <option *ngIf="materiauZone.materiau && materiauZone.materiau.liste === enumListeMateriau.A"
+                        [value]="enumResultatExamenAmiante.SCORE_1">Score 1</option>
+                    <option *ngIf="materiauZone.materiau && materiauZone.materiau.liste === enumListeMateriau.A"
+                        [value]="enumResultatExamenAmiante.SCORE_2">Score 2</option>
+                    <option *ngIf="materiauZone.materiau && materiauZone.materiau.liste === enumListeMateriau.A"
+                        [value]="enumResultatExamenAmiante.SCORE_3">Score 3</option>
+                    <option *ngIf="materiauZone.materiau && materiauZone.materiau.liste === enumListeMateriau.B"
+                        [value]="enumResultatExamenAmiante.AC1">AC1</option>
+                    <option *ngIf="materiauZone.materiau && materiauZone.materiau.liste === enumListeMateriau.B"
+                        [value]="enumResultatExamenAmiante.AC2">AC2</option>
+                    <option *ngIf="materiauZone.materiau && materiauZone.materiau.liste === enumListeMateriau.B"
+                        [value]="enumResultatExamenAmiante.EP">EP</option>
+                </select>
+            </div>
+            <div class="action" *ngIf="canEdit">
+                <button class="button" type="submit">Valider</button>
+            </div>
+        </form>
+        <ng-template #infosNC>
+            <form (ngSubmit)="onSubmit()" [formGroup]="informationsForm">
+                <input type="hidden" formControlName="etatDegradation" [ngModel]="enumEtatDegradation.NC.valueOf()" />
+                <input type="hidden" formControlName="etendueDegradation"
+                    [ngModel]="enumEtendueDegradation.NC.valueOf()" />
+                <input type="hidden" formControlName="commentaireDegradation" [ngModel]="'Non communiqué'" />
+
+                <input type="hidden" formControlName="moyenProtection" [ngModel]="enumProtection.NC.valueOf()" />
+                <input type="hidden" formControlName="etancheiteProtection" [ngModel]="enumEtancheite.NC.valueOf()" />
+                <input type="hidden" formControlName="commentaireProtection" [ngModel]="'Non communiqué'" />
+
+                <input type="hidden" formControlName="resultatConnu" [ngModel]="null" />
+                <div class="action" *ngIf="canEdit">
+                    <button class="button" type="submit">Valider</button>
+                </div>
+            </form>
+        </ng-template>
+    </div>
+</div>

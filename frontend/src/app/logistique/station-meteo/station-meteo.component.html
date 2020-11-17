@@ -1,0 +1,37 @@
+<app-menu-logistique></app-menu-logistique>
+<div class="content">
+  <div class="bloc">
+    <div class="formgroup">
+      <label>Référence</label>
+      <div *ngIf="stationMeteo?.id; else newStationMeteo">{{stationMeteo.ref}}</div>
+      <ng-template #newStationMeteo>
+        Nouvelle station météo
+      </ng-template>
+    </div>
+  </div>
+  <h2>
+    Information Station météo
+  </h2>
+  <div class="bloc">
+    <form [formGroup]="stationMeteoForm" (ngSubmit)="onSubmit(stationMeteoForm)">
+      <div class="formgroup full">
+        <label>Agence</label>
+        <select formControlName="bureau" [compareWith]="compare"
+                [ngClass]="{ 'invalid': stationMeteoForm['controls'].bureau.errors && submited}">
+          <option *ngFor="let bureau of bureaux" [ngValue]="bureau">{{bureau.nom}} - {{bureau.nomCommercial}}</option>
+        </select>
+      </div>
+      <div class="formgroup">
+        <label>Libellé</label>
+        <input type="text" formControlName="libelle" [ngClass]="{ 'invalid': stationMeteoForm['controls'].libelle.errors && submited }">
+      </div>
+      <div class="formgroup">
+        <label>Référence</label>
+        <input type="text" formControlName="ref" [ngClass]="{ 'invalid': stationMeteoForm['controls'].ref.errors && submited }">
+      </div>
+      <div class="action">
+        <button class="button" type="submit">Valider</button>
+      </div>
+    </form>
+  </div>
+</div>

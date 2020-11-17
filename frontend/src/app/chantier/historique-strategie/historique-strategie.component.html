@@ -1,0 +1,5 @@
+<app-menu-chantier *ngIf="chantier" [chantier]="chantier"></app-menu-chantier>
+<div class="content">
+  <app-historique *ngIf="strategie" application="strategie" [idParent]="strategie.id"></app-historique>
+  <app-historique *ngIf="!strategie && chantier" application="chantier" [idParent]="chantier.id"></app-historique>
+</div>

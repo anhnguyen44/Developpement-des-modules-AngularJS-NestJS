@@ -1,0 +1,29 @@
+<app-menu-admin-contenu></app-menu-admin-contenu>
+<div class="content">
+    <h2>Nouveau Categorie</h2>
+    <div class="bloc">
+        <form [formGroup]="cateForm" (ngSubmit)="onSubmitCate()">
+            <div class="formgroup">
+                <label>Titre categorie *</label>
+                <input type="text" (input)="urlCate=titreToUrl($event.target.value)" formControlName="titre" [ngClass]="{ 'invalid': submitedCate && f.titre.errors }">
+            </div>
+            <div class="formgroup">
+                <label>Menu *</label>
+                <select formControlName="menu" (change)='setUrlMenu()' [ngClass]="{ 'invalid': submitedCate && f.menu?.errors }" [compareWith]="compareFn">
+                    <option *ngFor="let menu of listeMenus; let i= index" [ngValue]="menu">{{menu.titre}}({{menu.name}})</option>
+                </select>
+            </div>
+            <div class="formgroup">
+                <label>URL *</label>
+                <input type="text" value="{{urlCate}}" formControlName="url" [ngClass]="{ 'invalid': submitedCate && f.url.errors }" disabled style="cursor: not-allowed !important;">
+            </div>
+            <div class="formgroup">
+                <label>Ordre</label>
+                <input type="number" min="0" formControlName="ordre" [ngClass]="{ 'invalid': submitedCate && f.ordre.errors }">
+            </div>
+            <div class="action">
+                <button class="button" type="submit" tabindex="13">Valider</button>
+            </div>  
+        </form>
+    </div>
+</div>

@@ -1,0 +1,46 @@
+<app-menu-superadmin></app-menu-superadmin>
+<div class="content">
+  <app-recherche [champDeRecherches]="champDeRecherches" [queryBuild]="queryBuild" (emitQueryBuild)="setQueryBuild($event)"></app-recherche>
+  <div class="bloc">
+    <div class="table">
+      <div class="action">
+        <div class="left">
+          <!-- <i class="fas fa-trash" *ngIf="canCreateProfile | async"></i> -->
+        </div>
+        <div class="right">
+          <i class="fas fa-file-excel"></i>
+          <div routerLink="/superadmin/profil/ajouter" class="nofocus" *ngIf="canCreateProfile | async">
+            <i class="fas fa-plus"></i> Créer
+          </div>
+        </div>
+      </div>
+      <app-header-table [headers]="headers" [querybuild]="queryBuild" (emitQueryBuild)="setQueryBuild($event)"></app-header-table>
+      <div class="content">
+        <div class="row" *ngFor="let profil of profils" (dblclick)="gotoDetails('superadmin/profil/modifier', profil)">
+          <div class="grow2"><div class="labelTable">{{headers[0].label}}</div><span>{{profil.nom}}</span></div>
+          <div class="grow1">
+            <div class="labelTable">{{headers[1].label}}</div>
+            <input type="checkbox" *ngIf="profil.isVisibleFranchise; else notVisibleFranchise" checked disabled>
+            <ng-template #notVisibleFranchise><input type="checkbox" disabled></ng-template>
+          </div>
+          <div class="grow3">
+            <div class="labelTable">{{headers[2].label}}</div>
+            <span>
+              <span style="word-break: break-all" *ngFor="let droit of profil.droits; last as isLast">{{droit.code}}<span *ngIf="!isLast">, </span></span>
+            </span>
+          </div>
+          <div class=action>
+              <i class="fas fa-pencil-alt" (click)="gotoDetails('superadmin/profil/modifier', profil)"></i>
+              <i class="fas fa-trash delete-link"  (click)="supprimer(profil.id)" *ngIf="canCreateProfile | async"></i>
+          </div>
+        </div>
+        <app-pagination
+                [nbObjets]="nbObjets"
+                [queryBuild]="queryBuild"
+                (emitQueryBuild)="setQueryBuild($event)"
+        ></app-pagination>
+      </div>
+    </div>
+  </div>
+</div>
+

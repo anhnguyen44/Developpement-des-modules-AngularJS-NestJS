@@ -1,0 +1,33 @@
+{
+  "db": {
+    "host": "192.168.0.1",
+    "dbuser": "aleaac",
+    "dbpassword": "8ICUDoQkiEzMKYAO",
+    "port": 3306,
+    "dbname": "aleaAC",
+    "testsMayDropDb": "false"
+  },
+  "cors": {
+    "origin": "*"
+  },
+  "token": {
+    "secret": "aleaac"
+  },
+  "ssl": {
+    "key": "/etc/letsencrypt/live/aleacontroles.com/privkey.pem",
+    "cert": "/etc/letsencrypt/live/aleacontroles.com/cert.pem"
+  },
+  "sendmail": {
+    "newline": "unix",
+    "path": "/usr/sbin/sendmail"
+  },
+  "dkim": {
+    "domainName": "aleacontroles.com",
+    "keySelector": "web",
+    "privateKey": "-----BEGIN RSA PRIVATE KEY-----\nMIICWwIBAAKBgQCuj5zXQaGtCgcCGl16Q8/t4ZaFzPkG2D61RRvWjOc+IMjdgStu\nyZGemOplLRZkomlrQ2mYIL31UrZM4srRLuRgfgWw6Xf9bfYXFeamz/SmIqVYaC7N\nn7CfvEgpTKQqVBgnRflClr9BvE4OtzZV5qlDV+jZZkG1uEgV/Fz+SNZv/QIDAQAB\nAoGAL3mfjmurLQStI0VIZxhKVMglx/4XPGVTqLlC+PcZbSw9dQDMbzUjBZ9RIHNC\nw9voD+Qls9ozz6TPL9n+jyXRtnmAwT0Zm2jXVEbBVBA/QDqFXiDPf49LUfrimz+A\nc/iv6AoFvXuHj4LluPOokfo0ZbNwZFkiCBa4bMmFOMyD5AECQQDbABO3R5AxX9hQ\neSYOZ5/c/ais7VBVoy6v86KYDNrSXF6fp/mk4owcJHD1tv7Xf9OO2I/QDhqHuHvP\nXbb1Fh6VAkEAzA2Auzm59J6POsa9oY+LpaHRMaNhRUzZShTIZg9yiQgRWr6QKlI1\ntIoxYlZasjrnK4+3S6dovLusiDMuQPR5yQJAOLo8YS1YXHHHRpEbGoAdGNFb7+9I\n7+XlIg6p/1jVFch3ekO4ls1YHbIS0JMmUAv8cPQHzIzasm1HJN/RlIq2QQJAI8S6\nLBeSYS7qLINp+kgPUplq8iiRhHRUIohCGKHckei4IhAFdWWzxFH1FifM/jEVFK28\nk6Zk1bCQLc/K69fvAQJAN0/ZMt/9b/hwX9d43zPsDwds5qoDS/9ytCf4yEgwt6Ib\nOHE/FsPrvC3feH23AcAlZyls4Gs4hXw8LgmPmLT51g==\n-----END RSA PRIVATE KEY-----"
+  },
+  "site": {
+    "url": "https://www.aleacontroles.com/ac",
+    "apiUrl": "https://www.aleacontroles.com:4242/api/v1"
+  }
+}

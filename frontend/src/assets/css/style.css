@@ -1,0 +1,48 @@
+body{
+    font-family: Ubuntu, sans-serif;
+    width: 100%;
+    color: #505151;
+    /* color: red; */
+}
+  
+h1 {
+    margin-top: 0;
+}
+  
+h2 {
+    display: block;
+    width: 100%;
+    margin: 0 -20px;
+    box-shadow: none;
+    padding: 10px 20px;
+    font-size: 1.2em;
+}
+  
+h3 {
+   border: none;
+    margin-bottom: 0;
+}
+  
+h1 + p {
+    margin-top: 0;
+}
+  
+h3 + p {
+    margin-top: 0;
+}  
+
+h4 + p {
+    margin-top: 0;
+  }
+  
+ul li {
+    /* list-style-image: url('assets/img/logo_carre.png'); */
+}
+  
+ul li ul li {
+    /* list-style-image: url('assets/img/logo_carre.png'); */
+}
+
+/* .mce-fullscreen{
+    z-index: 10000;
+  } */

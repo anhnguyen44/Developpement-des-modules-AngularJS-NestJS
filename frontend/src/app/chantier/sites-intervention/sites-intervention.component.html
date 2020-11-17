@@ -1,0 +1,24 @@
+<app-menu-chantier></app-menu-chantier>
+<div class="content">
+    <div class="bloc">
+        <div class="formgroup">
+            <label>Référence</label>
+            <div *ngIf="chantier?.id; else newChantier">{{chantier?.id}}</div>
+            <ng-template #newChantier>
+                <img src="assets/img/ajax-loader-dark.gif" alt="Attente de réponse du serveur..." />
+            </ng-template>
+        </div>
+        <div class="formgroup">
+            <label>Nom du chantier</label>
+           <div>{{chantier?.nomChantier}}</div>
+        </div>
+    </div>
+    <h2>
+        Sites d'intervention
+    </h2>
+    <app-liste-sites-intervention [isOnlyCreate]="true" (emitCreateSite)="refresh()" (emitSelectSite)="refresh()"></app-liste-sites-intervention>
+    <h2 *ngIf="listePoints && listePoints.length > 0">Cartographie <span tooltip="Recharger la carte" style="float: right; cursor: pointer;" (click)="refresh()"><i class="fas fa-undo"></i></span></h2>
+    <div class="bloc" *ngIf="listePoints && listePoints.length > 0">
+        <app-map *ngIf="listePoints && listePoints.length > 0" [center]="listePoints[0]" [markers]="listePoints" [caption]="caption"></app-map>
+    </div>
+</div>

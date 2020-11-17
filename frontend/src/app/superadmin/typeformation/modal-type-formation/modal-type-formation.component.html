@@ -1,0 +1,108 @@
+<div class="content">
+  <i class="fas fa-times btn-close" (click)="close()"></i>
+  <h2>Ajout d'un type de formation</h2>
+  <div class="bloc">
+    <div class="formgroup">
+      <label>Nom de la formation *</label>
+      <input type="text" [(ngModel)]="typeFormation.nomFormation">
+    </div>
+    <div class="formgroup">
+      <label>Catégorie de la formation</label>
+      <input type="text" [(ngModel)]="typeFormation.cateFormation">
+    </div>
+    <div class="formgroup">
+      <label>Phase de la formation</label>
+      <input type="text" [(ngModel)]="typeFormation.phrFormation">
+    </div>
+    <div class="formgroup">
+      <label>Produit reférent</label>
+      <select [(ngModel)]="typeFormation.product" [compareWith]="compareFn">
+        <option *ngFor="let produit of listProductFormation;let i = index" [ngValue]='produit'>{{produit.nom}}</option>
+      </select>
+    </div>
+    <div class="formgroup">
+      <label>Catégorie de personnel</label>
+      <input type="text" [(ngModel)]="typeFormation.foncCible">
+    </div>
+    <div class="formgroup">
+      <label>Phrase diplôme</label>
+      <textarea cols="30" rows="10" [(ngModel)]="typeFormation.phrDiplome"></textarea>
+    </div>
+    <div class="formgroup">
+      <label>Durée de la formation en jour</label>
+      <input type="number" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.5" [(ngModel)]="typeFormation.dureeEnJour">
+    </div>
+    <div class="formgroup">
+      <label>Interne</label>
+      <input type="checkbox" [(ngModel)]="typeFormation.interne">
+    </div>
+    <div class="formgroup">
+      <label>Durée de la formation en heure</label>
+      <input type="number" [(ngModel)]="typeFormation.dureeEnHeure">
+    </div>
+    <div class="formgroup">
+      <label>Délai alerte en jour</label>
+      <input type="number" [(ngModel)]="typeFormation.delaiAmerte">
+    </div>
+    <div class="formgroup">
+      <label>Durée de validité en mois</label>
+      <input type="number" [(ngModel)]="typeFormation.dureeValidite">
+    </div>
+    <div class="formgroup">
+      <label>Référentiel utilisé</label>
+      <input type="text" [(ngModel)]="typeFormation.referentielUtilise">
+    </div>
+    <h3>Domaine Compétence</h3>
+    <div class="formgroup">
+      <label>Type évaluation pratique</label>
+      <input type="text" [(ngModel)]="typeFormation.typeEvaluationPratique">
+    </div>
+    <div class="formgroup">
+      <label>Type évaluation théorique</label>
+      <input type="text" [(ngModel)]="typeFormation.typeEvaluationTheorique">
+    </div>
+    <form [formGroup]='competenceForm' (ngSubmit)="submitCompetence()">
+      <div class="formgroup">
+        <label>Compétence pratique</label>
+        <select formControlName="dCPratique" [compareWith]="compareFn">
+          <option value="null"></option>
+          <option *ngFor="let compe of listCompetences; let i = index" [ngValue]='compe'>{{compe.nom}}</option>
+        </select>
+        <button class="roundbutton nofocus" type="submit" (click)='compePraSubmit()'>
+          <i class="fas fa-plus-circle right btn-add"></i>
+        </button>
+      </div>
+      <div class="formgroup">
+        <label>Compétence théorique</label>
+        <select formControlName="dCTheorique" [compareWith]="compareFn">
+          <option value='null'></option>
+          <option *ngFor="let compe of listCompetences; let i = index" [ngValue]='compe'>{{compe.nom}}</option>
+        </select>
+        <button class="roundbutton nofocus" type="submit" (click)='compeTheoSubmit()'>
+          <i class="fas fa-plus-circle right btn-add"></i>
+        </button>
+      </div>
+      <div *ngIf='listCompetencePratique.length' class="formgroup" style="display:block">
+        <div *ngFor='let comPra of listCompetencePratique; let i = index' class="formgroup full" style="display:block">
+          <label>{{comPra.nom}}</label>
+          <i class="fas fa-times-circle btn-remove" style="position: absolute;right: 13px;"
+            (click)="supprimerPra(comPra)"></i>
+        </div>
+      </div>
+      <div *ngIf='!listCompetencePratique.length' class="formgroup" style="display:block">
+        <div class="formgroup full" style="display:block"></div>
+      </div>
+      <div *ngIf='listCompetenceTheorique.length' class="formgroup" style="display:block">
+        <div *ngFor='let comTheo of listCompetenceTheorique; let i = index' class="formgroup full"
+          style="display:block">
+          <label>{{comTheo.nom}}</label>
+          <i class="fas fa-times-circle btn-remove" style="position: absolute;right: 13px;"
+            (click)="supprimerTheo(comTheo)"></i>
+        </div>
+      </div>
+    </form>
+    <div class="action" *ngIf='!modalListeTypeFormation'>
+      <div class="button" (click)="ajoutTypeFormation()">Valider</div>
+    </div>
+  </div>
+</div>

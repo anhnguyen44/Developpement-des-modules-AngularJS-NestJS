@@ -1,0 +1,31 @@
+<div class="content" (clickOutside)="emitClose.emit()" [delayClickOutsideInit]="true">
+    <i class="sub fas fa-times btn-close" (click)="close()"></i>
+    <h2>Ajout d'un fichier</h2>
+    <div class="bloc">
+        <form>
+            <div class="formgroup full">
+                <label>Fichier</label>
+                <label for="fichier" id="labelFichier">{{fileName}}</label>
+                <input type="file" id="fichier" (change)="onFileChange($event)" #fileInput><i (click)="openFileChange()"
+                    class="fas fa-file-upload"></i>
+            </div>
+            <div class="formgroup full">
+                <label>Nom du fichier</label>
+                <input type="text" [(ngModel)]="fichier.nom" [ngModelOptions]="{standalone: true}">
+            </div>
+            <div class="formgroup full" *ngIf="!TypeFichier">
+                <label>Type de fichier</label>
+                <select [(ngModel)]="fichier.typeFichier" [ngModelOptions]="{standalone: true}">
+                    <option *ngFor="let typeFichier of typeFichiers" [ngValue]="typeFichier">{{typeFichier.nom}}</option>
+                </select>
+            </div>
+            <div class="formgroup full">
+                <label>Commentaire</label>
+                <textarea [(ngModel)]="fichier.commentaire" [ngModelOptions]="{standalone: true}"></textarea>
+            </div>
+            <div class="action">
+                <div class="button" (click)="envoyer()">Envoyer</div>
+            </div>
+        </form>
+    </div>
+</div>

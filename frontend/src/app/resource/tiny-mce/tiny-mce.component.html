@@ -1,0 +1,5 @@
+<script src="{{moxmanUrl}}/plugin.js"></script>
+<!-- <textarea id="tiny" [(ngModel)]="content" (change)="changeContent()"></textarea> -->
+<editor [(ngModel)]="content" [init]="init" (ngModelChange)=changeContent() id="tiny"></editor>
+<!-- <div>{{contenu}}</div> -->
+<!-- <ckeditor [editor]="Editor" data="<p>Hello, world!</p>" [config]="config"></ckeditor> -->

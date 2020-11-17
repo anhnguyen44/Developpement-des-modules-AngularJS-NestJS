@@ -1,0 +1,14 @@
+<div class="formgroup" [class.full]="isFull" [formGroup]="parentForm">
+  <label>{{label}}</label>
+  <div style="width: 100%;">
+    <select [(ngModel)]="currentListe" [compareWith]="compareList" [ngModelOptions]="{standalone: true}"
+      tabindex="{{tabIndex}}" (ngModelChange)="setListe($event)" [attr.disabled]="disabled ? '' : null" [attr.readonly]="readonly ? '' : null"
+      [class.invalid]="parentForm.controls[internalFormControlName].touched && parentForm.controls[internalFormControlName].errors">
+      <option *ngFor="let item of listeAffichage | async" [ngValue]="item">{{item.resume}}</option>
+    </select>
+    <textarea [formControlName]="internalFormControlName" tabindex="{{tabIndex}}" *ngIf="isEnrichissable"
+      (change)="txtUpdate($event.target.value)" [attr.disabled]="disabled ? '' : null" [attr.readonly]="readonly ? '' : null"
+      [class.invalid]="parentForm.controls[internalFormControlName].touched && parentForm.controls[internalFormControlName].errors"></textarea>
+    <input type="hidden" [formControlName]="internalFormControlName" *ngIf="!isEnrichissable">
+  </div>
+</div>

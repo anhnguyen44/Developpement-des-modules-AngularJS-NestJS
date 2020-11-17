@@ -1,0 +1,39 @@
+<app-menu-parametrage *ngIf="!isSuperAdmin; else superAdminMenu"></app-menu-parametrage>
+<ng-template #superAdminMenu>
+  <app-menu-superadmin></app-menu-superadmin>
+</ng-template>
+<div class="content">
+  <app-recherche [champDeRecherches]="champDeRecherches" [queryBuild]="queryBuild" (emitQueryBuild)="setQueryBuild($event)"></app-recherche>
+  <div class="bloc">
+    <div class="table">
+      <div class="action">
+        <div class="left"></div>
+        <div class="right">
+          <i class="fas fa-file-excel"></i>
+          <div routerLink="/parametrage/grilleTarif/ajouter" class="nofocus">
+            <i class="fas fa-plus"></i> Créer
+          </div>
+        </div>
+      </div>
+      <app-header-table (emitQueryBuild)="setQueryBuild($event)" [headers]="headers" [querybuild]="queryBuild"></app-header-table>
+      <div class="content">
+        <div class="row" *ngFor="let grilleTarif of grillesTarif" (dblclick)="gotoDetails('/grilleTarif/modifier/informations', grilleTarif)">
+          <div><div class="labelTable">{{headers[0].label}}</div>{{grilleTarif.id}}</div>
+          <div class="grow2"><div class="labelTable">{{headers[1].label}}</div>{{grilleTarif.reference}}</div>
+          <div class="grow3"><div class="labelTable">{{headers[2].label}}</div>{{grilleTarif.commentaire}}</div>
+          <div class="action">
+            <span tooltip="Dupliquer" show-delay="250" hide-delay="250"><i class="fas fa-clone" (click)="clone(grilleTarif)"></i></span>
+            <span tooltip="Modifier" show-delay="250" hide-delay="250"><i class="fas fa-pencil-alt" (click)="gotoDetails('/grilleTarif/modifier/informations', grilleTarif)"></i></span>
+            <span tooltip="Supprimer" show-delay="250" hide-delay="250"><i class="fas fa-trash delete-link" (click)="supprimer(grilleTarif.id)" *ngIf="!grilleTarif.isGrillePublique"></i></span>
+          </div>
+        </div>
+        <app-pagination
+                [nbObjets]="nbObjets"
+                [queryBuild]="queryBuild"
+                (emitQueryBuild)="setQueryBuild($event)"
+        ></app-pagination>
+      </div>
+    </div>
+  </div>
+</div>
+

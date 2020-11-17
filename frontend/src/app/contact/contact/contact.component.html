@@ -1,0 +1,232 @@
+<app-menu-contact *ngIf="!modal"></app-menu-contact>
+<div class="content">
+    <div class="bloc" *ngIf="!modal">
+        <div class="formgroup">
+            <label>Référence</label>
+            <div *ngIf="contact?.id; else newInterlocuteur">{{id}}</div>
+            <ng-template #newInterlocuteur>
+                Nouvel interlocuteur
+            </ng-template>
+        </div>
+    </div>
+    <h2>
+        Information contact
+    </h2>
+    <div class="bloc">
+        <form [formGroup]="contactForm" (ngSubmit)="onSubmit(contactForm)">
+            <div class="formgroup full o1" *ngIf="!modal">
+                <label>Entreprise Parente</label>
+                <input type="text" [(ngModel)]="contact?.compteContacts?.compte.raisonSociale"
+                    [ngModelOptions]="{standalone: true}" tabindex="1" readonly>
+                <div class="smallAction">
+                    <i *ngIf="contact?.compteContacts?.compte" class="fas fa-eye"
+                        [routerLink]="['/contact/compte', contact?.compteContacts?.compte.id, 'modifier']"></i>
+                    <i class="fas fa-user-plus" (click)="openModalCompte()"></i>
+                </div>
+            </div>
+            <div class="formgroup full o1">
+                <label></label>
+                <div (click)="getInfoCompte()" class="button">Récupérer info compte</div>
+            </div>
+            <div class="formgroup full o1" *ngIf="bureaux && bureaux.length > 0">
+                <label>Agence</label>
+                <select formControlName="bureau" [compareWith]="compare"
+                    [ngClass]="{ 'invalid': contactForm['controls'].bureau.errors && submited}" tabindex="2">
+                    <option *ngFor="let bureau of bureaux" [ngValue]="bureau">{{bureau.nom}} - {{bureau.nomCommercial}}</option>
+                </select>
+            </div>
+
+            <div class="formgroup o1">
+                <label>Fonction</label>
+                <select formControlName="fonction" [compareWith]="compare" tabindex="3">
+                    <option *ngFor="let fonction of fonctions" [ngValue]="fonction">{{fonction.nom}}</option>
+                </select>
+            </div>
+
+            <div class="formgroup o2" formGroupName="adresse">
+                <label>Adresse</label>
+                <input type="text" formControlName="adresse"
+                    [ngClass]="{ 'invalid': contactForm['controls'].adresse['controls'].adresse.errors && submited}" tabindex="9">
+                <i class="fas fa-map-marker-alt"
+                    *ngIf="adresseForm.get('adresse')?.value && adresseForm.get('cp')?.value && adresseForm.get('ville')?.value"
+                    (click)="goToGoogleAdresse(adresseForm)"></i>
+            </div>
+
+            <div class="formgroup o1">
+                <label *ngIf="contact?.compteContacts?.compte">Activité entreprise</label>
+                <div *ngIf="contact?.compteContacts?.compte">{{contact?.compteContacts?.compte?.qualite?.nom}}</div>
+                <label *ngIf="!contact?.compteContacts?.compte">Type</label>
+                <div *ngIf="!contact?.compteContacts?.compte">Particulier</div>
+            </div>
+
+
+            <div class="formgroup o2" formGroupName="adresse">
+                <label>Complement</label>
+                <input type="text" formControlName="complement" tabindex="10">
+            </div>
+
+            <div class="formgroup o1">
+                <label>Civilite</label>
+                <select formControlName="civilite" [compareWith]="compare" tabindex="4">
+                    <option *ngFor="let civilite of civilites" [ngValue]="civilite">{{civilite.nom}}</option>
+                </select>
+            </div>
+
+            <div class="formgroup o2" formGroupName="adresse">
+                <label>Code postal</label>
+                <!-- <input type="text" formControlName="cp"
+                    [ngClass]="{ 'invalid': contactForm['controls'].adresse['controls'].cp.errors && submited }"> -->
+                <app-cp-ville [isRechercheVille]="false" [parentForm]="adresseForm" [internalFormControlName]="'cp'" (emitCP)="setCP($event)" [tabindex]="11"></app-cp-ville>
+            </div>
+
+            <div class="formgroup o1">
+                <label>Nom</label>
+                <input formControlName="nom" type="text" onkeyup="this.value = this.value.toUpperCase();"
+                    [ngClass]="{ 'invalid': contactForm['controls'].nom.errors && submited }" tabindex="5">
+            </div>
+
+            <div class="formgroup o2" formGroupName="adresse">
+                <label>Ville</label>
+                <!-- <input type="text" formControlName="ville"
+                       [ngClass]="{ 'invalid': contactForm['controls'].adresse['controls'].ville.errors && submited }"> -->
+                <app-cp-ville [isRechercheVille]="true" [parentForm]="adresseForm" [internalFormControlName]="'ville'"
+                    (emitCP)="setCP($event)" [tabindex]="12"></app-cp-ville>
+            </div>
+
+            <div class="formgroup o1">
+                <label>Prenom</label>
+                <input formControlName="prenom" type="text" tabindex="6">
+            </div>
+
+            <div class="formgroup o2" formGroupName="adresse">
+                <label>Telephone</label>
+                <input type="text" formControlName="telephone" [value]="adresseForm.get('telephone')!.value | telephone"
+                    [ngClass]="{ 'invalid': contactForm['controls'].adresse['controls'].telephone.errors && submited }" tabindex="13">
+                <a *ngIf="contactForm['controls'].adresse['controls'].telephone.valid"
+                    href="{{'tel:+33' + adresseForm.get('telephone').value.split(' ').join('').substr(1)}}"
+                    class="smallAction">
+                    <i class="fas fa-phone"></i>
+                </a>
+            </div>
+
+            <div class="formgroup o1">
+                <label>Portable</label>
+                <input formControlName="portable" type="text" [value]="contactForm.get('portable')!.value | telephone" tabindex="7">
+                <a *ngIf="contactForm['controls'].portable.valid"
+                    href="{{'tel:+33' + contactForm.get('portable').value.split(' ').join('').substr(1)}}"
+                    class="smallAction">
+                    <i class="fas fa-phone"></i>
+                </a>
+            </div>
+
+            <div class="formgroup o2" formGroupName="adresse">
+                <label>Fax</label>
+                <input type="text" formControlName="fax" [value]="adresseForm.get('fax')!.value | telephone" tabindex="14">
+            </div>
+
+            <div class="formgroup o1" formGroupName="adresse">
+                <label>Email</label>
+                <input type="text" formControlName="email"
+                    [ngClass]="{ 'invalid': contactForm['controls'].adresse['controls'].email.errors && submited }" tabindex="8">
+                <a class="smallAction" *ngIf="adresseForm['controls'].email.valid"
+                    href="{{'mailto:' + adresseForm.get('email').value}}">
+                    <i class="fas fa-envelope"></i>
+                </a>
+            </div>
+
+            <div class="formgroup full o3" *ngIf="!modal">
+                <label>Compte utilisateur</label>
+                <input type="text" [(ngModel)]="intituleUtilisateur" [ngModelOptions]="{standalone: true}">
+                <i (click)="userModalOpened = true" class="fas fa-user-plus"></i>
+            </div>
+
+            <h3 class="o3">Information prospection</h3>
+
+            <div class="formgroup o3">
+                <label>Prospect</label>
+                <input type="checkbox" formControlName="bProspect">
+            </div>
+
+            <div class="formgroup o3">
+                <label>Phase</label>
+                <select formControlName="phase" [compareWith]="compareVal">
+                    <option *ngFor="let phase of phases" [ngValue]="phase">{{phase}}</option>
+                </select>
+            </div>
+
+            <div class="formgroup o3">
+                <label>Objectif</label>
+                <select formControlName="objectif" [compareWith]="compareVal">
+                    <option *ngFor="let objectif of objectifs" [ngValue]="objectif">{{objectif}}</option>
+                </select>
+            </div>
+
+            <div class="formgroup o3">
+                <label>Potentiel</label>
+                <select formControlName="potentiel" [compareWith]="compareVal">
+                    <option *ngFor="let potentiel of potentiels" [ngValue]="potentiel">{{potentiel}}</option>
+                </select>
+            </div>
+
+            <div class="formgroup o3" *ngIf="contact">
+                <label>Qualification</label>
+                <div>
+                    <input type="radio" value="A" formControlName="qualification" [(ngModel)]="contact.qualification">A
+                    <input type="radio" value="B" formControlName="qualification" [(ngModel)]="contact.qualification">B
+                    <input type="radio" value="C" formControlName="qualification" [(ngModel)]="contact.qualification">C
+                    <input type="radio" value="D" formControlName="qualification" [(ngModel)]="contact.qualification">D
+                </div>
+            </div>
+
+            <div class="formgroup o3" *ngIf="contact">
+                <label>Autre qualification</label>
+                <input type="text" formControlName="qualification" [(ngModel)]="contact.qualification">
+            </div>
+
+            <div class="formgroup o3" *ngIf="secteurs && secteurs.length > 0">
+                <label>Secteur</label>
+                <select formControlName="secteur" [compareWith]="compareVal">
+                    <option *ngFor="let secteur of secteurs" [ngValue]="secteur">{{secteur}}</option>
+                </select>
+            </div>
+
+            <div class="formgroup o3">
+                <label>Autre secteur</label>
+                <input type="text" formControlName="secteur">
+            </div>
+
+            <div class="formgroup o3">
+                <label>Anniversaire</label>
+                <input type="date"
+                    formControlName="anniversaire">
+            </div>
+
+            <h3 class="o3">Logiciel métier utilisé</h3>
+
+            <div class="formgroup o3">
+                <label>Editeur</label>
+                <input type="text" formControlName="editeur">
+            </div>
+
+            <div class="formgroup o3">
+                <label>Application</label>
+                <input type="text" formControlName="application">
+            </div>
+
+            <h3 class="o3">Commentaire</h3>
+            <div class="formgroup full o3">
+                <label>Commentaire</label>
+                <textarea formControlName="commentaire"></textarea>
+            </div>
+
+            <div class="action o3">
+                <button class="button" type="submit">Valider</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<app-modal-contact *ngIf="modalType" [type]="modalType" (emitCompte)="setCompte($event)" (emitClose)="setClose()"
+    [@fadeIn] [@fadeOut]></app-modal-contact>
+<app-modal-user *ngIf="userModalOpened" (emitClose)="userModalOpened = false" (emitUtilisateur)="setUser($event)"
+    [@fadeIn] [@fadeOut]></app-modal-user>

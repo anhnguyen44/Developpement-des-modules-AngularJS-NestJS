@@ -1,0 +1,14 @@
+{
+  "type": "mysql",
+  "host": "192.168.1.50",
+  "port": 3306,
+  "username": "root",
+  "password": "diagadev",
+  "database": "aleaAC",
+  "migrations": [
+    "migration/*.ts']"
+  ],
+  "cli": {
+    "migrationsDir": "migration"
+  }
+}

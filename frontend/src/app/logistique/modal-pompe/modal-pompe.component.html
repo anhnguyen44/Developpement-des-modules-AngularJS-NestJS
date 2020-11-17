@@ -1,0 +1,9 @@
+<div class="content" (clickOutside)="emitClose.emit()" [delayClickOutsideInit]="true">
+  <i class="fas fa-times btn-close" (click)="emitClose.emit()"></i>
+  <app-liste-pompe
+          [modal]="true"
+          [pompesAjoutees]="pompesAjoutees"
+          [idBureau]="idBureau"
+          [rendezVous]="rendezVous"
+          (emitPompe)="emitPompe.emit($event)"></app-liste-pompe>
+</div>

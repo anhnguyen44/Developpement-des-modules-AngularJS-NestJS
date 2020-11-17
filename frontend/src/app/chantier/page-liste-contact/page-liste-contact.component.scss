@@ -1,0 +1,49 @@
+@import "variables";
+:host{
+  width: 100%;
+}
+
+.onglet {
+  display: flex;
+  width: 100%;
+}
+
+.onglet div{
+  flex-grow: 2;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  background-color: $couleurFondBloc;
+  border-top: solid 2px $couleurFondBoutton;
+  border-left: solid 2px $couleurFondBoutton;
+  border-right: solid 2px $couleurFondBoutton;
+}
+
+.onglet .contact {
+  border-top-left-radius: 0;
+}
+
+.onglet .compte {
+  border-top-right-radius: 0;
+}
+
+.onglet div.active {
+  background-color: $couleurFondBoutton;
+  flex-grow: 4;
+  cursor: default;
+}
+
+.onglet div:not(.active) {
+  color: $couleurTexte;
+}
+
+.onglet div:hover{
+  background-color: $couleurFondBoutton;
+  color: white;
+}
+
+@media (max-width: 640px) {
+  .button {
+    padding: 0;
+    min-width: unset;
+  }
+}

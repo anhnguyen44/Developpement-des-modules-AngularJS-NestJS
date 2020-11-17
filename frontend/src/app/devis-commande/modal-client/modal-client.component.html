@@ -1,0 +1,28 @@
+<div class="content" (clickOutside)="close($event)" [delayClickOutsideInit]="true" [@fadeOut]>
+  <i class="fas fa-times btn-close" (click)="close($event)"></i>
+  <div *ngIf="choixDuType">
+    <h2>Choix du type</h2>
+    <div class="bloc">
+      <div class="formgroup">
+        <label>Contact externe</label>
+        <input type="checkbox" [(ngModel)]="isExterne">
+      </div>
+      <div class="formgroup full" *ngIf="isExterne">
+        <label>Type de contact</label>
+        <select [(ngModel)]="newTypeContactDevisCommande">
+          <option *ngFor="let typeContact of typeContactExterne" [ngValue]="typeContact">{{typeContact.nom}}</option>
+        </select>
+      </div>
+      <div class="formgroup full" *ngIf="!isExterne">
+        <label>Type de contact</label>
+        <select [(ngModel)]="newTypeContactDevisCommande">
+          <option *ngFor="let typeContact of typeContactInterne" [ngValue]="typeContact">{{typeContact.nom}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <app-page-liste-interlocuteur *ngIf="modalClient && !modalContact" [isContactSeul]="isContactSeul" [modalClient]="modalClient" (emitCompte)="setClient($event)"
+    (emitContact)="setClient($event)" (emitNouveauContact)="setNouveauContact()"></app-page-liste-interlocuteur>
+  <app-contact *ngIf="modalContact" [modal]="true" (emitContact)="setClient($event)" (emitCompte)="setClient($event)">
+  </app-contact>
+</div>

@@ -1,0 +1,34 @@
+<div class="bloc">
+  <div class="table">
+    <div class="action">
+      <div class="left">
+
+      </div>
+      <div class="right">
+        <div (click)="openModal()" class="nofocus">
+          <i class="fas fa-plus"></i> Ajouter
+        </div>
+      </div>
+    </div>
+    <div class="header">
+      <div class="row">
+        <div>Informateur</div>
+        <div>Libellé</div>
+        <div>Contenu</div>
+        <div class="action">Actions</div>
+      </div>
+    </div>
+    <div class="content">
+      <div class="row" *ngFor="let informationsBesoin of informationsBesoins">
+        <div><div class="labelTable">Informateur</div><span>{{informationsBesoin?.informateur}}</span></div>
+        <div><div class="labelTable">Libellé</div><span>{{informationsBesoin?.libelle}}</span></div>
+        <div><div class="labelTable">Contenu</div><span>{{informationsBesoin?.contenu}}</span></div>
+        <div class="action">
+          <i class="fas fa-pencil-alt" (click)="getInformationsBesoin(informationsBesoin)"></i>
+          <i class="fas fa-trash delete-link" (click)="deleteInformationsBesoin(informationsBesoin)"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-modal-informations-besoin *ngIf="modalAjouter" [infosBesoinClient]="currentInfosBesoinClientLabo" [idParent]="idParent" (emitinfoInfosBesoinClientLabo)="setInformationsBesoin($event)" (emitClose)="modalAjouter = false"></app-modal-informations-besoin>

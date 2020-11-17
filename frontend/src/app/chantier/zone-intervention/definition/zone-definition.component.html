@@ -1,0 +1,433 @@
+<div class="content">
+  <div class="bloc warning" *ngIf="displayAttentionVentilo">
+    Vérifier si des ventilateurs sont disponibles pour simuler l'activité humaine.
+  </div>
+  <h2 *ngIf="!idZoneIntervention">Nouvelle Zone {{labelTypeZone}}</h2>
+  <h2 *ngIf="idZoneIntervention">Modification de la Zone {{labelTypeZone}}</h2>
+  <form [formGroup]="informationsForm">
+    <div class="bloc">
+      <div class="formgroup">
+        <label>Référence</label>
+        <input type="text" formControlName="reference" tabindex="1"
+          [ngClass]="{ 'invalid': submittedInformations && f.reference.errors }" />
+      </div>
+      <div class="formgroup">
+        <label>Libellé</label>
+        <input type="text" formControlName="libelle" tabindex="2"
+          [ngClass]="{ 'invalid': submittedInformations && f.libelle.errors }" />
+      </div>
+      <app-liste nomListe="DescriptifZoneIntervention" [listeComplete]="listeDescriptifZoneIntervention"
+        label="Descriptif" [parentForm]="informationsForm" *ngIf="isPatchValueDone" internalFormControlName="descriptif"
+        [tabIndex]="3" [disabled]="!canEdit" (emitListe)="listeDescriptifZoneIntervention = $event"
+        style="width: 100%;"></app-liste>
+      <div class="formgroup">
+        <label>Statut d'occupation <i class="fas fa-question-circle" (click)="modalStatutOccupation = true"></i></label>
+        <select formControlName="statut" tabindex="4"
+          [ngClass]="{ 'invalid': submittedInformations && f.statut.errors }" [compareWith]="compareEnum">
+          <option [value]="enumStatutOccupation.LOCAL_DE_VIE_VIDE">Local de Vie (LV) - Vide</option>
+          <option [value]="enumStatutOccupation.LOCAL_DE_VIE_OCCUPE">Local de Vie (LV) - Occupé</option>
+          <option [value]="enumStatutOccupation.LOCAL_OCCASIONNELLEMENT_VISITE_VIDE">Local Occasionnellement Visité
+            (LOV) - Vide</option>
+          <option [value]="enumStatutOccupation.LOCAL_OCCASIONNELLEMENT_VISITE_OCCUPE">Local Occasionnellement Visité
+            (LOV) - Occupé</option>
+        </select>
+      </div>
+      <div class="formgroup">
+        <label>Bâtiment</label>
+        <select formControlName="batiment" tabindex="5"
+          [ngClass]="{ 'invalid': submittedInformations && f.batiment.errors }" [compareWith]="compare">
+          <option *ngFor="let batim of listeBatiments" [ngValue]="batim">{{batim.nom}}</option>
+        </select>
+      </div>
+      <div class="formgroup">
+        <label>Conditions</label>
+        <select formControlName="conditions">
+          <option value=""></option>
+          <option value="airSuffisant">Circulation d'air suffisante et représentative</option>
+          <option value="airInsufisant">Circulation d'air insuffisante et/ou non représentative</option>
+        </select>
+      </div>
+
+      <h3>Stratégie de la Zone</h3>
+
+      <div class="formgroup">
+        <label>Zone définie par AléaContrôles</label>
+        <input type="checkbox" formControlName="isZoneDefinieAlea" tabindex="6" />
+      </div>
+      <div class="formgroup">
+        <label>Sous accréditation</label>
+        <input type="checkbox" formControlName="isSousAccreditation" tabindex="7" />
+      </div>
+
+      <div class="formgroup" *ngIf="typeZone === enumTypeZone.ZT">
+        <label>Durée de traitement (semaines)</label>
+        <input type="number" formControlName="dureeTraitementEnSemaines" tabindex="8"
+          [ngClass]="{ 'invalid': submittedInformations && f.dureeTraitementEnSemaines.errors }" />
+      </div>
+      <div class="formgroup" *ngIf="typeZone === enumTypeZone.ZT">
+        <label>Confinement</label>
+        <select formControlName="confinement" [ngClass]="{ 'invalid': submittedInformations && f.confinement.errors }"
+          [compareWith]="compareEnum" tabindex="9">
+          <option [value]="enumConfinement.ABSENCE">Absence</option>
+          <option [value]="enumConfinement.STATIQUE">Statique</option>
+          <option [value]="enumConfinement.DYNAMIQUE">Dynamique</option>
+        </select>
+      </div>
+
+      <div class="formgroup full">
+        <label>Plan d'Installation Chantier (PIC)</label>
+        <select formControlName="PIC" tabindex="10" [ngClass]="{ 'invalid': submittedInformations && f.PIC.errors }"
+          [compareWith]="compare">
+          <option [ngValue]="null">Aucun</option>
+          <option *ngFor="let fic of listePIC" [ngValue]="fic">{{fic.nom}} - {{fic.commentaire}}</option>
+        </select>
+        <i class="fas fa-plus-circle btn-plus" (click)="openModalPIC = true" *ngIf="canEdit"></i>
+      </div>
+      <div class="formgroup full">
+        <label>Environnements</label>
+        <select multiple formControlName="environnements"
+          [ngClass]="{ 'invalid': submittedInformations && f.environnements.errors }" [compareWith]="compare"
+          style="height: 65px;" tabindex="12">
+          <option *ngFor="let env of listeEnvironnements" [ngValue]="env">{{env.nom}}</option>
+        </select>
+      </div>
+
+      <div class="formgroup">
+        <label>Milieu</label>
+        <div>
+          <input type="radio" formControlName="milieu" [value]="enumMilieu.Interieur" id="milieu1" /> <label for="milieu1">Intérieur</label>
+          &nbsp;&nbsp;
+          <input type="radio" formControlName="milieu" [value]="enumMilieu.Exterieur" id="milieu2" /> <label for="milieu2">Extérieur</label>
+          &nbsp;&nbsp;
+          <input type="radio" formControlName="milieu" [value]="enumMilieu.LES_DEUX" id="milieu3" /> <label for="milieu3">Les deux</label>
+        </div>
+      </div>
+      <div class="formgroup" *ngIf="typeZone === enumTypeZone.ZT">
+        <label>Nombre de groupes d'extracteurs</label>
+        <input type="number" formControlName="nbGrpExtracteurs" tabindex="8"
+          [ngClass]="{ 'invalid': submittedInformations && f.nbGrpExtracteurs.errors }" />
+      </div>
+
+      <div class="formgroup full">
+        <label>Répartition des prélèvements</label>
+        <textarea formControlName="repartitionPrelevements" tabindex="13"></textarea>
+      </div>
+
+      <div class="formgroup full">
+        <label>Commentaire</label>
+        <textarea formControlName="commentaire" tabindex="13"></textarea>
+      </div>
+
+      <div class="action" *ngIf="canEdit && isPatchValueDone && zoneIntervention">
+        <button class="button"
+          *ngIf="f.statut.value == 2 || f.statut.value == 4 || zoneIntervention.statut == enumStatutOccupation.LOCAL_DE_VIE_OCCUPE || zoneIntervention.statut == LOCAL_OCCASIONNELLEMENT_VISITE_OCCUPE"
+          [disabled]="!idZoneIntervention" (click)="openLaModalHoraires()" tabindex="14">Saisir les horaires</button>
+        <button class="button" (click)="submitInformations()" tabindex="15">Enregistrer</button>
+      </div>
+    </div>
+
+    <h2 *ngIf="idZoneIntervention" style="width: 100%;">Matériaux amiantés de la zone</h2>
+    <div class="bloc" *ngIf="idZoneIntervention">
+
+      <div class="formgroup">
+        <label>Densité d'occupation théorique <i class="fas fa-question-circle" tooltip="Information du diagnostic amiante, si fourni. Sinon 'Non communiqué'. Cela indique la fréquentation des locaux en utilisation normale."></i></label>
+        <select [disabled]="!canEdit" formControlName="densiteOccupationTheorique"
+          [ngClass]="{ 'invalid': submittedInformations && f.densiteOccupationTheorique.errors }"
+          [compareWith]="compareEnum">
+          <option [value]="enumDensiteOccupationTheorique.Faible.valueOf()">Faible</option>
+          <option [value]="enumDensiteOccupationTheorique.Forte.valueOf()">Forte</option>
+          <option [value]="enumDensiteOccupationTheorique.NC.valueOf()">Non communiqué</option>
+        </select>
+      </div>
+
+      <div class="formgroup">
+        <label>Type d'activité</label>
+        <select [disabled]="!canEdit" formControlName="typeActivite"
+          [ngClass]="{ 'invalid': submittedInformations && f.typeActivite.errors }" [compareWith]="compareEnum">
+          <option [value]="enumTypeActivite.Habitation.valueOf()">Habitation</option>
+          <option [value]="enumTypeActivite.Enseignement.valueOf()">Enseignement</option>
+          <option [value]="enumTypeActivite.Industriel.valueOf()">Industriel</option>
+          <option [value]="enumTypeActivite.Commerce.valueOf()">Commercial</option>
+          <option [value]="enumTypeActivite.Bureaux.valueOf()">Bureaux</option>
+          <option [value]="enumTypeActivite.Soins.valueOf()">Soins</option>
+          <option [value]="enumTypeActivite.Loisirs.valueOf()">Loisirs</option>
+          <option [value]="enumTypeActivite.Autre.valueOf()">Autre</option>
+          <option [value]="enumTypeActivite.NC.valueOf()">Non communiqué</option>
+        </select>
+      </div>
+
+      <div class="formgroup full" *ngIf="f.typeActivite.value == enumTypeActivite.Autre">
+        <label>Autre activité</label>
+        <input formControlName="autreActivite" />
+      </div>
+
+      <app-liste nomListe="CommentaireOccupationLocaux" label="Commentaire sur l'occupation des locaux"
+        [disabled]="!canEdit" [parentForm]="informationsForm" *ngIf="isPatchValueDone"
+        internalFormControlName="commentaireOccupation" [tabIndex]="3" style="width: 100%;"
+        (emitListe)="listeCommentaireOccupation = $event;"></app-liste>
+
+
+
+      <div class="formgroup">
+        <label>Exposition du matériau à l'air</label>
+        <select [disabled]="!canEdit" formControlName="expositionAir"
+          [ngClass]="{ 'invalid': submittedInformations && f.expositionAir.errors }" [compareWith]="compareEnum">
+          <option [value]="enumExpositionAir.Faible.valueOf()">Faible</option>
+          <option [value]="enumExpositionAir.Forte.valueOf()">Forte</option>
+          <option [value]="enumExpositionAir.NC.valueOf()">Non communiqué</option>
+        </select>
+      </div>
+
+      <div class="formgroup">
+        <label>Exposition du matériau aux chocs</label>
+        <select [disabled]="!canEdit" formControlName="expositionChocs"
+          [ngClass]="{ 'invalid': submittedInformations && f.expositionChocs.errors }" [compareWith]="compareEnum">
+          <option [value]="enumExpositionChocs.Faible.valueOf()">Faible</option>
+          <option [value]="enumExpositionChocs.Forte.valueOf()">Forte</option>
+          <option [value]="enumExpositionChocs.NC.valueOf()">Non communiqué</option>
+        </select>
+      </div>
+
+      <app-liste nomListe="CommentaireExpositionAirChocs" label="Commentaire" [parentForm]="informationsForm"
+        *ngIf="isPatchValueDone" internalFormControlName="commentaireExpositionAirChocs" [tabIndex]="6"
+        style="width: 100%;" (emitListe)="listeCommentaireExpositionAirChocs = $event;" [disabled]="!canEdit">
+      </app-liste>
+
+
+      <div class="action" *ngIf="canEdit && isPatchValueDone && zoneIntervention">
+        <button class="button" (click)="submitInformations()" tabindex="15">Enregistrer</button>
+      </div>
+
+
+      <app-liste-materiau-amiante *ngIf="displayMatZones" (emitCreateMateriau)="addMateriau()" [canEdit]="canEdit"
+        (emitSelectMateriau)="editMateriau($event)" [chantier]="chantier"></app-liste-materiau-amiante>
+    </div>
+  </form>
+
+  <h2 *ngIf="typeZone === enumTypeZone.ZH && idZoneIntervention">Locaux unitaires</h2>
+  <div class="bloc" *ngIf="typeZone === enumTypeZone.ZH && idZoneIntervention && zoneIntervention">
+    <div class="formgoup" style="margin-bottom: 1em;">
+      <label>La Zone Homogène fait moins de 10m²</label>
+      <input type="checkbox" [ngModel]="zoneIntervention.isZoneInf10" (ngModelChange)="saveInf10($event)"
+        [ngModelOptions]="{standalone: true}" [attr.disabled]="!canEdit ? '' : null" />
+    </div>
+    <div style="display: inline-block; width: 48%;" class="warning"
+      *ngIf="zoneIntervention && zoneIntervention.isZoneInf10">
+      Si la zone de prélèvement a un volume &lt; 4200L, il faudra utiliser des filtres de 25mm de diamètre et le
+      prélèvement ne pourra pas être COFRAC
+    </div>
+
+    <div style="width: 98%;">
+      <accordion *ngIf="idZoneIntervention && zoneIntervention && !zoneIntervention.isZoneInf10"
+        (openedGroup)="currentOpenGroup = $event">
+        <group title="Superficie &le; 100m² et longueur &le; 15m" [idGroup]="1"
+          [opened]="!currentOpenGroup || (currentOpenGroup && currentOpenGroup.idGroup === 1)">
+          <div style="width: 100%; display: flex;">
+            <div class="formgroup" style="width: 48%;">
+              <label>Nom</label>
+              <input type="text" style="width: 175px;" [(ngModel)]="refLocalMiniToAdd"
+                [ngModelOptions]="{standalone: true}" [attr.disabled]="!canEdit ? '' : null" />
+              <i class="fas fa-plus-circle" style="color: green;" (click)="addLocalInf100Inf15()" *ngIf="canEdit"></i>
+            </div>
+          </div>
+          <div class="formgroup" *ngFor="let loc of localInf100inf15; let i = index; let last = last">
+            <label>{{loc.nom}}</label>
+            <i class="fas fa-times-circle" style="color: red;" (click)="delLocalInf100Inf15(loc)" *ngIf="canEdit"></i>
+          </div>
+        </group>
+        <group title="Superficie &le; 100m² et longueur > 15m" [idGroup]="2"
+          [opened]="currentOpenGroup && currentOpenGroup.idGroup === 2">
+          <div style="width: 100%; display: flex;">
+            <div class="formgroup" style="width: 48%;">
+              <label>Nom</label>
+              <input type="text" style="width: 175px;" [(ngModel)]="refLongLocalToAdd"
+                [ngModelOptions]="{standalone: true}" [attr.disabled]="!canEdit ? '' : null" />
+            </div>
+            <div class="formgroup" style="width: 48%;">
+              <label>Longueur (m)</label>
+              <input type="number" min="16" style="width: 75px;" [(ngModel)]="longueurLocalToAdd"
+                [ngModelOptions]="{standalone: true}" [attr.disabled]="!canEdit ? '' : null" />
+              <i class="fas fa-plus-circle" style="color: green;" (click)="addLocalInf100Sup15()" *ngIf="canEdit"></i>
+            </div>
+          </div>
+          <div class="formgroup" *ngFor="let loc of localInf100sup15; let i = index; let last = last">
+            <label>{{loc.nom}}</label>
+            {{loc.longueur}} m
+            <i class="fas fa-times-circle" style="color: red;" (click)="delLocalInf100Sup15(loc)" *ngIf="canEdit"></i>
+          </div>
+        </group>
+        <group title="Superficie > 100m²" [idGroup]="3" [opened]="currentOpenGroup && currentOpenGroup.idGroup === 3">
+          <div style="width: 100%; display: flex;">
+            <div class="formgroup">
+              <label>Nom</label>
+              <input type="text" style="width: 175px;" [(ngModel)]="refSup100ToAdd"
+                [ngModelOptions]="{standalone: true}" [attr.disabled]="!canEdit ? '' : null" />
+            </div>
+            <div class="formgroup">
+              <label>Surface (m²)</label>
+              <input type="number" min="101" style="width: 75px;" [(ngModel)]="surfaceLocalToAdd"
+                [ngModelOptions]="{standalone: true}" [attr.disabled]="!canEdit ? '' : null" />
+              <i class="fas fa-plus-circle" style="color: green;" (click)="addLocalSup100()" *ngIf="canEdit"></i>
+            </div>
+          </div>
+          <div class="formgroup" *ngFor="let loc of localSup100; let i = index; let last = last">
+            <label>{{loc.nom}}</label>
+            {{loc.surface}} m²
+            <i class="fas fa-times-circle" style="color: red;" (click)="delLocalSup100(loc)" *ngIf="canEdit"></i>
+          </div>
+        </group>
+        <group title="Groupement de locaux/superficies" [idGroup]="4"
+          [opened]="currentOpenGroup && currentOpenGroup.idGroup === 4">
+          <div class="formgroup">
+            <label>Nom du groupement</label>
+            <input type="text" min="0" style="width: 175px;" [(ngModel)]="nomGroupToAdd"
+              [ngModelOptions]="{standalone: true}" [attr.disabled]="!canEdit ? '' : null" />
+            <i class="fas fa-plus-circle" style="color: green;" (click)="addGrp()" *ngIf="canEdit"></i>
+          </div>
+          <div class="formgroup full">
+            <table style="width: 100%; border-collapse: collapse;">
+              <tr *ngFor="let grp of getGrpList(); let i = index">
+                <td>
+                  {{grp.nom}}
+                  <i class="fas fa-times-circle" style="margin-left: 1em; color: red; cursor: pointer;"
+                    (click)="deleteGrp(grp)" *ngIf="canEdit"></i>
+                </td>
+                <td colspan="5">
+                  <table style="width: 100%; border-collapse: collapse;">
+                    <tr>
+                      <td>
+                        Nom du local
+                      </td>
+                      <td>
+                        <input type="text" style="width: 100%;" [(ngModel)]="nomLocalGroupToAdd[i - 1]"
+                          [ngModelOptions]="{standalone: true}" [attr.disabled]="!canEdit ? '' : null" />
+                      </td>
+                      <td>
+                        Surface (m²)
+                      </td>
+                      <td>
+                        <input type="number" min="0" style="width: 75px;" [(ngModel)]="surfaceLocalGroupToAdd[i - 1]"
+                          [ngModelOptions]="{standalone: true}" [attr.disabled]="!canEdit ? '' : null" />
+                      </td>
+                      <td>
+                        <i class="fas fa-plus-circle" style="color: green; cursor: pointer; margin-left: 1em;"
+                          (click)="addLocalGrp(grp.id, i - 1)" *ngIf="canEdit"></i>
+                      </td>
+                    </tr>
+                    <tr *ngFor="let loc of (zoneIntervention.locaux | filter : 'idParent' : grp.id)">
+                      <td>
+
+                      </td>
+                      <td>
+                        {{loc.nom}}
+                      </td>
+                      <td>
+
+                      </td>
+                      <td>
+                        {{loc.surface}} m²
+                      </td>
+                      <td>
+                        <i class="fas fa-times-circle" style="margin-left: 1em; color: red; cursor: pointer;"
+                          (click)="deleteLocalGrp(loc)" *ngIf="canEdit"></i>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </group>
+        <group title="Cages d'escalier" [idGroup]="5" [opened]="currentOpenGroup && currentOpenGroup.idGroup === 5">
+          <div style="display: flex; width: 100%;">
+            <div style="width: 100%;">
+              <div class="formgroup">
+                <label>Largeur (m)</label>
+                <div>
+                  <input type="number" min="0" style="width: 75px;" [(ngModel)]="largeurCage"
+                    [ngModelOptions]="{standalone: true}" [attr.disabled]="!canEdit ? '' : null"
+                    (change)="updateSurfaceFromLL()" />
+                </div>
+              </div>
+              <div class="formgroup">
+                <label>Longueur (m)</label>
+                <div>
+                  <input type="number" min="0" style="width: 75px;" [(ngModel)]="longueurCage"
+                    [ngModelOptions]="{standalone: true}" [attr.disabled]="!canEdit ? '' : null"
+                    (change)="updateSurfaceFromLL()" />
+                </div>
+              </div>
+            </div>
+            <div style="width: 100%;">
+              <div class="formgroup">
+                <label>Nombre de niveaux</label>
+                <input type="number" min="2" style="width: 75px;" [(ngModel)]="niveauxCageToAdd"
+                  [ngModelOptions]="{standalone: true}" (change)="updateSurfaceFromLL()"
+                  [attr.disabled]="!canEdit ? '' : null" />
+                <i class="fas fa-plus-circle" style="color: green; position: relative; left: 10px;" (click)="addCage()"
+                  *ngIf="canEdit"></i>
+              </div>
+              <div class="formgroup">
+                <label>Nom</label>
+                <div>
+                  <input type="text" style="width: 175px;" [(ngModel)]="refCageToAdd"
+                    [ngModelOptions]="{standalone: true}" [attr.disabled]="!canEdit ? '' : null" />
+                </div>
+              </div>
+            </div>
+            <div style="width: 100%;">
+              <div class="formgroup full">
+                <label>Superficie (m²)</label>
+                <div>
+                  {{surfaceCageToAdd}} m² ({{surfaceCageToAdd / niveauxCageToAdd}} m² par niveau)
+                  <input type="hidden" min="0" style="width: 75px;" [(ngModel)]="surfaceCageToAdd"
+                    [ngModelOptions]="{standalone: true}" [attr.disabled]="!canEdit ? '' : null" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngFor="let loc of localCage; let i = index; let last = last" style="display: flex;">
+            <div class="formgroup">
+              <label>{{loc.nom}}</label>
+              {{loc.surface}} m² ({{loc.largeur}} * {{loc.longueur}}) par niveau
+            </div>
+            <div class="formgroup">
+              <label></label>
+              {{loc.nbNiveaux}} niveaux
+              <i class="fas fa-times-circle" style="color: red;" (click)="delCage(loc)" *ngIf="canEdit"></i>
+            </div>
+          </div>
+        </group>
+      </accordion>
+      <h3></h3>
+      <div class="formgroup full" *ngIf="zoneIntervention">
+        <label>Nombre de pièces unitaires (PU)</label>
+        <input type="number" [value]="zoneIntervention.isZoneInf10 ? 1 : zoneIntervention.nbPiecesUnitaires" readonly />
+      </div>
+    </div>
+  </div>
+
+  <h2 *ngIf="typeZone === enumTypeZone.ZT && idZoneIntervention">Processus de la zone</h2>
+  <div class="bloc" *ngIf="typeZone === enumTypeZone.ZT && idZoneIntervention">
+    <app-liste-processus-zone *ngIf="displayProcZones" (emitCreateProcessus)="addProcessus()"
+      (emitSelectProcessus)="editProcessus($event)" [canEdit]="canEdit"></app-liste-processus-zone>
+  </div>
+</div>
+
+
+<app-modal-materiau-zone *ngIf="idZoneIntervention && openModalMateriauZone" (emitClose)="openModalMateriauZone = false"
+  (emitMateriauZone)="materiauZoneFromModal($event)" [materiauZone]="materiauZoneToEdit" [canEdit]="canEdit"
+  [informationsIsNC]="true"></app-modal-materiau-zone>
+<app-modal-horaires-zone *ngIf="idZoneIntervention && openModalHoraires" (emitClose)="openModalHoraires = false"
+  [canEdit]="canEdit" (emitHoraires)="setHoraires($event)" [idZone]="idZoneIntervention"
+  [horairesZone]="zoneIntervention.horaires">
+</app-modal-horaires-zone>
+<app-modal-processus-zone *ngIf="idZoneIntervention && openModalProcessusZone" [canEdit]="canEdit"
+  (emitClose)="openModalProcessusZone = false" (emitProcessusZone)="processusZoneFromModal($event)"
+  [processusZone]="processusZoneToEdit" [idZone]="idZoneIntervention"></app-modal-processus-zone>
+<app-modal-fichier *ngIf="chantier && typeFichierPIC && openModalPIC" [TypeFichier]="typeFichierPIC"
+  application="chantier" [idParent]="chantier.id" (emitClose)="openModalPIC = false" (emitFichier)="setNewPIC($event)">
+</app-modal-fichier>
+
+<app-modal-contenu *ngIf="modalStatutOccupation" (emitClose)="modalStatutOccupation = false"
+  expression="statut-occupation"></app-modal-contenu>

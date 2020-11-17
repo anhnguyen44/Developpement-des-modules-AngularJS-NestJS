@@ -1,0 +1,50 @@
+<!-- <div class="content" (clickOutside)="close()" [delayClickOutsideInit]="true" [excludeBeforeClick]=true [exclude]="'app-notification,.mce-reset,.moxman-reset,.moxman-thumb'"> -->
+  <div class="content">
+  <i class="fas fa-times btn-close" (click)="close()"></i>
+  <h2>Evoyer email</h2>
+  <div class="bloc">
+    <form [formGroup]="mailForm" (ngSubmit)="onSubmit(mailForm)">
+      <div class="formgroup full">
+        <label>Expéditeur</label>
+        <input formControlName="from"
+               [ngClass]="{ 'invalid': mailForm['controls'].from.errors && submited}" type="text">
+      </div>
+      <div class="formgroup full">
+        <label>Destinataire</label>
+        <input formControlName="to"
+               [ngClass]="{ 'invalid': mailForm['controls'].to.errors && submited}" type="text">
+      </div>
+      <div class="formgroup full">
+        <label>CC</label>
+        <input formControlName="cc"  type="text">
+      </div>
+      <!--<div class="formgroup full">
+        <label>CCi</label>
+        <input formControlName="cci" type="text">
+      </div>-->
+      <div class="formgroup full">
+        <label>Sujet</label>
+        <input formControlName="subject"
+               [ngClass]="{ 'invalid': mailForm['controls'].subject.errors && submited}" type="text">
+      </div>
+      <div class="formgroup full">
+        <label>Contenu</label>
+        <!-- <textarea formControlName="contenu"></textarea> -->
+        <!-- <ckeditor name="contenu" [(ngModel)]="mail.contenu" [editor]="Editor" [config]="config"  [ngModelOptions]="{standalone: true}"></ckeditor> -->
+        <!-- <app-tiny-mce [ngClass]="{ 'invalid': submitedContenu && f.contenu.errors }" (emitContent)="getContent($event)" [idContenu]='id'></app-tiny-mce> -->
+        <app-tiny-mce [modalMail]="1" (emitContent)="getContent($event)"></app-tiny-mce>
+      </div>
+      <div class="formgroup full">
+        <label>Fichier joint</label>
+        <div>
+          <div *ngFor="let attachment of mail.attachments">
+            <input type="checkbox" [(ngModel)]="attachment.selected" [ngModelOptions]="{standalone: true}">{{attachment.filename.substr(0, attachment.filename.lastIndexOf('.')) + '.pdf'}}
+          </div>
+        </div>
+      </div>
+      <div class="action">
+        <button class="button">Envoyer</button>
+      </div>
+    </form>
+  </div>
+</div>

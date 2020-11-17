@@ -1,0 +1,63 @@
+<div class="content">
+  <!-- <app-recherche [champDeRecherches]="champDeRecherches" [queryBuild]="queryBuild" (emitQueryBuild)="setQueryBuild($event)"></app-recherche> -->
+
+  <div class="table">
+    <div class="action" *ngIf="!isModal && canEdit">
+      <div class="left"></div>
+      <div class="right">
+        <div (click)="openImportModal(idStrategie)" class="nofocus">
+          <i class="fas fa-file-import"></i> Importer
+        </div>
+        <div routerLink="/chantier/{{idChantier}}/strategie/{{idStrategie}}/ajout-zone" class="nofocus">
+          <i class="fas fa-plus"></i> Créer
+        </div>
+      </div>
+    </div>
+    <app-header-table [querybuild]="queryBuild" [headers]="headers" (emitQueryBuild)="setQueryBuild($event)">
+    </app-header-table>
+    <div class="content" *ngIf="!isModal; else lineEmit">
+      <div class="row" *ngFor="let zoneIntervention of zonesIntervention"
+        (dblclick)="gotoDetails('/edit-zone', zoneIntervention)">
+        <!-- <div *ngIf="isModal" class="grow0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div> -->
+        <div>{{zoneIntervention.reference}}</div>
+        <div>{{zoneIntervention.libelle}}</div>
+        <div>{{zoneIntervention.nbPiecesUnitaires}}</div>
+        <div>{{zoneIntervention.nbPrelevementsCalcul}}</div>
+        <div>{{zoneIntervention.nbPrelevementsARealiser}}</div>
+        <div>{{zoneIntervention.batiment?.nom}}</div>
+        <div class="action">
+          <i class="fas fa-pencil-alt" (click)="gotoDetails('/edit-zone', zoneIntervention)"></i>
+          <i class="fas fa-trash delete-link" (click)="supprimer(zoneIntervention)" *ngIf="canEdit"></i>
+        </div>
+      </div>
+      <div *ngIf="!zonesIntervention || zonesIntervention.length === 0" class="danger"
+        style="padding: 1em; text-align: center;">
+        Aucune zone définie pour l'instant.
+      </div>
+      <app-pagination [nbObjets]="nbObjets" [queryBuild]="queryBuild" (emitQueryBuild)="setQueryBuild($event)">
+      </app-pagination>
+    </div>
+    <ng-template #lineEmit>
+      <div class="content">
+        <div class="row" *ngFor="let zoneIntervention of zonesIntervention" appDebounceClick
+          (debounceClick)="duplicateZone(zoneIntervention, idStrategie)" [debounceTime]="700" style="cursor: pointer;">
+          <!-- <div *ngIf="isModal" class="grow0"><input type="checkbox" [(ngModel)]="zoneIntervention.selected"
+              [ngModelOptions]="{standalone: true}" /></div> -->
+          <div>{{zoneIntervention.reference}}</div>
+          <div>{{zoneIntervention.libelle}}</div>
+          <div>{{zoneIntervention.nbPiecesUnitaires}}</div>
+          <div>{{zoneIntervention.nbPrelevementsCalcul}}</div>
+          <div>{{zoneIntervention.nbPrelevementsARealiser}}</div>
+          <div>{{zoneIntervention.batiment?.nom}}</div>
+          <div class="action"><i class="fas fa-clone"></i></div>
+        </div>
+        <app-pagination [nbObjets]="nbObjets" [queryBuild]="queryBuild" (emitQueryBuild)="setQueryBuild($event)">
+        </app-pagination>
+      </div>
+    </ng-template>
+  </div>
+
+</div>
+<app-modal-import-zone *ngIf="openModalImportZone" [callingStrategieId]="currentStrategieForImport"
+  (emitClose)="openModalImportZone = false" (emitZone)="getZones();openModalImportZone = false;">
+</app-modal-import-zone>

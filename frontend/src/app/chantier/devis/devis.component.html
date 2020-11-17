@@ -1,0 +1,28 @@
+<app-menu-chantier></app-menu-chantier>
+<div class="content">
+    <div class="bloc">
+        <div class="formgroup">
+            <label>Référence</label>
+            <div *ngIf="chantier && chantier.id; else newChantier">{{chantier?.id}}</div>
+            <ng-template #newChantier>
+                <img src="assets/img/ajax-loader-dark.gif" alt="Attente de réponse du serveur..." />
+            </ng-template>
+        </div>
+        <div class="formgroup">
+            <label>Nom du chantier</label>
+            <div>{{chantier?.nomChantier}}</div>
+        </div>
+    </div>
+
+    <h2>Générer/Joindre</h2>
+    <div class="bloc">
+        <div class="action">
+            <button type="button" class="button" (click)="openModalDevis = true;"><i class="fas fa-link"></i> Lier un devis/une commande</button>
+            <button type="button" class="button" (click)="createDevis();"><i class="fas fa-plus"></i> Créer un nouveau devis</button>
+        </div>
+    </div>
+    <app-liste-devis-commande [@fadeIn] [@fadeOut] *ngIf="chantier && chantier.id" nomCleParent="devisCommande.idChantier" (emitUnlink)="unlinkDevis($event)"
+        [idParent]="chantier.id"></app-liste-devis-commande>
+</div>
+<app-modal-devis-commande-chantier *ngIf="openModalDevis" (emitDevisCommande)="setDevis($event)"
+    (emitClose)="openModalDevis = false;"></app-modal-devis-commande-chantier>

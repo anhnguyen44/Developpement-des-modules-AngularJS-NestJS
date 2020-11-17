@@ -1,0 +1,169 @@
+<div class="wrapper">
+    <div class="triangle"></div>
+    <!-- <div class="menu" (clickOutside)="closeMenu()" [exclude]="'.sous-menu'"> -->
+    <div class="menu">
+        <div class="left">
+            <div (click)="closeMenu()" routerLink="/dashboard"><i class="fas fa-home"></i> <span>Accueil</span></div>
+            <div (click)="changeMenu('Application')" *ngIf="canRenderApplication"
+                 [class.active]="nomMenu === 'Application'">
+                <i class="fab fa-microsoft"></i> <span>Applications</span>
+            </div>
+            <ng-container *ngFor='let menu of listMenuPricipal;let i = index'>
+                <div (click)='changeMenu(menu.titre)' [class.active]="nomMenu === menu.titre"
+                     *ngIf="canRenderApplication">
+                    <i class={{menu.icone}}></i> <span>{{menu.titre}}</span>
+                </div>
+            </ng-container>
+        </div>
+        <div class="right" *ngIf="nomMenu === 'Application' && (canRenderApplication) && !openSousMenus">
+            <div class="application" (clickOutside)="closeMenu()" [exclude]="'.sous-menu,.left,.right'">
+                <div (click)="closeMenu()" routerLink="contact" *ngIf="canRenderBaseInterlocuteur">
+                    <i class="fas fa-users"></i><span>Comptes / Contacts</span>
+                </div>
+                <div (click)="closeMenu()" routerLink="devis-commande">
+                    <i class="fas fa-file-invoice"></i><span>Devis</span>
+                </div>
+                <div (click)="closeMenu()" routerLink="contact/activite">
+                    <i class="fas fa-calendar"></i><span>Activités</span>
+                </div>
+                <div (click)="closeMenu()" routerLink="logistique">
+                    <i class="fas fa-cubes"></i><span>Logistique</span>
+                </div>
+                <div (click)="closeMenu()" routerLink="logistique/planning">
+                    <i class="fas fa-calendar-alt"></i><span>Planning</span>
+                </div>
+                <div (click)="closeMenu()" routerLink="chantier/liste">
+                    <i class="fas fa-hard-hat"></i><span>Chantier</span>
+                </div>
+                <!--<div (click)="closeMenu()" routerLink="intervention">
+                  <i class="fas fa-object-ungroup"></i><span>Interventions</span>
+                </div>-->
+                <div (click)="closeMenu()" routerLink="prelevement">
+                    <i class="fab fa-searchengin"></i><span>Prélèvements</span>
+                </div>
+                <div (click)="closeMenu()" routerLink="parametrage" *ngIf="canRenderParametrage | async">
+                    <i class="fas fa-cogs"></i><span>Paramétrage</span>
+                </div>
+                <div (click)="closeMenu()" *ngIf="canRenderSuperAdmin | async" routerLink="superadmin">
+                    <i class="fas fa-tools"></i><span>Super Admin</span>
+                </div>
+                <div (click)="closeMenu()" *ngIf="canRenderAdminContenu | async" routerLink="contenu-admin">
+                    <i class="fab fa-internet-explorer"></i><span>Admin de contenu</span>
+                </div>
+                <div (click)="closeMenu()" routerLink="formation">
+                    <i class="fas fa-cube"></i><span>Formation</span>
+                </div>
+                
+            </div>
+        </div>
+        <ng-container *ngFor="let menuPrici of listMenuPricipal">
+            <div *ngIf="menuPrici!==null && nomMenu === menuPrici.titre && (canRenderApplication) && !openSousMenus"
+                 class="right">
+                <div class="application" (clickOutside)="closeMenu()" [exclude]="'.sous-menu,.left,.right'">
+                    <ng-container *ngFor="let menuEnfant of listeMenuVisible;let i = index">
+                        <div *ngIf="menuEnfant.menuParent!==null && menuEnfant.menuParent.id===menuPrici.id && !menuEnfant.recherche"
+                             (click)="changeSousMenu(menuEnfant.titre)">
+                            <div>
+                                <i class={{menuEnfant.icone}}></i>
+                                <div>
+                                    <span>
+                                        {{menuEnfant.titre}}
+                                    </span>
+                                    <span class="sousTitre" *ngIf="menuEnfant.sousTitre">
+                                        {{menuEnfant.sousTitre}}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="menuEnfant.menuParent!==null && menuEnfant.menuParent.id===menuPrici.id && menuEnfant.recherche"
+                             routerLink="contenu/liste/{{menuEnfant.id}}" (click)="closeMenu()">
+                            <div>
+                                <i class={{menuEnfant.icone}}></i>
+                                <div>
+                                    <span>
+                                        {{menuEnfant.titre}}
+                                    </span>
+                                    <span class="sousTitre" *ngIf="menuEnfant.sousTitre">
+                                        {{menuEnfant.sousTitre}}
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngFor="let contenu of listeContenu;let i = index">
+                        <div *ngIf="contenu.menu!==null && contenu.menu.id===menuPrici.id"
+                             (click)="gotoDetails('/contenu/',contenu)">
+                            <div>
+                                <a>
+                                    <img *ngIf="contenu.miniature!==null"
+                                         src="{{apiUrl}}/fichier/affiche/{{contenu?.miniature.keyDL}}">
+                                </a>
+                                <div>
+                                    <span>
+                                        {{contenu.titre}}
+                                    </span>
+                                    <span class="sousTitre" *ngIf="contenu.intro">
+                                        {{contenu.intro}}
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </ng-container>
+
+        <ng-container *ngFor="let sousMenu of listeMenuVisible">
+            <div *ngIf="nomSousMenu === sousMenu.titre  && (canRenderApplication) && openSousMenus && (!sousMenu.recherche)"
+                 class="right">
+                <div *ngIf="nomMenu!==nomSousMenu && sousMenu.menuParent !==null" class="nav-sous-menu"
+                     (clickOutside)="closeMenu()" [exclude]="'.sous-menu,.left,.right'">
+                    <div (click)="changeSousMenu(sousMenu.menuParent.titre)" style="cursor: pointer;" class="return">
+                        <strong>{{sousMenu.menuParent.titre}}</strong></div>
+                    <div>></div>
+                    <div>{{sousMenu.titre}}</div>
+                </div>
+                <div class="application" (clickOutside)="closeMenu()" [exclude]="'.sous-menu,.left,.right'">
+                    <ng-container *ngFor="let sousMenuNi2 of listeMenuVisible;let i = index">
+                        <div *ngIf="sousMenuNi2!==null && sousMenuNi2.menuParent.id===sousMenu.id && !sousMenuNi2.recherche"
+                             (click)="changeSousMenu(sousMenuNi2.titre)">
+                            <div><i class={{sousMenuNi2.icone}}></i><span>{{sousMenuNi2.titre}}</span></div>
+                            <span style=" padding-left: 70px;
+                                  display: block;
+                                  padding-top: 10px;
+                                  font-size: 14px;">
+                                  {{sousMenuNi2.sousTitre}}
+                    </span>
+                        </div>
+                        <div *ngIf="sousMenuNi2!==null && sousMenuNi2.menuParent.id===sousMenu.id && sousMenuNi2.recherche"
+                             routerLink="contenu/liste/{{sousMenuNi2.id}}" (click)="closeMenu()">
+                            <div><i class={{sousMenuNi2.icone}}></i><span>{{sousMenuNi2.titre}}</span></div>
+                            <span style=" padding-left: 70px;
+                                    display: block;
+                                    padding-top: 10px;
+                                    font-size: 14px;">
+                                    {{sousMenuNi2.sousTitre}}
+                      </span>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngFor="let contenu of listeContenu;let i = index">
+                        <div *ngIf="contenu.menu!==null && contenu.menu.id===sousMenu.id"
+                             (click)="gotoDetails('/contenu/',contenu)">
+                            <div><a><img *ngIf="contenu.miniature!==null"
+                                         src="{{apiUrl}}/fichier/affiche/{{contenu?.miniature.keyDL}}"></a><span>{{contenu.titre}}</span>
+                            </div>
+                            <span style=" padding-left: 70px;
+                                display: block;
+                                padding-top: 10px;
+                                font-size: 14px;">
+                                {{contenu.intro}}
+                  </span>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</div>

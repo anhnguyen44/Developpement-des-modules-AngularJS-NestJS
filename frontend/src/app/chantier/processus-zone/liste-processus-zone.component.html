@@ -1,0 +1,44 @@
+<div class="content">
+  <div class="bloc">
+    <div class="table">
+      <div class="action" *ngIf="canEdit">
+        <div class="left">
+
+        </div>
+        <div class="right">
+          <div (click)="emitNouveauProcessus($event);" class="nofocus">
+            <i class="fas fa-plus"></i> Ajouter
+          </div>
+        </div>
+      </div>
+
+      <app-header-table [headers]="headers" [querybuild]="queryBuild" [defaultOrder]="defaultOrder"
+        [allSelected]="isAllChecked()" [checkbox]="true" (emitQueryBuild)="setQueryBuild($event)"
+        (emitSetAllChecked)="setAllChecked($event)"></app-header-table>
+      <div class="content">
+        <div class="row" *ngFor="let processusZone of processusZones" (dblclick)="goToDetail(processusZone)">
+          <div class="grow0"><input type="checkbox" [(ngModel)]="processusZone.selected"></div>
+          <div class="grow0">
+            <div class="labelTable">Id</div>
+            <span>{{processusZone.id}}</span>
+          </div>
+          <div>
+            <div class="labelTable">Libellé</div>
+            <span>{{processusZone.processus?.libelle}}</span>
+          </div>
+          <div>
+            <div class="labelTable">Taches</div>
+            <span><span *ngFor="let tache of processusZone.listeGES[0].taches; let last = last">{{tache.nom}}<span *ngIf="!last">, </span></span></span>
+          </div>
+          <div class="action">
+            <i *ngIf="!isModal" class="fas fa-pencil-alt" (click)="goToDetail(processusZone)"></i>
+            <i *ngIf="isModal" class="fas fa-link" (click)="emitSelectionSite(processusZone)"></i>
+            <i class="fas fa-trash delete-link" (click)="delete(processusZone)" *ngIf="canEdit"></i>
+          </div>
+        </div>
+        <app-pagination [nbObjets]="nbObjets" [queryBuild]="queryBuild" (emitQueryBuild)="setQueryBuild($event)">
+        </app-pagination>
+      </div>
+    </div>
+  </div>
+</div>

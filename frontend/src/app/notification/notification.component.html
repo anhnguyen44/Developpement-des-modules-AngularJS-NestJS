@@ -1,0 +1,12 @@
+<div *ngIf="getNotification() && getNotification().messages && getNotification().messages.length > 0" [ngClass]="['content', getNotification().typeMessage]">
+    <div *ngIf="getNotification().typeMessage !== 'success'" (click)="closeMessage()" class="sub close">
+      <i class="sub fas fa-times"></i>
+    </div>
+    <div class="messages">
+      <span *ngIf="getNotification().messages.length === 1; else plusieurMessage">{{getNotification().messages[0]}}</span>
+      <ng-template #plusieurMessage>
+
+        <div class="message" *ngFor="let message of getNotification().messages">{{message}}</div>
+      </ng-template>
+    </div>
+</div>

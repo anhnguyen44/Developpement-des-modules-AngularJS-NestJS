@@ -1,0 +1,64 @@
+<app-menu-parametrage *ngIf="!isSuperAdmin && !isModal; else superAdminMenu"></app-menu-parametrage>
+<ng-template #superAdminMenu>
+  <app-menu-superadmin *ngIf="!isModal"></app-menu-superadmin>
+</ng-template>
+<div class="content">
+  <app-recherche [champDeRecherches]="champDeRecherches" [queryBuild]="queryBuild" (emitQueryBuild)="setQueryBuild($event)"></app-recherche>
+  <div class="bloc">
+    <div class="table">
+      <div class="action" *ngIf="!isModal">
+        <div class="left"></div>
+        <div class="right">
+          <i class="fas fa-file-excel"></i>
+          <div routerLink="/parametrage/utilisateur/ajouter" class="nofocus">
+            <i class="fas fa-plus"></i> Créer
+          </div>
+        </div>
+      </div>
+      <app-header-table [querybuild]="queryBuild" [headers]="headers" (emitQueryBuild)="setQueryBuild($event)"></app-header-table>
+      <div class="content" *ngIf="!isModal; else lineEmit">
+        <div class="row" *ngFor="let utilisateur of utilisateurs" (dblclick)="gotoDetails('/utilisateur/modifier', utilisateur)">
+          <div><div class="labelTable">Nom</div><span>{{utilisateur.nom}}</span></div>
+          <div><div class="labelTable">Prénom</div><span>{{utilisateur.prenom}}</span></div>
+          <div class="grow3"><div class="labelTable">Mail</div><span style="word-break: break-all">{{utilisateur.login}}</span></div>
+          <div>
+            <div class="labelTable">Profil(s)</div>
+            <span>
+              <span *ngFor="let profil of utilisateur.profils; last as isLast">{{profil.profil?.nom}}
+                <span *ngIf="!isLast">, </span>
+              </span>
+            </span>
+          </div>
+          <div class="action">
+            <i class="fas fa-pencil-alt" (click)="gotoDetails('/utilisateur/modifier', utilisateur)"></i>
+            <i *ngIf="!utilisateur.isSuspendu" tooltip="Suspendre" class="fas fa-user-slash delete-link" (click)="supprimer(utilisateur)"></i>
+            <i *ngIf="utilisateur.isSuspendu" tooltip="Réactiver" class="fas fa-user success-link" (click)="supprimer(utilisateur)"></i>
+            <i *ngIf="isSuperAdmin" tooltip="SA : Se connecter en tant que" class="fas fa-user-shield" (click)="impersonate(utilisateur)"></i>
+          </div>
+        </div>
+        <app-pagination
+                [nbObjets]="nbObjets"
+                [queryBuild]="queryBuild"
+                (emitQueryBuild)="setQueryBuild($event)"
+        ></app-pagination>
+      </div>
+      <ng-template #lineEmit>
+          <div class="content">
+              <div class="row" *ngFor="let utilisateur of utilisateurs" (click)="emitUser(utilisateur)" style="cursor: pointer;">
+                <div>{{utilisateur.nom}}</div>
+                <div>{{utilisateur.prenom}}</div>
+                <div class="grow3">{{utilisateur.login}}</div>
+                <div><span *ngFor="let profil of utilisateur.profils; last as isLast">{{profil.profil?.nom}}<span *ngIf="!isLast">, </span></span></div>
+                <div class="action"><i class="fas fa-link"></i></div>
+              </div>
+              <app-pagination
+                      [nbObjets]="nbObjets"
+                      [queryBuild]="queryBuild"
+                      (emitQueryBuild)="setQueryBuild($event)"
+              ></app-pagination>
+            </div>
+      </ng-template>
+    </div>
+  </div>
+</div>
+

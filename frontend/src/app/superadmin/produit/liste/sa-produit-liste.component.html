@@ -1,0 +1,42 @@
+<app-menu-superadmin></app-menu-superadmin>
+<div class="content">
+  <app-recherche [queryBuild]="queryBuild" [champDeRecherches]="champDeRecherches" (emitQueryBuild)="setQueryBuild($event)"></app-recherche>
+  <div class="bloc">
+    <div class="table">
+      <div class="action">
+        <div class="left">
+          <!-- <i class="fas fa-trash" *ngIf="canCreateProduite | async"></i> -->
+          <button class="button" type="button" (click)="doGenerateGrilles()">Générer/Mettre à jour les grilles <img *ngIf="isGrilleUpdating" src="assets/img/ajax-loader.gif" style="margin-left: 0.5em;" /></button>
+        </div>
+        <div class="right">
+          <i class="fas fa-file-excel"></i>
+          <div routerLink="/superadmin/produit/ajouter" class="nofocus" *ngIf="canCreateProduite | async">
+            <i class="fas fa-plus"></i> Créer
+          </div>
+        </div>
+      </div>
+      <app-header-table [querybuild]="queryBuild" [headers]="headers" (emitQueryBuild)="setQueryBuild($event)"></app-header-table>
+      <div class="content">
+        <div class="row" *ngFor="let produit of produits" (dblclick)="gotoDetails('superadmin/produit/modifier', produit)">
+          <div><div class="labelTable">{{headers[0].label}}</div><span>{{produit?.type?.nom}}</span></div>
+          <div><div class="labelTable">{{headers[1].label}}</div><span>{{produit.nom}}</span></div>
+          <div><div class="labelTable">{{headers[2].label}}</div><span>{{produit.code}}</span></div>
+          <div><div class="labelTable">{{headers[3].label}}</div><span>{{produit.prixUnitaire | currency:'EUR':true}}</span></div>
+          <div><div class="labelTable">{{headers[4].label}}</div><span>{{produit.rang}}</span></div>
+          <div class="action">
+            <span tooltip="Supprimer" show-delay="100" hide-delay="100"><i class="fas fa-trash delete-link" (click)="supprimer(produit.id)" *ngIf="canCreateProduite | async"></i></span> 
+            <span tooltip="Modifier" show-delay="100" hide-delay="100" style="margin-left: 1em;"><i class="fas fa-edit edit-link" (click)="gotoDetails('/superadmin/produit/modifier', produit)"></i></span> 
+            <span tooltip="Monter" show-delay="100" hide-delay="100" style="margin-left: 1em;"><i class="fas fa-chevron-up edit-link" (click)="changerOrdre(-1, produit)"></i></span> 
+            <span tooltip="Descendre" show-delay="100" hide-delay="100" style="margin-left: .5em;"><i class="fas fa-chevron-down edit-link" (click)="changerOrdre(1, produit)"></i></span>
+          </div>
+        </div>
+        <app-pagination
+                [nbObjets]="nbObjets"
+                [queryBuild]="queryBuild"
+                (emitQueryBuild)="setQueryBuild($event)"
+        ></app-pagination>
+      </div>
+    </div>
+  </div>
+</div>
+

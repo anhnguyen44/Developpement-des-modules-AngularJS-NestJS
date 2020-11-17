@@ -1,0 +1,20 @@
+<div class="content">
+  <i class="fas fa-times btn-close" (click)="close()"></i>
+  <app-liste-contact
+          *ngIf="type === 'liste-contact'"
+          [modal]="true"
+          [idCompte]="idCompte" 
+          (emitContact)="setContact($event)"
+          (emitNouveau)="setNouveau($event)"
+          [nonAttache]=nonAttache
+  ></app-liste-contact>
+  <app-liste-compte
+          *ngIf="type === 'liste-compte'"
+          [modal]="true"
+          (emitCompte)="setCompte($event)"
+  ></app-liste-compte>
+
+  <app-contact *ngIf="type === 'contact'" [modal]="true" [compte]="compte" (emitContact)="setContact($event)" (emitCompte)="setCompte($event)"></app-contact>
+  <app-compte *ngIf="type === 'compte'" [modal]="true"></app-compte>
+</div>
+

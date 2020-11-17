@@ -1,0 +1,160 @@
+@import "variables";
+
+:host{
+  display: flex;
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  :host{
+    flex-wrap: wrap;
+  }
+}
+
+.button {
+  margin-bottom: 0;
+}
+
+.generation{
+  background-color: #eaeaea;
+  display: block;
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+  
+.blocStag{
+  display: block;
+  width: 100%;  
+  padding: 10px;
+  border: 1px solid #e0e0e0;
+  box-sizing: border-box;
+}
+
+.even{
+  border-top: 0px;
+  border-bottom: 0px;
+}
+
+.blocStag>div{
+  float: left;
+}
+
+.odd, .odd>.actionSta{
+  background-color: #eaeaea; 
+}
+
+.even, .even>.actionSta{
+  background-color: #e2e2e2;
+}
+
+.odd>div, .odd>.actionSta i{
+  background-color: #e2e2e2;
+}
+
+.even>div, .even>.actionSta i{
+  background-color: #eaeaea; 
+}
+
+.even>.actionSta i:hover,.odd>.actionSta i:hover{
+  background-color: #3a3a3a;
+  color: #ec7123;
+  cursor: pointer;
+  transition: all 0.5s;
+}
+
+.actionSta i{
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 26px;
+  padding: 73px 0px;
+}
+
+.cocher{
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 10%;
+  cursor: pointer;
+}
+
+.infoSta{
+  width: 78%;
+  margin: 0 1%;
+  cursor: pointer;
+}
+
+.actionSta{
+  width: 10%;
+  
+}
+
+.cocher input[type='checkbox']{
+  display: block;
+  margin: 0 auto;
+}
+
+.clearfix:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0;
+}
+
+.clearfix { display: inline-block; }
+/* start commented backslash hack \*/
+* html .clearfix { height: 1%; }
+.clearfix { display: block; }
+
+.stagiaire {
+  background-color: white;
+}
+
+.cocherStagiaire {
+  background-color: $couleurFondTr1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 10%;
+}
+
+.infoStagiaire {
+  padding: 0 10px;
+  background-color: $couleurFondTr1;
+  width: 75%;
+}
+
+.actionStagiaire {
+  background-color: white;
+  width: 10%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.actionStagiaire > div {
+  background-color: $couleurFondTr1;
+  height: 47%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.5s;
+  cursor: pointer;
+}
+
+.actionStagiaire > div:hover {
+  background-color: $couleurFondTr2;
+}
+
+.actionStagiaire > div:hover > i {
+  color: $couleurFondBoutton;
+}
+
+.actionStagiaire > div > i {
+  font-size: 1.7em;
+  transition: all 0.5s;
+}

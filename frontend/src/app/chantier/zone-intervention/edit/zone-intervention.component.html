@@ -1,0 +1,76 @@
+<app-menu-chantier *ngIf="chantier" [chantier]="chantier"></app-menu-chantier>
+<div class="content">
+  <div class="onglet" *ngIf="idZoneIntervention">
+    <div class="button compte" [class.active]="onglet === 'definition'" (click)="changeOnglet('definition')">
+      Définition
+    </div>
+    <div class="button" [class.active]="onglet === 'echantillonnage'" (click)="changeOnglet('echantillonnage')">
+      &Eacute;chantillonnage
+    </div>
+    <div class="button" [class.active]="onglet === 'prelevements'" (click)="changeOnglet('prelevements')">
+      Prélèvements
+    </div>
+    <div class="button contact" [class.active]="onglet === 'plans'" (click)="changeOnglet('plans')">
+      Plans des prélèvements
+    </div>
+  </div>
+
+  <div class="bloc">
+    <div class="action">
+      <button type="button" class="button" *ngIf="!canValidateStrategie && !isValidationEnCours && !isStrategieValidee"
+        (click)="askValidation()">
+        <i class="fas fa-user-check"></i> Faire valider la stratégie
+      </button>
+      <button type="button" class="button" *ngIf="!canValidateStrategie && isValidationEnCours" disabled>
+        <i class="fas fa-user-check"></i> Validation en cours
+      </button>
+      <button type="button" class="button" *ngIf="canValidateStrategie && !isStrategieValidee" (click)="validate()">
+        <i class="fas fa-check"></i> Valider la stratégie
+      </button>
+      <button type="button" class="button" *ngIf="isStrategieValidee" (click)="unlock()">
+        <i class="fas fa-unlock"></i> Modifier la stratégie
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="onglet === 'definition'">
+    <app-zone-definition *ngIf="chantier && strategie && zoneIntervention && franchise"
+      (emitZoneNeedReload)="reloadZone()" [chantier]="chantier" [strategie]="strategie"
+      [zoneIntervention]="zoneIntervention" [franchise]="franchise" [canEdit]="canEdit"></app-zone-definition>
+  </div>
+  <div *ngIf="onglet === 'echantillonnage'">
+    <div class="bloc" *ngIf="idZoneIntervention">
+      <app-echantillonnage *ngIf="chantier && strategie && zoneIntervention && zoneIntervention.id && franchise" [canEdit]="canEdit"
+        [chantier]="chantier" [strategie]="strategie" [zoneIntervention]="zoneIntervention" [franchise]="franchise">
+      </app-echantillonnage>
+    </div>
+  </div>
+  <div *ngIf="onglet === 'prelevements'">
+    <div class="bloc" *ngIf="idZoneIntervention && chantier && strategie && zoneIntervention && zoneIntervention.id && franchise">
+      <app-zone-prelevement
+        (emitZoneNeedReload)="reloadZone()" [canEdit]="canEdit" [chantier]="chantier" [strategie]="strategie"
+        [zoneIntervention]="zoneIntervention" [franchise]="franchise"></app-zone-prelevement>
+    </div>
+  </div>
+  <div *ngIf="onglet === 'plans'">
+    <div class="bloc" *ngIf="idZoneIntervention">
+      <app-fichier-zone></app-fichier-zone>
+    </div>
+  </div>
+
+
+  <div class="onglet" *ngIf="idZoneIntervention">
+    <div class="button compte" [class.active]="onglet === 'definition'" (click)="changeOnglet('definition')">
+      Définition
+    </div>
+    <div class="button" [class.active]="onglet === 'echantillonnage'" (click)="changeOnglet('echantillonnage')">
+      &Eacute;chantillonnage
+    </div>
+    <div class="button" [class.active]="onglet === 'prelevements'" (click)="changeOnglet('prelevements')">
+      Prélèvements
+    </div>
+    <div class="button contact" [class.active]="onglet === 'plans'" (click)="changeOnglet('plans')">
+      Plans des prélèvements
+    </div>
+  </div>
+</div>

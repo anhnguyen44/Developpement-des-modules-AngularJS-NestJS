@@ -1,0 +1,35 @@
+{
+  "db": {
+    "host": "192.168.1.50",
+    "dbuser": "root",
+    "dbpassword": "diagadev",
+    "port": 3306,
+    "dbname": "aleaAC",
+    "testsMayDropDb": "true"
+  },
+  "cors": {
+    "origin": "*"
+  },
+  "token": {
+    "secret": "aleaac"
+  },
+  "ssl": {
+    "key": "/etc/letsencrypt/live/dev.aleacontroles.com/privkey.pem",
+    "cert": "/etc/letsencrypt/live/dev.aleacontroles.com/cert.pem"
+  },
+  "smtp": {
+    "host": "smtp.mailtrap.io",
+    "port": 2525,
+    "auth": {
+        "user": "b71d09d7deb9fa",
+        "pass": "3c26e3113b98cb"
+    },
+    "logger": true,
+    "debug": true
+  },
+  "site": {
+    "url": "https://dev.aleacontroles.com/aleaAC",
+    "apiUrl": "https://dev.aleacontroles.com:4242/api/v1"
+  }
+}
+

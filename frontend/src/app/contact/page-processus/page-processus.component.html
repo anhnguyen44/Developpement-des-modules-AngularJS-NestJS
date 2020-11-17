@@ -1,0 +1,4 @@
+<app-menu-contact></app-menu-contact>
+<app-liste-processus *ngIf="idType && (!idProcessus && !isNew)" [idCompte]="idType" (emitNew)="setNew()"></app-liste-processus>
+<app-processus *ngIf="(idProcessus && lastPath === 'modifier') || isNew" [idProcessus]="idProcessus" [isNew]="isNew" [idCompte]="idType"></app-processus>
+<app-historique *ngIf="idProcessus && lastPath === 'historique'" [idParent]="idProcessus" [application]="'processus'"></app-historique>

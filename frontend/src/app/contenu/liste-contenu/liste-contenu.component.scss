@@ -1,0 +1,70 @@
+:host{
+  width: 100%;
+}
+
+.bloc {
+  padding-top: 0;
+  width: 100%;
+}
+
+h3 {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 0;
+  padding: 10px 20px;
+}
+
+.date {
+  font-size: 0.8em;
+}
+
+.content-actu {
+  width: 100%;
+  display: flex;
+}
+
+.content-actu .img-actu {
+  width: 100px;
+  flex-shrink: 0;
+  margin-right: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content-actu img {
+
+}
+
+.complement {
+  margin-top: 5px;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.categorie,
+.link
+{
+  font-weight: bold;
+}
+
+.content-actu p {
+  margin: 0;
+}
+
+.content-actu .description {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.content-actu p {
+  width: 100%;
+}
+
+.content-actu a {
+  align-self: flex-end;
+}

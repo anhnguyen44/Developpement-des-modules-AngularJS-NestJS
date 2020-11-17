@@ -1,0 +1,47 @@
+<app-menu-logistique></app-menu-logistique>
+<div class="content">
+  <div class="bloc">
+    <div class="formgroup">
+      <label>Référence</label>
+      <div *ngIf="consommable?.id; else newConsommable">{{consommable.ref}}</div>
+      <ng-template #newConsommable>
+        Nouveau consommable
+      </ng-template>
+    </div>
+  </div>
+  <h2>
+    Information consommable
+  </h2>
+  <div class="bloc">
+    <form [formGroup]="consommableForm" (ngSubmit)="onSubmit(consommableForm)">
+      <div class="formgroup full">
+        <label>Agence</label>
+        <select formControlName="bureau" [compareWith]="compare"
+                [ngClass]="{ 'invalid': consommableForm['controls'].bureau.errors && submited}">
+          <option *ngFor="let bureau of bureaux" [ngValue]="bureau">{{bureau.nom}} - {{bureau.nomCommercial}}</option>
+        </select>
+      </div>
+      <div class="formgroup">
+        <label>Libellé</label>
+        <input type="text" formControlName="libelle" [ngClass]="{ 'invalid': consommableForm['controls'].libelle.errors && submited }">
+      </div>
+      <div class="formgroup">
+        <label>Nombre par commande</label>
+        <input type="number" formControlName="nombreParCommande" [ngClass]="{ 'invalid': consommableForm['controls'].nombreParCommande.errors && submited }">
+      </div>
+      <div class="formgroup">
+        <label>Référence</label>
+        <input type="text" formControlName="ref" [ngClass]="{ 'invalid': consommableForm['controls'].ref.errors && submited }">
+      </div>
+      <div class="formgroup">
+        <label>Stock</label>
+        <div>{{consommable?.stock}}</div>
+      </div>
+      <div class="action">
+        <button class="button" type="submit">Valider</button>
+        <div *ngIf="consommable?.id" class="button" (click)="openModalConsommable()">Ajouter au stock</div>
+      </div>
+    </form>
+  </div>
+</div>
+<app-modal-consommable *ngIf="modalConsommable" [nombreParCommande]="consommable.nombreParCommande" (emitNombreAAjouter)="setStock($event)" (emitClose)="close()"></app-modal-consommable>

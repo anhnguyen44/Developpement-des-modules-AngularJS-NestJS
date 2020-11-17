@@ -1,0 +1,50 @@
+{
+  "name": "tsmean",
+  "version": "4.0.1",
+  "description": "Boilerplate for a TS-MEAN App",
+  "devDependencies": {
+    "@types/aws-sdk": "^2.7.0",
+    "aws-sdk": "^2.256.1",
+    "lerna": "^2.11.0",
+    "ts-node": "^6.1.1",
+    "tslint": "^5.10.0",
+    "typescript": "^2.9.1",
+    "@types/node": "^10.3.2"
+  },
+  "scripts": {
+    "start": "echo \"Nothing to do\" && exit 1",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install": "lerna bootstrap",
+    "deploy:backend": "ts-node deployment/deploy-backend.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tsmean/tsmean"
+  },
+  "keywords": [
+    "Boilerplate",
+    "Seed",
+    "MEAN",
+    "NodeJS",
+    "ExpressJS",
+    "Angular",
+    "MongoDB",
+    "Typescript",
+    "Starter Kit"
+  ],
+  "author": "Daniel Niederberger <bersling@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tsmean/tsmean/issues"
+  },
+  "homepage": "https://github.com/tsmean/tsmean#readme",
+  "dependencies": {
+    "@ckeditor/ckeditor5-ckfinder": "^11.0.1",
+    "@ckeditor/ckeditor5-heading": "^11.0.1",
+    "cors": "^2.8.5",
+    "docxtemplater-image-module": "https://modules.docxtemplater.com/packages/v2/support_diagamter/8548e5ef-1d5d-418a-67e0-759d290e546a/image-module-3.5.3.tar.gz"
+  },
+  "config": {
+    "unsafe-perm": true
+  }
+}

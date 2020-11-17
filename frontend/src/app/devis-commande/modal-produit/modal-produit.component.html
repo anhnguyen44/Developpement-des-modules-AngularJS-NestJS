@@ -1,0 +1,41 @@
+<div class="content" (clickOutside)="close()" [delayClickOutsideInit]="true">
+    <i class="fas fa-times btn-close" (click)="close()"></i>
+    <div class="bloc">
+        <div class="recherche">
+            <input type="text" placeholder="Rechercher" [(ngModel)]="rechercheString">
+            <select id="typeDevis" [(ngModel)]="typeDevis" (change)="changeTypeDevis()">
+                <option *ngFor="let key of keys" [value]="key" [label]="enumTypeDevis[key] | enum"></option>
+            </select>
+            <div class="button" (click)="rechercher()">Trouver</div>
+        </div>
+    </div>
+    <div class="bloc">
+        <div class="table">
+            <div class="header">
+                <div class="row">
+                    <div>Type</div>
+                    <div>Nom</div>
+                    <div>Code Produit</div>
+                    <div>Code Tarif</div>
+                    <div>Prix</div>
+                    <div>Prix remisé</div>
+                </div>
+            </div>
+            <div class="content">
+                <div class="row" *ngFor="let tarifDetail of tarifDetails"
+                    (dblclick)="emitTarifDetail.emit(tarifDetail)">
+                    <div>{{enumTypeDevis[tarifDetail.produit.idType] | enum}}</div>
+                    <div>{{tarifDetail.produit.nom}}</div>
+                    <div>{{tarifDetail.produit.code}}</div>
+                    <div>{{tarifDetail.grilleTarif.reference}}</div>
+                    <div>{{tarifDetail.tarifPublique.prixUnitaire}} €</div>
+                    <div><span
+                            *ngIf=" tarifDetail.tarifPublique && tarifDetail.tarifPublique.prixUnitaire !== tarifDetail.prixUnitaire">{{tarifDetail.prixUnitaire}}
+                            €</span></div>
+                </div>
+            </div>
+        </div>
+        <app-pagination [nbObjets]="nbObjets" [queryBuild]="queryBuild" (emitQueryBuild)="setQueryBuild($event)">
+        </app-pagination>
+    </div>
+</div>

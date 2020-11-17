@@ -1,0 +1,28 @@
+:host{
+  width: 100%;
+  display: flex;
+}
+
+.btn-add {
+  color: seagreen;
+  cursor: pointer;
+  padding-right: .5em;
+}
+
+.roundbutton {
+  padding-left: 1em;
+  border: none;
+  background: none;
+  font-size: 1em;
+}
+
+.btn-remove {
+  color: red;
+  cursor: pointer;
+}
+
+@media (max-width: 640px) {
+  :host{
+    flex-wrap: wrap;
+  }
+}

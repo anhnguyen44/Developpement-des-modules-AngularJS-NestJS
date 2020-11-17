@@ -1,0 +1,39 @@
+<app-menu-superadmin></app-menu-superadmin>
+<div class="content">
+  <app-recherche [champDeRecherches]="champDeRecherches" [queryBuild]="queryBuild" (emitQueryBuild)="setQueryBuild($event)"></app-recherche>
+  <div class="bloc">
+    <div class="table">
+      <div class="action">
+        <div class="left">
+          
+        </div>
+        <div class="right">
+          <i class="fas fa-file-excel"></i>
+          <div routerLink="/superadmin/franchise/ajouter" class="nofocus" *ngIf="canCreateFranchise | async">
+            <i class="fas fa-plus"></i> Créer
+          </div>
+        </div>
+      </div>
+      <div class="header">
+        <div class="row">
+          <div>Raison Sociale</div>
+          <div>Franchisé</div>
+          <div class="action">Action</div>
+        </div>
+      </div>
+      <div class="content">
+        <div class="row" *ngFor="let franchise of franchises" (dblclick)="gotoDetails('superadmin/franchise/modifier', franchise)">
+          <div><div class="labelTable">Raison sociale</div><span>{{franchise.raisonSociale}}</span></div>
+          <div><div class="labelTable">Franchisé</div><span>{{franchise.nomPrenomSignature}}</span></div>
+          <div class="action"><i class="fas fa-pencil-alt" (click)="gotoDetails('superadmin/franchise/modifier', franchise)"></i></div>
+        </div>
+        <app-pagination
+                [nbObjets]="nbObjets"
+                [queryBuild]="queryBuild"
+                (emitQueryBuild)="setQueryBuild($event)"
+        ></app-pagination>
+      </div>
+    </div>
+  </div>
+</div>
+

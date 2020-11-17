@@ -1,0 +1,45 @@
+<app-menu-superadmin></app-menu-superadmin>
+<div class="content">
+  <h2>Amiante Liste A/B/C</h2>
+  <div class="bloc">
+    <div class="formgroup full">
+      <label for="fichier" id="labelFichier">Colonnes</label>
+      <div>liste ('A', 'B', 'C', 'Autre'), partieStructure, composantConstruction, partieComposant</div>
+    </div>
+    <div class="formgroup full">
+      <label for="fichier" id="labelFichier">Présence ligne header</label>
+      <div>Non</div>
+    </div>
+    <div class="formgroup full">
+      <label for="fichier" id="labelFichier">Fichier XLSX</label>
+      <input type="file" id="fichier" (change)="onFileChangeAmiante($event)" #fileInputAmiante><i (click)="openFileChangeAmiante()"
+        class="fas fa-file-upload"></i>
+    </div>
+    <div class="action">
+      <button class="button" (click)="envoyerAmiante()" [disabled]="!fichier">
+        <i class="fas fa-upload" style="font-size: 20px;"></i> Mettre à jour avec le fichier
+        <img *ngIf="isImportListesAmiante" src="assets/img/ajax-loader.gif" style="margin-left: 0.5em;" />
+      </button>
+    </div>
+  </div>
+  <h2>Listes enrichissables</h2>
+  <div class="bloc">
+    <div class="formgroup full">
+      <label for="fichier" id="labelFichier">Colonnes</label>
+      <div>typePartage ('Aucun', 'Franchise', 'Reseau'), nomListe, resume, valeur, ordre, isLivreParDefaut, sousListe</div>
+    </div>
+    <div class="formgroup full">
+      <label for="fichier" id="labelFichier">Présence ligne header</label>
+      <div>Oui</div>
+    </div>
+    <div class="formgroup full">
+      <label for="fichier" id="labelFichier">Fichier XLSX</label>
+      <input type="file" id="fichier" (change)="onFileChangeEnrichissable($event)" #fileInputListe><i (click)="openFileChangeEnrichissable()"
+        class="fas fa-file-upload"></i>
+    </div>
+    <div class="action">
+      <button class="button" (click)="exportListesEnrichissables()"><i class="fas fa-download" style="font-size: 20px;"></i>Télécharger export</button>
+      <button class="button" (click)="envoyerEnrichissable()" [disabled]="!fichierListesEnrichissables"><i class="fas fa-upload" style="font-size: 20px;"></i>Mettre à jour avec le fichier</button>
+    </div>
+  </div>
+</div>

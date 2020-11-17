@@ -1,0 +1,67 @@
+<div class="content">
+    <h2>Information</h2>
+    <div class="bloc">
+        <!-- mode edition -->
+        <form name="form" #f="ngForm" (ngSubmit)="f.form.valid && valider(f)" *ngIf="isNew; else noEdit" novalidate>
+            <div class="formgroup">
+                <label>Référence</label>
+                <input type="text" [(ngModel)]="prelevement.reference" name="reference" #reference="ngModel" required
+                       [ngClass]="{ 'invalid': f.submitted && reference.invalid }">
+            </div>
+            <div class="formgroup">
+                <label>Type</label>
+                <select [(ngModel)]="prelevement.idTypePrelevement" name="idTypePrelevement" #idTypePrelevement="ngModel" required
+                        [ngClass]="{ 'invalid': f.submitted && idTypePrelevement.invalid }">
+                    <option *ngFor="let keyTypePrelevement of keysTypePrelevement" [value]="keyTypePrelevement">{{enumTypePrelevement[keyTypePrelevement] | enum}}</option>
+                </select>
+            </div>
+            <div class="formgroup" *ngIf="prelevement.idTypePrelevement">
+                <label>Objectif</label>
+                <select [(ngModel)]="prelevement.objectif" name="objectif" #objectif="ngModel"
+                        [required]="prelevement.idTypePrelevement"
+                        [ngClass]="{ 'invalid': f.submitted && objectif.invalid }">
+                    <option *ngFor="let objectif of objectifs" [ngValue]="objectif">{{objectif.code}}</option>
+                </select>
+            </div>
+            <div class="formgroup" *ngIf="prelevement.idTypePrelevement">
+                <label>Zone intervention</label>
+                <select [(ngModel)]="prelevement.zoneIntervention" #zoneIntervention="ngModel" name="zoneIntervention"
+                        [required]="prelevement.idTypePrelevement"
+                        [ngClass]="{ 'invalid': f.submitted && zoneIntervention.invalid }">
+                    <option *ngFor="let zoneInter of zonesIntervention" [ngValue]="zoneInter">{{zoneInter.libelle}}</option>
+                </select>
+            </div>
+
+            <h3 *ngIf="prelevement.idTypePrelevement &&
+            (prelevement.idTypePrelevement == enumTypePrelevement.METAOP || prelevement.idTypePrelevement == enumTypePrelevement.ENVIRONNEMENTAL)">
+                Info analyse
+            </h3>
+
+            <div class="formgroup" *ngIf="prelevement.idTypePrelevement &&
+            (prelevement.idTypePrelevement == enumTypePrelevement.METAOP || prelevement.idTypePrelevement == enumTypePrelevement.ENVIRONNEMENTAL)">
+                <label>Objectif visé (f/L)</label>
+                <input type="number" [(ngModel)]="prelevement.saViseeStrategie" name="saViseeStrategie"  #saViseeStrategie="ngModel"
+                       [required]="prelevement.idTypePrelevement == enumTypePrelevement.METAOP || prelevement.idTypePrelevement == enumTypePrelevement.ENVIRONNEMENTAL"
+                       [ngClass]="{ 'invalid': f.submitted && saViseeStrategie.invalid }">
+            </div>
+
+            <div class="formgroup" *ngIf="prelevement.idTypePrelevement &&
+            (prelevement.idTypePrelevement == enumTypePrelevement.METAOP || prelevement.idTypePrelevement == enumTypePrelevement.ENVIRONNEMENTAL)">
+                <label>Fraction à analyser</label>
+                <select [(ngModel)]="prelevement.idFractionStrategie" name="idFractionStrategie" #idFractionStrategie="ngModel"
+                        [required]="prelevement.idTypePrelevement == enumTypePrelevement.METAOP || prelevement.idTypePrelevement == enumTypePrelevement.ENVIRONNEMENTAL"
+                        [ngClass]="{ 'invalid': f.submitted && idFractionStrategie.invalid }">
+                    <option *ngFor="let keyFractionFiltre of keysFractionFiltre" [value]="keyFractionFiltre">{{enumFractionFiltre[keyFractionFiltre]}}</option>
+                </select>
+            </div>
+
+            <div class="action">
+                <button type="submit" class="button">Valider</button>
+            </div>
+        </form>
+        <!-- mode lecture -->
+        <ng-template #noEdit>
+
+        </ng-template>
+    </div>
+</div>

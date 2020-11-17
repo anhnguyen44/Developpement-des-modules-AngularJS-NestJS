@@ -1,0 +1,24 @@
+{
+  "db": {
+    "host": "192.168.1.50",
+    "dbuser": "root",
+    "dbpassword": "diagadev",
+    "port": 3306,
+    "dbname": "aleaACYo",
+    "testsMayDropDb": "true"
+  },
+  "cors": {
+    "origin": "*"
+  },
+  "token": {
+    "secret": "aleaac"
+  },
+  "ssl": {
+    "key": null,
+    "cert": null
+  },
+  "site": {
+    "url": "http://localhost:4200",
+    "apiUrl": "http://localhost:4242/api/v1"
+  }
+}

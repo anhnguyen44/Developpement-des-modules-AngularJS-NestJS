@@ -1,0 +1,69 @@
+<div class="content">
+  <div class="bloc">
+    <div class="table">
+      <div class="action">
+        <div class="left">
+
+        </div>
+        <div class="right">
+          <i class="fas fa-file-excel"></i>
+          <div *ngIf="isModal" (click)="currentSitePrelevement = undefined; emitNouveauSite($event);" class="nofocus">
+            <i class="fas fa-plus"></i> Créer
+          </div>
+          <div *ngIf="!isModal" (click)="currentSitePrelevement = undefined; modalSiteIntervention = true;"
+            class="nofocus">
+            <i class="fas fa-plus"></i> Créer
+          </div>
+        </div>
+      </div>
+
+      <app-header-table [headers]="headers" [querybuild]="queryBuild" [defaultOrder]="defaultOrder"
+        [allSelected]="isAllChecked()" [checkbox]="true" (emitQueryBuild)="setQueryBuild($event)"
+        (emitSetAllChecked)="setAllChecked($event)"></app-header-table>
+      <div class="content">
+        <div class="row" *ngFor="let sitePrelevement of sitePrelevements" (dblclick)="goToDetail(sitePrelevement)">
+          <div class="grow0"><input type="checkbox" [(ngModel)]="sitePrelevement.selected"></div>
+          <div>
+            <div class="labelTable">Id</div>
+            <span>{{sitePrelevement.id}}</span>
+          </div>
+          <div>
+            <div class="labelTable">Nom</div>
+            <span>{{sitePrelevement.nom}}</span>
+          </div>
+          <div>
+            <div class="labelTable">Adresse</div>
+            <span>{{sitePrelevement.adresse?.adresse}} {{sitePrelevement.adresse?.cp}}
+              {{sitePrelevement.adresse?.ville}}</span>
+          </div>
+          <div>
+            <div class="labelTable">Commentaire</div>
+            <span>
+              {{sitePrelevement.commentaire}}
+            </span>
+          </div>
+          <div>
+            <div class="labelTable">Bâtiments(s)</div>
+            <span>
+              <span *ngFor="let batiment of sitePrelevement.batiments; last as isLast">{{batiment.nom}}
+                <span *ngIf="!isLast">, </span>
+              </span>
+            </span>
+          </div>
+          <div class="action">
+            <i *ngIf="!isModal" class="fas fa-pencil-alt" (click)="goToDetail(sitePrelevement)"></i>
+            <i *ngIf="isModal" class="fas fa-link" (click)="emitSelectionSite(sitePrelevement)"></i>
+            <i class="fas fa-trash delete-link" (click)="delete(sitePrelevement)"></i>
+          </div>
+        </div>
+        <app-pagination [nbObjets]="nbObjets" [queryBuild]="queryBuild" (emitQueryBuild)="setQueryBuild($event)">
+        </app-pagination>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-modal-site-intervention *ngIf="modalSiteIntervention && !isModal" [siteInterv]="currentSitePrelevement"
+  [modalSiteIntervention]="modalSiteIntervention" [isOnlyCreate]="isOnlyCreate" [for]="'create'"
+  (emitClose)="closeModalSiteIntervention($event)" (emitSiteIntervention)="setSiteIntervention($event)">
+</app-modal-site-intervention>

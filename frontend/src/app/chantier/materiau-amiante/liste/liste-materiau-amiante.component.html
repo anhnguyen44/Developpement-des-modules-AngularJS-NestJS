@@ -1,0 +1,61 @@
+<div class="content">
+  <div class="bloc">
+    <div class="table">
+      <div class="action" *ngIf="canEdit">
+        <div class="left">
+
+        </div>
+        <div class="right">
+          <div (click)="emitNouveauMateriau($event);" class="nofocus">
+            <i class="fas fa-plus"></i> Ajouter
+          </div>
+        </div>
+      </div>
+
+      <app-header-table [headers]="headers" [querybuild]="queryBuild" [defaultOrder]="defaultOrder"
+        [allSelected]="isAllChecked()" [checkbox]="true" (emitQueryBuild)="setQueryBuild($event)"
+        (emitSetAllChecked)="setAllChecked($event)"></app-header-table>
+      <div class="content">
+        <div class="row" *ngFor="let materiauZone of materiauZones" (dblclick)="goToDetail(materiauZone)">
+          <div class="grow0"><input type="checkbox" [(ngModel)]="materiauZone.selected"></div>
+          <div>
+            <div class="labelTable">Id</div>
+            <span>{{materiauZone.id}}</span>
+          </div>
+          <div>
+            <div class="labelTable">Matériau</div>
+            <span *ngIf="materiauZone.materiau && materiauZone.materiau.liste !== enumListeMateriau.A">{{materiauZone.materiau.partieComposant}}</span>
+            <span *ngIf="materiauZone.materiau && materiauZone.materiau.liste === enumListeMateriau.A">{{materiauZone.materiau.composantConstruction}}</span>
+            <span *ngIf="!materiauZone.materiau ">N/A</span>
+          </div>
+          <div>
+            <div class="labelTable">Matériau autres</div>
+            <span *ngIf="materiauZone.materiauAutre && materiauZone.materiauAutre.length">{{materiauZone.materiauAutre}}</span>
+            <span *ngIf="!materiauZone.materiauAutre || !materiauZone.materiauAutre.length">N/A</span>
+          </div>
+          <div>
+            <div class="labelTable">Liste</div>
+            <span *ngIf="materiauZone.materiau">{{enumListeMateriau[materiauZone.materiau.liste]}}</span>
+            <span *ngIf="!materiauZone.materiau">Autres</span>
+          </div>
+          <div>
+            <div class="labelTable">Score</div>
+            <span *ngIf="materiauZone.resultatConnu">
+              {{enumScore[materiauZone.resultatConnu?.toString()]}}
+            </span>
+            <span *ngIf="!materiauZone.resultatConnu">
+              
+            </span>
+          </div>
+          <div class="action">
+            <i *ngIf="!isModal" class="fas fa-pencil-alt" (click)="goToDetail(materiauZone)"></i>
+            <i *ngIf="isModal" class="fas fa-link" (click)="emitSelectionSite(materiauZone)"></i>
+            <i class="fas fa-trash delete-link" (click)="delete(materiauZone)" *ngIf="canEdit"></i>
+          </div>
+        </div>
+        <app-pagination [nbObjets]="nbObjets" [queryBuild]="queryBuild" (emitQueryBuild)="setQueryBuild($event)">
+        </app-pagination>
+      </div>
+    </div>
+  </div>
+</div>

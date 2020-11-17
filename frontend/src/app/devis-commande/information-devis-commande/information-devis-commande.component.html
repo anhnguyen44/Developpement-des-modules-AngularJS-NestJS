@@ -1,0 +1,124 @@
+<app-menu-devis-commande></app-menu-devis-commande>
+<div class="content">
+  <div class="bloc">
+    <div class="formgroup">
+      <label>Référence</label>
+      <div *ngIf="devisCommande?.id; else newDevis">{{devisCommande?.id}}</div>
+      <ng-template #newDevis>
+        Nouveau Devis
+      </ng-template>
+    </div>
+    <div class="formgroup" *ngIf="devisCommande?.id">
+      <label>Version</label>
+      <div>{{devisCommande?.version}}</div>
+        <div *ngIf="!devisCommande.versionFigee && isDevis" [class.disable]="devisCommande.isModifie"  class="button small" (click)="figeDevis()"><i class="fas fa-lock-open"></i></div>
+        <div *ngIf="devisCommande.versionFigee || !isDevis" [class.disable]="!isDevis" class="button small" (click)="figeDevis()"><i class="fas fa-lock"></i></div>
+    </div>
+    <div class="formgroup" *ngIf="devisCommande?.id">
+      <label>Statut</label>
+      <div>{{devisCommande?.statut?.nom}}</div>
+    </div>
+    <div class="formgroup" *ngIf="devisCommande?.id">
+      <label>Agence</label>
+      <div>{{devisCommande?.bureau?.nom}}<span *ngIf="devisCommande?.bureau?.franchise">
+          ({{devisCommande?.bureau?.franchise?.raisonSociale}})</span></div>
+    </div>
+  </div>
+  <h2>
+    Informations client
+  </h2>
+  <div class="bloc">
+    <form (ngSubmit)="onSubmit()">
+      <div class="formgroup full">
+        <label>Client</label>
+        <input *ngIf="!devisCommande?.versionFigee" type="text" [(ngModel)]="intituleClient"
+          [ngModelOptions]="{standalone: true}"><i *ngIf="!devisCommande?.versionFigee" class="fas fa-user-plus"
+          (click)="openModalClient()" tabindex="1"></i>
+        <div *ngIf="devisCommande?.versionFigee">{{intituleClient}}</div>
+      </div>
+      <div class="formgroup full" *ngIf="grilleTarifs && grilleTarifs.length > 0">
+        <label>Tarifs spécifiques associés</label>
+        <div>
+          <ul class="list-align-form checkmark-min">
+            <li *ngFor="let grilleTarif of grilleTarifs"><b>{{grilleTarif.reference}}</b> de type
+              {{enumTypeDevis[grilleTarif.idTypeGrille]}}</li>
+          </ul>
+        </div>
+      </div>
+      <h3>Type devis</h3>
+      <div class="formgroup full" *ngIf="devisCommande">
+        <label>Type</label>
+        <select *ngIf="!devisCommande.versionFigee" id="typeDevis" [(ngModel)]="devisCommande.typeDevis"
+          [ngModelOptions]="{standalone: true}" (change)="changeType()" tabindex="2">
+          <option *ngFor="let key of keys" [value]="key" [label]="enumTypeDevis[key] | enum"></option>
+        </select>
+        <div *ngIf="devisCommande.versionFigee">{{enumTypeDevis[devisCommande.typeDevis]}}</div>
+      </div>
+
+      <h3 *ngIf="displayAdresse" [@fadeIn] [@fadeOut]>Adresse</h3>
+      <form [formGroup]="adresseForm" *ngIf="displayAdresse" [@fadeIn] [@fadeOut]>
+        <div class="formgroup">
+          <label>Adresse</label>
+          <input type="text" formControlName="adresse"
+            [ngClass]="{ 'invalid': adresseForm['controls'].adresse.errors && submited}" (change)="isModified = true" tabindex="3">
+          <i class="fas fa-map-marker-alt"
+            *ngIf="adresseForm.get('adresse')?.value && adresseForm.get('cp')?.value && adresseForm.get('ville')?.value"
+            (click)="goToGoogleAdresse(adresseForm)"></i>
+        </div>
+        <div class="formgroup">
+          <label>Complément</label>
+          <input type="text" formControlName="complement" (change)="isModified = true" tabindex="4">
+        </div>
+        <div class="formgroup">
+          <label>Code postal</label>
+          <!-- <input type="text" formControlName="cp"
+            [ngClass]="{ 'invalid': adresseForm['controls'].cp.errors && submited }" (change)="isModified = true"> -->
+            <app-cp-ville [isRechercheVille]="false" [parentForm]="adresseForm" [internalFormControlName]="'cp'"
+                    (emitCP)="setCP($event)" [tabindex]="5"></app-cp-ville>
+        </div>
+        <div class="formgroup">
+          <label>Ville</label>
+          <!-- <input type="text" formControlName="ville"
+                     [ngClass]="{ 'invalid': adresseForm['controls'].ville.errors && submited }" (change)="isModified = true"> -->
+          <app-cp-ville [isRechercheVille]="true" [parentForm]="adresseForm" [internalFormControlName]="'ville'"
+            (emitCP)="setCP($event)" [tabindex]="6"></app-cp-ville>
+        </div>
+      </form>
+
+
+
+      <h3 *ngIf="displayChoixChantier" [@fadeIn] [@fadeOut]>Chantier</h3>
+      <form [formGroup]="chantierForm" *ngIf="displayChoixChantier" [@fadeIn] [@fadeOut]>
+        <div class="formgroup full">
+          <label></label>
+          <div>
+          <input type="radio" formControlName="relier" value="nouveau" [checked]="!devisCommande || (devisCommande && !devisCommande.idChantier)" id="nouveau"> <label for="nouveau">Créer un nouveau chantier</label> &nbsp;&nbsp;&nbsp;&nbsp;
+          <input type="radio" formControlName="relier" value="ancien" [checked]="devisCommande && devisCommande.idChantier" id="ancien"> <label for="ancien">Sélectionner un chantier</label>
+          </div>
+        </div>
+        <div class="formgroup full" *ngIf="chantierForm.controls['relier']!.value === 'ancien'">
+          <label>Chantier</label>
+          <input type="text" formControlName="txtChantier"><i class="fas fa-hard-hat" (click)="openModalChantier()"></i>
+        </div>
+      </form>
+
+      <div class="action" *ngIf="chantier">
+        Chantier : #{{chantier.reference}} - {{chantier.nomChantier}}
+      </div>
+
+      <div class="action" *ngIf="sessionFormation">
+        Session de formation : #{{sessionFormation?.id}} - {{sessionFormation?.typeFormation?.nomFormation}}
+      </div>
+
+      <div class="action">
+        <button class="button" *ngIf="devisCommande && devisCommande.id && devisCommande.idChantier" type="button" (click)="goToChantier()"><i class="fas fa-hard-hat"></i> Voir le chantier</button>
+        <button class="button" *ngIf="devisCommande && devisCommande.id && sessionFormation && sessionFormation.id && devisCommande.idFormation && activeButton" type="button" [routerLink]="['/formation', sessionFormation.id, 'modifier']"><i class="fas fa-hard-hat"></i> Voir la formation</button>
+        <button class="button" *ngIf="devisCommande && devisCommande.id && !sessionFormation && !devisCommande.idFormation && activeButton" type="button" (click)="openModalFormation()"><i class="fas fa-hard-hat"></i> Attacher une formation</button>
+        <button class="button">Suivant</button>
+      </div>
+    </form>
+  </div>
+</div>
+<app-modal-client *ngIf="modalClient" [modalClient]="modalClient" [choixDuType]="false" (emitClientWithTarif)="setClient($event)" (emitClose)="closeModalClient()" [@fadeIn] [@fadeOut]></app-modal-client>
+<app-modal-liste-chantier *ngIf="displayModalChantier" (emitChantier)="setChantier($event)" (emitClose)="closeModalChantier()"></app-modal-liste-chantier>
+<app-modal-session-formation *ngIf='displayModalFormation' (emitClose)='displayModalFormation=false' (emitSessionFormation)='emitSessionFormation($event)'></app-modal-session-formation>

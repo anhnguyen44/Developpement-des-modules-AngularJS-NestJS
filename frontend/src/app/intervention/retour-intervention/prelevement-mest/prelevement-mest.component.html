@@ -1,0 +1,19 @@
+<div class="form">
+  <div class="formgroup full">
+    <label>Zone de travail</label>
+    <div>{{prelevement.zoneIntervention.libelle}}</div>
+  </div>
+  <div class="formgroup">
+    <label>Point de prelevement</label>
+    <select [(ngModel)]="prelevement.idPointPrelevementMEST">
+      <option *ngFor="let keyPointPrelevement of keysPointPrelevement" [value]="keyPointPrelevement"
+              (ngModelChange)="checkPrelevement()">
+        {{enumPointPrelevement[keyPointPrelevement]}}
+      </option>
+    </select>
+  </div>
+  <div class="formgroup">
+    <label>Référence flacon</label>
+    <input type="text" [(ngModel)]="prelevement.referenceFlaconMEST" (ngModelChange)="checkPrelevement()">
+  </div>
+</div>

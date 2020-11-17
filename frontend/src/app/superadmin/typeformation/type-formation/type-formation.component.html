@@ -1,0 +1,49 @@
+<app-menu-superadmin *ngIf='!modal'></app-menu-superadmin>
+<div class="content">
+  <app-recherche [champDeRecherches]="champDeRecherches" [queryBuild]="queryBuild"
+    (emitQueryBuild)="setQueryBuild($event)"></app-recherche>
+
+  <!-- <h2 *ngIf='!modal'>Type de formations</h2> -->
+  <div class="bloc">
+    <div class="table">
+      <div class="action" *ngIf='!modal'>
+        <div class="right"></div>
+        <div class="left">
+          <div class="nofocus" (click)="ajoutTypeFormation()">
+            <i class="fas fa-plus"></i> Créer
+          </div>
+        </div>
+      </div>
+      <div class="header">
+        <div class="row">
+          <div class="grow2">Formation</div>
+          <div class="grow2">Produit</div>
+          <div class="grow1">Durée en jour</div>
+          <div class="grow1">Durée en heure</div>
+          <div class="grow1">Interne</div>
+          <div class="action">Action</div>
+        </div>
+      </div>
+      <div class="content">
+        <div class="row" *ngFor="let tf of typeFormations" (dblclick)="editTypeFormation(tf)">
+          <!-- <div class="row"> -->
+          <div class="grow2">{{tf.nomFormation}}</div>
+          <div class="grow2">{{tf?.product?.nom}}</div>
+          <div class="grow1">{{tf.dureeEnJour}}</div>
+          <div class="grow1">{{tf.dureeEnHeure}}</div>
+          <div class="grow1"><span *ngIf="tf?.interne"><i class="fas fa-check"></i></span></div>
+          <div class="action" *ngIf="!modal"><i show-delay="100" hide-delay="100" (click)="editTypeFormation(tf)"
+              class="fas fa-pencil-alt"></i><i class="fas fa-trash delete-link" (click)="supprimer(tf)"
+              style="margin-left: 1em;"></i>
+          </div>
+          <div class="action" *ngIf="modal">
+              <i *ngIf="modal" class="fas fa-link" (click)="editTypeFormation(tf)"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-modal-type-formation *ngIf="openModalCreate" [listPratique]='listPratique' [listTheorique]='listTheorique'
+    [typeFormations]="typeFormations" [typeFormation]="typeFormation" (emitTypeFormation)="setTypeFormation($event)"
+    (emitClose)="openModalCreate = false" [@fadeIn] [@fadeOut] [modalListeTypeFormation]='modal'></app-modal-type-formation>
+</div>

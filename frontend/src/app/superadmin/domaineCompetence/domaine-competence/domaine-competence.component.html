@@ -1,0 +1,33 @@
+<app-menu-superadmin></app-menu-superadmin>
+<div class="content">
+  <h2>Domaine Compétence</h2>
+  <div class="bloc">
+    <div class="table">
+      <div class="action">
+        <div class="right"></div>
+        <div class="left">
+          <div class="nofocus" (click)="ajoutCompetence()">
+            <i class="fas fa-plus"></i> Créer
+          </div>
+        </div>
+      </div>
+      <div class="header">
+        <div class="row">
+          <div class="grow1">id</div>
+          <div class="grow4">Nom de domaine compétence</div>
+          <div class="action">Action</div>
+        </div>
+      </div>
+      <div class="content">
+        <div class="row" *ngFor='let com of domaineCompetences;let i = index' (dblclick)="edit(com)">
+        <!-- <div class="row"> -->
+          <div class="grow1">{{i+1}}</div>
+          <div class="grow4">{{com.nom}}</div>
+          <div class="action"><i show-delay="100" hide-delay="100" class="fas fa-pencil-alt" (click)="edit(com)"></i><i class="fas fa-trash delete-link" (click)="supprimer(com)" style="margin-left: 1em;"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- app modal DC -->
+  <app-modal-domaine-competence *ngIf="domaineCompetence" [domaineCompetence]='domaineCompetence' [domaineCompetences]='domaineCompetences' (emitCompetence)="setCompetence($event)" [@fadeIn] [@fadeOut]></app-modal-domaine-competence>
+</div>

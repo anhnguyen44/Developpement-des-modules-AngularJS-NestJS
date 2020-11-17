@@ -1,0 +1,108 @@
+<app-menu-logistique></app-menu-logistique>
+<div class="content">
+  <div class="bloc">
+    <div class="formgroup">
+      <label>Référence</label>
+      <div *ngIf="pompe?.id; else newFiltre">{{pompe.ref}}</div>
+      <ng-template #newFiltre>
+        Nouvelle Pompe
+      </ng-template>
+    </div>
+  </div>
+  <h2>
+    Information pompe
+  </h2>
+  <div class="bloc">
+    <form [formGroup]="pompeForm" (ngSubmit)="onSubmit(pompeForm)">
+      <div class="formgroup full">
+        <label>Agence</label>
+        <select formControlName="bureau" [compareWith]="compare"
+                [ngClass]="{ 'invalid': pompeForm['controls'].bureau.errors && submited}">
+          <option *ngFor="let bureau of bureaux" [ngValue]="bureau">{{bureau.nom}} - {{bureau.nomCommercial}}</option>
+        </select>
+      </div>
+      <div class="formgroup">
+        <label>Libellé</label>
+        <input type="text" formControlName="libelle" [ngClass]="{ 'invalid': pompeForm['controls'].libelle.errors && submited}">
+      </div>
+      <div class="formgroup">
+        <label>Référence</label>
+        <input type="text" formControlName="ref" [ngClass]="{ 'invalid': pompeForm['controls'].ref.errors && submited}">
+      </div>
+      <div class="formgroup">
+        <label>Type</label>
+        <select formControlName="idTypePompe" [compareWith]="compare"
+                [ngClass]="{ 'invalid': pompeForm['controls'].idTypePompe.errors && submited}">
+          <option *ngFor="let key of keys" [value]="key" [label]="enumTypePompe[key] | enum"></option>
+        </select>
+      </div>
+      <div class="formgroup">
+        <label>Couleur agenda</label>
+        <input type="color" formControlName="couleur" value="#ff00ff">
+      </div>
+
+      <div class="formgroup">
+        <label>Incertitude (en %)</label>
+        <input type="number" formControlName="incertitude" [ngClass]="{ 'invalid': pompeForm['controls'].incertitude.errors && submited}">
+      </div>
+      <div class="formgroup">
+        <label>Indice Volumique</label>
+        <input type="text" formControlName="indiceVolumique" [ngClass]="{ 'invalid': pompeForm['controls'].indiceVolumique.errors && submited}">
+      </div>
+
+      <div class="formgroup">
+        <label>Date étalonnage</label>
+        <input type="date" formControlName="dateEtalonnage"
+               [value]="pompeForm.get('dateEtalonnage')?.value | date:'yyyy-MM-dd'"
+               [ngClass]="{ 'invalid': pompeForm['controls'].dateEtalonnage.errors && submited}">
+      </div>
+      <div class="formgroup">
+        <label>Période étalonnage (en jours)</label>
+        <input type="number" formControlName="periodeEtalonnage"
+               [ngClass]="{ 'invalid': pompeForm['controls'].periodeEtalonnage.errors && submited}">
+      </div>
+
+      <div class="formgroup">
+        <label>Date vérification</label>
+        <input type="date" formControlName="dateValidation"
+               [value]="pompeForm.get('dateValidation')?.value | date:'yyyy-MM-dd'"
+               [ngClass]="{ 'invalid': pompeForm['controls'].dateValidation.errors && submited}">
+      </div>
+      <div class="formgroup">
+        <label>Période vérification (en jours)</label>
+        <input type="number" formControlName="periodeValidation"
+               [ngClass]="{ 'invalid': pompeForm['controls'].periodeValidation.errors && submited}">
+      </div>
+
+      <div class="formgroup">
+        <label>Vérification Annexe</label>
+        <input type="date" formControlName="dateVerifAnnexe"
+               [value]="pompeForm.get('dateVerifAnnexe')?.value | date:'yyyy-MM-dd'"
+               [ngClass]="{ 'invalid': pompeForm['controls'].dateVerifAnnexe.errors && submited}">
+      </div>
+      <div class="formgroup">
+        <label>Période vérification (en jours)</label>
+        <input type="number" formControlName="periodeVerifAnnexe"
+               [ngClass]="{ 'invalid': pompeForm['controls'].periodeVerifAnnexe.errors && submited}">
+      </div>
+
+      <div class="action">
+        <div *ngIf="pompeForm.get('id')!.value" class="button" (click)="openModalIndisponibilite()">Gérer les indisponibilitées</div>
+        <button class="button" type="submit">Valider</button>
+      </div>
+    </form>
+  </div>
+  <app-planning
+          *ngIf="pompe && pompe.id"
+          [idBureau]="pompe.idBureau"
+          [type]="'logistique'"
+          [bureaux]="bureaux"
+          [entites]="[pompe]"
+          (emitInterval)="setInterval($event)"></app-planning>
+</div>
+<app-modal-indisponibilite
+        [rendezVous]="indisponibles"
+        *ngIf="modalIndisponibilite"
+        [pompe]="pompe"
+        (emitClose)="closeModalIndisponibilite()"
+        (emitRendezVous)="setIndisponibilite($event)"></app-modal-indisponibilite>

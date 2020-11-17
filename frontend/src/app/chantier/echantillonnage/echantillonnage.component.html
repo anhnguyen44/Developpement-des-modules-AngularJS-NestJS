@@ -1,0 +1,105 @@
+<form [formGroup]="echantillonnageForm" (ngSubmit)="onSubmit(echantillonnageForm)">
+    <div class="gess" formArrayName="echantillonnages">
+        <div class="affectation-ges"
+            *ngFor="let affectation of fff.controls; let i2 = index; let last = last"
+            [formGroupName]="i2" class="affectation-ges">
+            <div class="content-affectation-ges">
+                <div class="dateHeureDebut">
+                    <div class="formgroup">
+                        <label>Code</label>
+                        <input type="text" formControlName="code" />
+                    </div>
+                    <div class="formgroup">
+                        <label>Freq/semaine</label>
+                        <input type="number" min="0" formControlName="frequenceParSemaine" />
+                        <i class="fas fa-question-circle" style="position: relative; left: 1em;"
+                            tooltip="0 pour un prélèvement sans récurrence"></i>
+                    </div>
+                </div>
+                <div class="dateHeureDebut">
+                    <div class="formgroup">
+                        <label>Nb prélèvements calculé</label>
+                        <input type="number" formControlName="nbMesures" readonly />
+                    </div>
+                    <div class="formgroup">
+                        <label>Nb prélèvements à réaliser</label>
+                        <input type="number" min="0" formControlName="nbMesuresARealiser">
+                    </div>
+                </div>
+                <div class="dateHeureDebut"
+                    *ngIf="echantillonnageForm.get('echantillonnages')!.controls![i2]!.get('nbMesures')!.value !== echantillonnageForm.get('echantillonnages')!.controls![i2]!.get('nbMesuresARealiser')!.value">
+                    <div class="formgroup danger" style="width: 100%;">
+                        <app-liste nomListe="CommentaireDifferenceMesuresARealiser"
+                            [listeComplete]="listeDifferenceMesures" label="Commentaire Difference Mesures A Realiser"
+                            [parentForm]="echantillonnageForm.get('echantillonnages').controls[i2]"
+                            (emitListe)="listeDifferenceMesures = $event"
+                            *ngIf="isPatchValueDone && listeDifferenceMesures"
+                            internalFormControlName="commentaireDifferenceMesure" [tabIndex]="4" style="width: 100%;">
+                        </app-liste>
+                    </div>
+                </div>
+                <div class="dateHeureDebut">
+                    <div class="formgroup" *ngIf="echantillonnageForm.get('echantillonnages')!.controls![i2]!.get('hasTempsCalcule')!.value">
+                        <label>Durée calculée (h)</label>
+                        <input type="number" formControlName="duree" readonly />
+                    </div>
+                    <div class="formgroup" *ngIf="!echantillonnageForm.get('echantillonnages')!.controls![i2]!.get('hasTempsCalcule')!.value">
+                        
+                    </div>
+                    <div class="formgroup">
+                        <label>Durée à réaliser (h)</label>
+                        <input type="number" min="0" formControlName="dureeARealiser">
+                    </div>
+                </div>
+                <div class="dateHeureDebut"
+                    *ngIf="echantillonnageForm.get('echantillonnages')!.controls![i2]!.get('duree')!.value !== echantillonnageForm.get('echantillonnages')!.controls![i2]!.get('dureeARealiser')!.value && echantillonnageForm.get('echantillonnages')!.controls![i2]!.get('hasTempsCalcule')!.value">
+                    <div class="formgroup danger" style="width: 100%;">
+                        <app-liste nomListe="CommentaireDifferenceDureeARealiser" [listeComplete]="listeDifferenceDuree"
+                            label="Commentaire Difference Durée A Realiser"
+                            [parentForm]="echantillonnageForm.get('echantillonnages').controls[i2]"
+                            (emitListe)="listeDifferenceDuree = $event" *ngIf="isPatchValueDone && listeDifferenceDuree"
+                            internalFormControlName="commentaireDifferenceDuree" [tabIndex]="4" style="width: 100%;">
+                        </app-liste>
+                    </div>
+                </div>
+                <div class="dateHeureDebut">
+                    <div class="formgroup full" style="width: 100%;">
+                        <label>Localisation</label>
+                        <input type="text" min="0" formControlName="localisation" />
+                    </div>
+                </div>
+                <div class="dateHeureDebut"
+                    *ngIf="echantillonnageForm.get('echantillonnages')!.controls![i2]!.get('isRealise')!.value === false">
+                    <div class="formgroup danger" style="width: 100%;">
+                        <app-liste nomListe="CommentaireNonRealisationObjectif" [listeComplete]="listeNonRealisation"
+                            label="Commentaire non réalisation objectif"
+                            [parentForm]="echantillonnageForm.get('echantillonnages').controls[i2]"
+                            (emitListe)="listeNonRealisation = $event" *ngIf="isPatchValueDone && listeNonRealisation"
+                            internalFormControlName="commentaireNonRealise" [tabIndex]="4" style="width: 100%;">
+                        </app-liste>
+                    </div>
+                </div>
+                <div class="dateHeureDebut">
+                    <div class="action" style="width: 100%;" *ngIf="canEdit">
+                        <button type="button" class="button"
+                            [disabled]="!echantillonnageForm.get('echantillonnages')!.controls![i2]!.dirty"
+                            (click)="onSubmit(echantillonnageForm.get('echantillonnages')!.controls![i2])">
+                            <i class="fas fa-save"></i> Sauvegarger
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="sub action-affectation-ges">
+                <input type="checkbox" formControlName="isRealise" (click)="canDeselect(i2)" (keydown)="canDeselect(i2)"
+                    [class.disabled-checkbox]="!canDeselect(i2)" />
+                <span tooltip="En SS3, certains objectifs sont obligatoires." *ngIf="!canDeselect(i2)"><i
+                        class="fas fa-question-circle"></i></span>
+            </div>
+        </div>
+        <div class="action" style="width: 100%;" *ngIf="canEdit">
+            <button type="button" class="button" [disabled]="!echantillonnageForm.dirty" (click)="onSubmit(null)">
+                <i class="fas fa-save"></i> Sauvegarger tout
+            </button>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,969 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "./variables";
+@import "../node_modules/angular-calendar/css/angular-calendar.css";
+
+/* GLOBAL HELPER */
+
+.p8 {
+  padding: 8px;
+}
+
+html {
+  overflow: -moz-scrollbars-vertical;
+  overflow-y: scroll;
+}
+
+body {
+  color: $couleurTexte;
+  background-color: #e8e7e9;
+  font-family: Ubuntu;
+  min-height: 100vh;
+  margin: 0;
+}
+
+h2 {
+  margin: 0;
+  padding: 15px 20px;
+  font-size: 1em;
+  color: $couleurH2;
+  background-color: $couleurFondH2;
+  border-bottom: 1px solid $couleurH2;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+
+h3 {
+  width: 100%;
+  color: $couleurH2;
+  border-bottom: 1px solid $couleurH2;
+  font-size: 1em;
+  margin: 10px -20px;
+  margin-bottom: 20px;
+  padding: 15px;
+}
+
+h4 {
+  width: 100%;
+}
+
+hr {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.nofocus:focus {
+  outline: none !important;
+  border: 0 !important;
+}
+
+.action i {
+  font-size: 1.5em;
+  cursor: pointer;
+}
+
+.app-full-width {
+  width: 100%;
+  font-family: $fontFamily;
+}
+
+.container {
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.app-page {
+  padding-top: 30px;
+}
+
+img {
+  max-width: 100%;
+}
+
+.center {
+  text-align: center;
+}
+
+p.large {
+  font-size: 1.3rem;
+}
+
+ul.no-bullets {
+  list-style-type: none;
+}
+
+/* BLOCK */
+
+.content {
+  flex-grow: 1;
+}
+
+.bloc {
+  box-sizing: border-box;
+  width: 100%;
+  background-color: $couleurFondBloc;
+  padding: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+
+.subBloc {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.content .btn-close {
+  cursor: pointer;
+  font-size: 2em;
+  position: relative;
+  top: 40px;
+  float: right;
+  margin-right: 0.5em;
+  margin-top: 0.25em;
+}
+
+/* INPUT */
+
+form, .form {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.formgroup {
+  display: flex;
+  align-items: center;
+  width: 48%;
+  justify-content: flex-start;
+  position: relative;
+  min-height: 31px;
+}
+
+.formgroup > i {
+  cursor: pointer;
+  position: absolute;
+  right: 5px;
+}
+
+.formgroup > .smallAction {
+  position: absolute;
+  right: 5px;
+  color: $couleurTexte;
+}
+
+.formgroup > .smallAction > i {
+  cursor: pointer;
+  margin-left: 5px !important;
+}
+
+.formgroup > label i {
+  cursor: pointer;
+  position: absolute;
+  left: 235px;
+}
+
+.formgroup {
+  margin-bottom: 7px;
+  margin-top: 7px;
+}
+
+.full {
+  width: 100%;
+}
+
+.subFormGroup {
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.couleur {
+  width: 15px;
+  height: 15px;
+}
+
+label {
+  min-width: 250px;
+  text-align: left;
+  font-size: 16px;
+  max-width: 250px;
+  padding-right: 10px;
+}
+
+input,
+select,
+textarea {
+  border-radius: 3px;
+  width: 100%;
+  padding: 0 10px;
+  height: 35px;
+  font-family: Ubuntu;
+  font-size: 16px;
+  color: $couleurTexte;
+  border: solid 1px $couleurBorderInput;
+  background-color: $couleurFondInput;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+select {
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+textarea {
+  padding: 10px 10px;
+  height: 80px;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  flex-grow: unset;
+  height: 15px;
+  width: 15px;
+  text-align: left;
+  margin: 3px;
+}
+
+input {
+  height: 31px;
+}
+
+input.is-invalid {
+  border-color: red;
+}
+
+.action {
+  margin-top: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.button {
+  border-radius: 5px;
+  font-size: 20px;
+  background-color: $couleurFondBoutton;
+  color: $couleurBoutton;
+  //margin: 0 20px;
+  height: 35px;
+  display: flex;
+  padding: 0 20px;
+  justify-content: center;
+  align-items: center;
+  min-width: 200px;
+  text-align: center;
+  cursor: pointer;
+  border: none;
+  transition: all 0.5s;
+  box-sizing: border-box;
+}
+
+.button:hover {
+  cursor: pointer;
+}
+
+.button:disabled {
+  background-color: $couleurFondBouttonDisable;
+  color: $couleurTexteBouttonDisable;
+  cursor: not-allowed !important;
+}
+
+.button:disabled:hover {
+  background-color: $couleurFondHoverBouttonDisable;
+}
+
+.button i {
+  margin: 0 10px;
+}
+
+.action .button {
+  margin-bottom: 10px;
+}
+.action .button > i.fas{
+  font-size: 24px;
+  padding-right: 10px;
+}
+
+.button.small {
+  position: absolute;
+  right: 0;
+  padding: 0;
+  width: 40px !important;
+  height: 40px;
+  min-width: unset !important;
+}
+
+.button.small i {
+  position: relative !important;
+  right: unset;
+}
+
+.link {
+  color: $couleurFondBoutton;
+  transition: all 0.5s;
+  cursor: pointer;
+}
+
+.link:hover {
+  color: $couleurFondBouttonActive;
+}
+
+.delete-link {
+  color: $couleurFondBoutonDanger;
+  transition: all 0.5s;
+  cursor: pointer;
+}
+
+.delete-link:hover {
+  color: $couleurFondBoutonDangerActive;
+}
+
+.success-link {
+  color: $couleurFondBoutonSuccess;
+  transition: all 0.5s;
+  cursor: pointer;
+}
+
+.success-link:hover {
+  color: $couleurFondBoutonSuccessActive;
+}
+
+.edit-link {
+  color: $couleurFondBoutonInfo;
+  transition: all 0.5s;
+  cursor: pointer;
+}
+
+.edit-link:hover {
+  color: $couleurFondBoutonInfoActive;
+}
+
+i.fas + i.fas {
+  margin-left: 1em;
+}
+
+.button.active,
+.button:hover {
+  background-color: $couleurFondBouttonActive;
+}
+
+.formgroup > .button {
+  width: 100%;
+  text-align: center;
+  margin: 0;
+}
+
+.button.disable {
+  background-color: $couleurFondBouttonDisable;
+  color: $couleurTexte;
+  cursor: not-allowed;
+}
+
+.button.btn-danger {
+  background-color: $couleurFondBoutonDanger;
+  color: $couleurBoutton;
+}
+
+/* VALIDATION */
+input.invalid,
+textarea.invalid,
+select.invalid {
+  background-color: $fondInvalid;
+  //border-bottom: solid 2px red;
+}
+
+/* Alerte */
+
+.affecte {
+  color: red;
+}
+
+.table .message {
+  text-align: center;
+  padding: 15px;
+}
+
+.alert {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  background-color: #f2dede;
+  color: #a94442;
+  border-radius: 10px;
+  padding: 20px;
+  font-weight: bold;
+}
+
+.danger {
+  background-color: #f2dede;
+  color: #a94442;
+}
+
+.success {
+  background-color: #dff0d8;
+  color: #3c763d;
+}
+
+.success-text {
+  color: #3c763d;
+}
+
+/* LISTE */
+ul.checkmark li {
+  font-size: 16px; // this determines the size of the list text and therefore checkmark size
+  list-style-type: none; // remove default list style
+  margin-bottom: 2em; // lists need to be able to breathe
+  padding: 0.25em 0 0 2.5em; // make room for the circle
+  position: relative; // because we want to position the circle in an absolute fashion
+}
+
+ul.checkmark li:before {
+  content: " "; // the circle itself is empty
+  display: block;
+  border: solid 0.8em #ec7323; // create a colored area...
+  border-radius: 0.8em; // ... and turn it into a circle
+  height: 0;
+  width: 0;
+  position: absolute; // the circle is then put into place
+  left: 0.5em;
+  top: 40%;
+  margin-top: -0.5em;
+}
+
+ul.checkmark li:after {
+  content: " ";
+  display: block;
+  width: 0.3em; // the short bar of the mark is half as long as the long bar
+  height: 0.6em;
+  border: solid white;
+  border-width: 0 0.2em 0.2em 0; // creates the inverted "L" shape
+  position: absolute;
+  left: 1em;
+  top: 40%;
+  margin-top: -0.2em;
+  -webkit-transform: rotate(45deg); // tilts the shape
+  -moz-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+
+
+ul.checkmark-min li {
+  list-style-type: none; // remove default list style
+  margin-bottom: 1em; // lists need to be able to breathe
+  padding: 0.125em 0 0 1.25em; // make room for the circle
+  position: relative; // because we want to position the circle in an absolute fashion
+}
+
+ul.checkmark-min li:before {
+  content: " "; // the circle itself is empty
+  display: block;
+  border: solid 0.4em #ec7323; // create a colored area...
+  border-radius: 0.4em; // ... and turn it into a circle
+  height: 0;
+  width: 0;
+  position: absolute; // the circle is then put into place
+  left: 0.25em;
+  top: 20%;
+}
+
+ul.checkmark-min li:after {
+  content: " ";
+  display: block;
+  width: 0.15em; // the short bar of the mark is half as long as the long bar
+  height: 0.3em;
+  border: solid white;
+  border-width: 0 0.1em 0.1em 0; // creates the inverted "L" shape
+  position: absolute;
+  left: 0.5em;
+  top: 40%;
+  margin-top: -0.1em;
+  -webkit-transform: rotate(45deg); // tilts the shape
+  -moz-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+/* ZONE DE RECHERCHE */
+
+/* SIMPLE */
+
+.recherche {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.recherche > * {
+  flex-grow: 1;
+  margin: 0 10px;
+}
+
+/* TABLEAU */
+.table {
+  width: 100%;
+}
+
+.table .arrowDown {
+  position: relative;
+  top: 5px;
+  margin: 0 !important;
+}
+
+.table .header,
+.table .content,
+.table .action {
+  width: 100%;
+}
+
+.table .labelTable {
+  display: none;
+}
+
+.table .action {
+  display: flex;
+  justify-content: space-between;
+  padding: 0;
+  margin-bottom: 10px;
+}
+
+.table .action div {
+  display: flex;
+}
+
+.table .action div > * {
+  margin: 0 10px;
+  cursor: pointer;
+}
+
+.table .header .row,
+.table .content .row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.table .header .row > *,
+.table .content .row > * {
+  flex-grow: 1;
+  flex-basis: 0;
+  flex-shrink: 1;
+  margin: 0 5px;
+}
+
+.table .header i {
+  text-align: center;
+  margin: 3px;
+  height: 15px;
+  width: 15px;
+}
+
+.table .header .row {
+  border-bottom: solid 1px $couleurH2;
+  border-top: solid 1px $couleurH2;
+}
+
+.table .content .row:nth-child(even) {
+  background-color: $couleurFondTr1;
+}
+
+.table .content .row:nth-child(odd) {
+  background-color: $couleurFondTr2;
+}
+
+.table .content .row:hover {
+  background-color: $couleurFondTrHover;
+}
+
+.table .row .action {
+  display: flex;
+  justify-content: center;
+  min-width: 80px;
+  flex-grow: 0 !important;
+}
+
+.table .row .action i {
+  margin: 3px;
+  font-size: 1.2em;
+}
+
+/* FLEX GROW OPTION */
+.grow0 {
+  flex-grow: 0 !important;
+}
+.grow1 {
+  flex-grow: 1 !important;
+}
+.grow2 {
+  flex-grow: 2 !important;
+}
+.grow3 {
+  flex-grow: 3 !important;
+}
+.grow4 {
+  flex-grow: 4 !important;
+}
+
+/* MENU GAUCHE */
+
+nav.menu-gauche {
+  font-size: 19px;
+  color: $couleurTexteMenu;
+}
+nav.menu-gauche div {
+  padding: 15px 0;
+  cursor: pointer;
+  outline: 0;
+}
+
+nav.menu-gauche div:hover,
+nav.menu-gauche div.active {
+  color: $couleurTexteMenuHover;
+  border-right: solid 3px $couleurTexteMenuHover;
+}
+
+nav.menu-gauche > div > div > div > span {
+  color: $couleurTexteMenu;
+}
+
+nav.menu-gauche > div > div {
+  border-right: none !important;
+}
+
+nav.menu-gauche > div.no-border {
+  border-right: none !important;
+  color: $couleurTexteMenu !important;
+}
+
+nav.menu-gauche > div.no-border:hover {
+  border-right: none !important;
+}
+
+nav.menu-gauche > div > div > div {
+  border-right: none !important;
+}
+
+nav.menu-gauche > div > div > span:hover,
+nav.menu-gauche > div > div > span.active {
+  color: $couleurTexteMenuHover;
+}
+
+nav.menu-gauche > div > div > div > span:hover,
+nav.menu-gauche > div > div > div > span.active {
+  color: $couleurTexteMenuHover;
+}
+
+.flex{
+  display: flex;
+}
+
+.wrap {
+  flex-wrap: wrap;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+}
+
+nav.menu-gauche .sous-menu {
+  font-size: 0.95em;
+  padding: 4px 0 4px 15px;
+}
+
+/** CAROUSEL. */
+.carte-carousel {
+  display: block;
+  padding-top: 20px;
+  height: 220px;
+  width: 33vw;
+  background: #fff;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+/* CONTENU */
+.ckeditorContenu{
+  width: 100%;
+}
+
+.ckeditorContenu h1 {
+  margin-top: 0;
+}
+
+.ckeditorContenu h2 {
+  display: block;
+  width: 100%;
+  margin: 0 -20px;
+  box-shadow: none;
+  padding: 10px 20px;
+  font-size: 1.2em;
+}
+
+.ckeditorContenu h3 {
+ border: none;
+  margin-bottom: 0;
+  padding: 10px 20px;
+}
+
+.ckeditorContenu h1 + p {
+  margin-top: 0;
+}
+
+.ckeditorContenu h3 + p {
+  margin-top: 0;
+}
+
+.ckeditorContenu h4 + p {
+  margin-top: 0;
+}
+
+.ckeditorContenu ul li {
+  // list-style-image: url('assets/img/logo_carre.png');
+}
+
+.ckeditorContenu ul li ul li {
+  // list-style-image: url('assets/img/logo_carre.png');
+}
+.ckeditorContenu .mce-fullscreen{
+  z-index: 10000;
+}
+
+/* Badge notification */
+.badge1 {
+  position:relative;
+}
+.badge1[data-badge]:after {
+  content:attr(data-badge);
+  position:absolute;
+  top:-10px;
+  right:-10px;
+  font-size:.7em;
+  background: $couleurFondBoutton;
+  color: $couleurBoutton;
+  width:18px;height:18px;
+  text-align:center;
+  line-height:18px;
+  border-radius:50%;
+  box-shadow:0 0 1px #333;
+}
+
+// METEO retour intervention
+.meteo {
+  width: 100%;
+  display: flex;
+  height: 40px;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.pluis {
+  display: flex;
+  justify-content: space-between;
+}
+
+.pluis > div {
+  width: 25%;
+  display: flex;
+  justify-content: center;
+}
+
+.meteoWrapper label{
+  min-width: 100px;
+}
+
+.meteoWrapper i.fas + i.fas {
+  margin-left: 0;
+}
+
+.meteoHeader{
+  height: 20px;
+}
+
+.meteoWrapper{
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+
+.meteo > div {
+  width: 15%;
+}
+
+// Condition retour intervention
+.conditions {
+  margin-top: 10px;
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.conditions .headerCondition {
+  margin-bottom: 5px;
+}
+
+.conditions .headerCondition,
+.conditions .conditionContent{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.conditions .headerCondition > div,
+.conditions .conditionContent > div {
+  width: 30%;
+  margin-left: 10px;
+}
+
+.conditions .headerCondition > div:first-child,
+.conditions .conditionContent > div:first-child {
+  margin-left: 0;
+}
+
+// affectation prelevement
+
+.affectation {
+  display: flex;
+  background-color: $couleurFondTr2;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.actionAffectation {
+  width: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+@media (max-width: 640px) {
+
+  .formgroup>*{
+    width: 100%;
+  }
+  .formgroup {
+    width: 100%;
+  }
+  .formgroup label {
+    margin-bottom: 5px;
+  }
+  .formgroup {
+    flex-wrap: wrap;
+  }
+  .formgroup>i,
+  .smallAction
+  {
+    width: unset;
+    bottom: 8px;
+  }
+  .menu-gauche {
+    display: flex;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    justify-content: space-between;
+  }
+
+  nav.menu-gauche div {
+    padding: 15px;
+    white-space: nowrap;
+  }
+
+  nav.menu-gauche div:hover,
+  nav.menu-gauche div.active {
+    border-right: 0;
+  }
+
+  .table .content .row {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .table .content .row .labelTable {
+    min-width: 150px;
+  }
+
+  .table .content .row>div {
+    margin-bottom: 3px;
+    flex-basis: 100%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .table .labelTable {
+    display: block;
+    font-style: italic;
+  }
+
+  .table .labelTable:after {
+    content: ' :';
+  }
+
+  .table .row .action {
+    justify-content: flex-end;
+  }
+
+  .table .content .row .action>i {
+    margin-left: 20px;
+  }
+
+  .table .header {
+    display: none;
+  }
+
+  .recherche .button {
+    margin-bottom: 10px;
+  }
+
+  .o1 {
+    order: 1;
+  }
+
+  .o2 {
+    order: 2;
+  }
+
+  .o3 {
+    order: 3;
+  }
+
+  .o4 {
+    order: 4;
+  }
+
+  .o5 {
+    order: 5;
+  }
+
+  .o6 {
+    order: 6;
+  }
+
+  .o7 {
+    order: 7;
+  }
+
+  .o8 {
+    order: 8;
+  }
+
+  .noMobile {
+    display: none;
+  }
+}

@@ -1,0 +1,311 @@
+<div class="content">
+    <h2>Information</h2>
+    <div class="bloc">
+        <form [formGroup]="prelevementForm" (submit)="onSubmit(prelevementForm)">
+
+            <div class="formgroup full">
+                <label>Référence</label>
+                <input *ngIf="isEditable; else noEditReference" type="text" formControlName="reference">
+                <ng-template #noEditReference>{{prelevementForm.get('reference').value}}</ng-template>
+            </div>
+
+            <div class="formgroup">
+                <label>Type de prélèvement</label>
+                <select formControlName="idTypePrelevement" *ngIf="isEditable; else noEditType">
+                    <option *ngFor="let keyTypePrelevement of keysTypePrelevement" value="keyTypePrelevement">{{enumTypePrelevement[keyTypePrelevement] | enum}}</option>
+                </select>
+                <ng-template #noEditTypePrelevement>{{enumTypePrelevement[prelevementForm.get('idTypePrelevement').value] | enum}}</ng-template>
+            </div>
+
+            <div class="formgroup" >
+                <label>Objectif</label>
+                <select formControlName="idObjectif" (compareWith)="compare" *ngIf="isEditable; else noEditObjectif"
+                        (change)="changeObjectif($event.target.value)">
+                    <option *ngFor="let objectif of objectifs" [value]="objectif.id">{{objectif.lettre}}</option>
+                </select>
+                <ng-template #noEditObjectif>{{prelevementForm.get('objectif').get('lettre').value}}</ng-template>
+            </div>
+
+
+            <div class="formgroup">
+                <label>Zone Intervention</label>
+                <select formControlName="idZoneIntervention" (compareWith)="compare" (change)="changeZoneIntervention($event.target.value)" *ngIf="isEditable; else noEditZoneIntervention">
+                    <option *ngFor="let zoneIntervention of zonesIntervention" [value]="zoneIntervention.id">
+                        {{zoneIntervention.reference}} - {{zoneIntervention.libelle}}
+                    </option>
+                </select>
+                <ng-template #noEditZoneIntervention>{{prelevementForm.get('zoneIntervention').get('reference').value}} - {{prelevementForm.get('zoneIntervention').get('libelle').value}}</ng-template>
+            </div>
+
+            <div class="formgroup">
+                <label *ngIf="prelevementForm.get('idTypePrelevement')!.value === enumTypePrelevement.METAOP && prelevementForm.get('idZIPrel')!.value"
+                >Processus</label>
+                <div class="full" *ngIf="prelevementForm.get('idTypePrelevement')!.value === enumTypePrelevement.METAOP && prelevementForm.get('idZIPrel')!.value">
+                    <select *ngIf="isEditable; else noEditProcessus"
+                            formControlName="idProcessus" (compareWith)="compare" (change)="changeProcessus($event.target.value)">
+                        <option *ngFor="let proc of processus" [value]="proc.id">{{proc.libelle}}</option>
+                    </select>
+                    <ng-template #noEditProcessus>{{prelevementForm.get('processus').get('description').value}}</ng-template>
+                </div>
+            </div>
+
+            <div class="formgroup">
+                <label>Débit initial 1</label>
+                <input type="number" formControlName="debitInitial1" (change)="changeDebit()" min="0.001" step="0.001" *ngIf="isEditable; else noEditDebitInitial1">
+                <ng-template #noEditDebitInitial1>{{prelevementForm.get('debitInitial1').value}}</ng-template>
+            </div>
+            <div class="formgroup"
+                 *ngIf="prelevementForm!.get('idTypePrelevement')!.value == enumTypePrelevement.METAOP">
+                <label>Débit initial 2</label>
+                <input type="number" formControlName="debitInitial2" (change)="changeDebit()" min="0.001" step="0.001" *ngIf="isEditable; else noEditDebitInitial2">
+                <ng-template #noEditDebitInitial2>{{prelevementForm.get('debitInitial2').value}}</ng-template>
+            </div>
+            <div class="formgroup"
+                 *ngIf="prelevementForm!.get('idTypePrelevement')!.value == enumTypePrelevement.METAOP">
+                <label>Débit initial 3</label>
+                <input type="number" formControlName="debitInitial3" (change)="changeDebit()" min="0.001" step="0.001" *ngIf="isEditable; else noEditDebitInitial3">
+                <ng-template #noEditDebitInitial3>{{prelevementForm.get('debitInitial3').value}}</ng-template>
+            </div>
+            <div class="formgroup">
+                <label>Debit moyen initial</label>
+                <div>{{prelevementForm!.get('debitMoyenInitial')!.value}}</div>
+            </div>
+
+            <div class="formgroup">
+                <label>Débit final 1</label>
+                <input type="number" formControlName="debitFinal1" (change)="changeDebit()" min="0.001" step="0.001" *ngIf="isEditable; else noEditDebitFinal1">
+                <ng-template #noEditDebitFinal1>{{prelevementForm.get('debitFinal1').value}}</ng-template>
+            </div>
+            <div class="formgroup"
+                 *ngIf="prelevementForm!.get('idTypePrelevement')!.value == enumTypePrelevement.METAOP">
+                <label>Débit final 2</label>
+                <input type="number" formControlName="debitFinal2" (change)="changeDebit()" min="0.001" step="0.001" *ngIf="isEditable; else noEditDebitFinal2">
+                <ng-template #noEditDebitFinal2>{{prelevementForm.get('debitFinal2').value}}</ng-template>
+            </div>
+            <div class="formgroup"
+                 *ngIf="prelevementForm!.get('idTypePrelevement')!.value == enumTypePrelevement.METAOP">
+                <label>Débit final 3</label>
+                <input type="number" formControlName="debitFinal3" (change)="changeDebit()" min="0.001" step="0.001" *ngIf="isEditable; else noEditDebitFinal3">
+                <ng-template #noEditDebitFinal3>{{prelevementForm.get('debitFinal3').value}}</ng-template>
+            </div>
+            <div class="formgroup">
+                <label>Debit moyen final</label>
+                <div>{{prelevementForm!.get('debitMoyenFinal')!.value}}</div>
+            </div>
+
+            <div class="full" *ngIf="
+            prelevementForm.get('idStatutPrelevement')!.value >= enumStatutPrelevement.PRELEVE &&
+            prelevementForm.get('idStatutPrelevement')!.value != enumStatutPrelevement.NON_EFFECTUE ">
+                <h3>Affectations</h3>
+                <div class="full flex wrap affectation" *ngFor="let affectation of prelevementForm.get('affectationsPrelevement').value">
+                    <div class="formgroup">
+                        <label>Pompe</label>
+                        <div>{{affectation.pompe.ref}}</div>
+                    </div>
+                    <div class="formgroup">
+                        <label>Filtre</label>
+                        <div>{{affectation.filtre.ref}}</div>
+                    </div>
+                    <div class="formgroup">
+                        <label>Date début</label>
+                        <div>{{affectation.dateHeureDebut | date : 'dd-MM-yyyy à HH:mm'}}</div>
+                    </div>
+                    <div class="formgroup">
+                        <label>Date fin</label>
+                        <div>{{affectation.dateHeureFin | date : 'dd-MM-yyyy à HH:mm'}}</div>
+                    </div>
+                    <div class="formgroup full" *ngIf="affectation.operateurChantier.id">
+                        <label>Opérateur chantier</label>
+                        <div>{{affectation.operateurChantier.prenom}} {{affectation.operateurChantier.nom}}</div>
+                    </div>
+                    <div class="formgroup" *ngIf="affectation.operateurChantier.id">
+                        <label>Taches</label>
+                        <div class="full flex wrap">
+                            <div class="full" *ngFor="let tache of affectation.taches">{{tache.nom}}</div>
+                        </div>
+                    </div>
+                    <div class="full"
+                         *ngIf="prelevementForm.get('zoneIntervention') &&
+                         (prelevementForm.get('zoneIntervention').get('milieu').value === 1 || prelevementForm.get('zoneIntervention').get('milieu').value === 2)">
+                        <h4>Météo</h4>
+                        <div class="meteoWrapper">
+                            <label></label>
+                            <div class="meteo meteoHeader">
+                                <div>Pluie</div>
+                                <div>Dir. vent</div>
+                                <div>Vit. vent</div>
+                                <div>Temp.</div>
+                                <div>Hum.</div>
+                                <div>Pres.</div>
+                            </div>
+                        </div>
+                        <div class="meteoWrapper">
+                            <label>Avant</label>
+                            <div class="meteo">
+                                <div>
+                                    <span *ngIf="affectation.pluieAvant"><i class="fas fa-check"></i></span>
+                                </div>
+                                <div>
+                                    {{affectation.directionVentAvant}}
+                                </div>
+                                <div>
+                                    {{affectation.vistesseVentAvant}}
+                                </div>
+                                <div>
+                                    {{affectation.temperatureAvant}}
+                                </div>
+                                <div>
+                                    {{affectation.humiditeAvant}}
+                                </div>
+                                <div>
+                                    {{affectation.pressionAvant}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="meteoWrapper">
+                            <label>Pendant</label>
+                            <div class="meteo">
+                                <div>
+                                    <span *ngIf="affectation.pluiePendant"><i class="fas fa-check"></i></span>
+                                </div>
+                                <div>
+                                    {{affectation.directionVentPendant}}
+                                </div>
+                                <div>
+                                    {{affectation.vistesseVentPendant}}
+                                </div>
+                                <div>
+                                    {{affectation.temperaturePendant}}
+                                </div>
+                                <div>
+                                    {{affectation.humiditePendant}}
+                                </div>
+                                <div>
+                                    {{affectation.pressionPendant}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="meteoWrapper">
+                            <label>Après</label>
+                            <div class="meteo">
+                                <div>
+                                    <span *ngIf="affectation.pluieApres"><i class="fas fa-check"></i></span>
+                                </div>
+                                <div>
+                                    {{affectation.directionVentApres}}
+                                </div>
+                                <div>
+                                    {{affectation.vistesseVentApres}}
+                                </div>
+                                <div>
+                                    {{affectation.temperatureApres}}
+                                </div>
+                                <div>
+                                    {{affectation.humiditeApres}}
+                                </div>
+                                <div>
+                                    {{affectation.pressionApres}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="formgroup"
+                 *ngIf="prelevementForm.get('idStatutPrelevement')!.value >= enumStatutPrelevement.PRELEVE">
+                <label>Temps d'exposition</label>
+                {{prelevementForm.get('tempsExposition')!.value}} minutes
+            </div>
+
+            <div class="full" *ngIf="
+            prelevementForm.get('idStatutPrelevement')!.value >= enumStatutPrelevement.PRELEVE &&
+            prelevementForm.get('idStatutPrelevement')!.value != enumStatutPrelevement.NON_EFFECTUE ">
+                <h3>Conditions</h3>
+                <div class="formgroup">
+                    <label>Conditions</label>
+                    <select formControlName="conditions" *ngIf="isEditable; else noEditCondition">
+                        <option value="airSuffisant">Circulation d'air suffisante et représentative</option>
+                        <option value="airInsufisant">Circulation d'air insuffisante et/ou non représentative</option>
+                    </select>
+                    <ng-template #noEditCondition>
+                        <span *ngIf="prelevementForm.get('conditions').value === 'airSuffisant'">Circulation d'air suffisante et représentative</span>
+                        <span *ngIf="prelevementForm.get('conditions').value === 'airInsufisant'">Circulation d'air insuffisante et/ou non représentative</span>
+                    </ng-template>
+                </div>
+            </div>
+            <h3>Analyse</h3>
+            <div class="formgroup">
+                <label>Delai express</label>
+                <input type="checkbox" formControlName="isDelaiExpress" *ngIf="isEditable; else noEditDelaiExpress">
+                <ng-template #noEditDelaiExpress>
+                    <span *ngIf="prelevementForm.get('isDelaiExpress').value; else noDelaiExpress">
+                        Oui
+                    </span>
+                    <ng-template #noDelaiExpress>
+                        Non
+                    </ng-template>
+                </ng-template>
+            </div>
+            <div class="formgroup">
+
+            </div>
+            <div class="formgroup">
+                <label>Fraction stratégie</label>
+                <select formControlName="idFractionStrategie" *ngIf="isEditable; else noEditFractionStrategie">
+                    <option *ngFor="let keyFractionFiltre of keysFractionFiltre" [value]="keyFractionFiltre"
+                            [label]="enumFractionFiltre[keyFractionFiltre]"></option>
+                </select>
+                <ng-template #noEditFractionStrategie>{{enumFractionFiltre[prelevementForm.get('idFractionStrategie').value]}}</ng-template>
+            </div>
+            <div class="formgroup"
+                 *ngIf="prelevementForm.get('idStatutPrelevement')!.value >= enumStatutPrelevement.RETOUR_ANALYSE">
+                <label>Fraction analyse</label>
+                <select formControlName="idFractionAnalyse">
+                    <option *ngFor="let keyFractionFiltre of keysFractionFiltre" [value]="keyFractionFiltre"
+                            [label]="enumFractionFiltre[keyFractionFiltre]"></option>
+                </select>
+            </div>
+            <div class="formgroup">
+                <label>SA visée strategie</label>
+                <input type="number" formControlName="saViseeStrategie" *ngIf="isEditable; else noEditSaViseeStrategie">
+                <ng-template #noEditSaViseeStrategie>{{prelevementForm.get('saViseeStrategie').value}}</ng-template>
+            </div>
+            <div class="formgroup"
+                 *ngIf="prelevementForm.get('idStatutPrelevement')!.value >= enumStatutPrelevement.RETOUR_ANALYSE">
+                <label>SA visée analyse</label>
+                <input type="number" formControlName="saViseeAnalyse">
+            </div>
+            <div class="formgroup">
+                <label>Nb ouvertures grille strategie</label>
+                <input type="number" formControlName="nbOuverturesGrilleStrategie" *ngIf="isEditable; else noEditNbOuverturesGrilleStrategie">
+                <ng-template #noEditNbOuverturesGrilleStrategie>{{prelevementForm.get('nbOuverturesGrilleStrategie').value}}</ng-template>
+            </div>
+            <div class="formgroup"
+                 *ngIf="prelevementForm.get('idStatutPrelevement')!.value >= enumStatutPrelevement.RETOUR_ANALYSE">
+                <label>Nb ouvertures grille analyse</label>
+                <input type="number" formControlName="nbOuverturesGrilleAnalyse">
+            </div>
+            <div class="formgroup"
+                 *ngIf="prelevementForm.get('idStatutPrelevement')!.value >= enumStatutPrelevement.RETOUR_ANALYSE">
+                <label>Surface de filtration (mm²)</label>
+                <input type="number" formControlName="surfaceFiltration">
+            </div>
+            <div class="formgroup"
+                 *ngIf="prelevementForm.get('idStatutPrelevement')!.value >= enumStatutPrelevement.RETOUR_ANALYSE">
+                <label>Surface moyenne des ouvertures (mm²)</label>
+                <input type="number" formControlName="surfaceMoyenneOuvertures">
+            </div>
+            <div class="formgroup"
+                 *ngIf="prelevementForm.get('idStatutPrelevement')!.value >= enumStatutPrelevement.RETOUR_ANALYSE">
+                <label>COFRAC</label>
+                <input type="checkbox" formControlName="isCofrac">
+            </div>
+            <div class="action">
+                <button class="button">Valider</button>
+            </div>
+        </form>
+    </div>
+</div>

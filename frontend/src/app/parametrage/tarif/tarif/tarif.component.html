@@ -1,0 +1,51 @@
+<app-menu-parametrage *ngIf="!superAdminId; else superAdminMenu"></app-menu-parametrage>
+<ng-template #superAdminMenu>
+  <app-menu-superadmin></app-menu-superadmin>
+</ng-template>
+<div class="content">
+  <div class="bloc" *ngIf="id; else createTarif">
+    <div class="formgroup">
+      <label>Référence</label>
+      <div *ngIf="grilleTarif?.isGrillePublique; else refModifiable"><span tooltip="La référence des grilles publiques n'est pas modifiable" placement="right">{{grilleTarif.reference}}</span></div>
+      <ng-template #refModifiable>
+        <input type="text" [(ngModel)]="grilleTarif.reference" tabindex="1" />
+      </ng-template>
+    </div>
+  </div>
+  <ng-template #createTarif>
+    <div class="bloc">
+      <div class="formgroup">
+        <label>Référence</label>
+        <input type="text" [(ngModel)]="grilleTarif.reference" id="refTarif" [ngClass]="{ 'invalid': submittedInformations && isRefInvalide }" required tabindex="1" />
+      </div>
+    </div>
+  </ng-template>
+
+
+  <h2>Informations</h2>
+  <div class="bloc">
+    <form [formGroup]="informationsForm" (ngSubmit)="onSubmitInformations()">
+      <div class="formgroup">
+        <label>Type de grille</label>
+        <div *ngIf="grilleTarif?.typeGrille; else typeModifiable"><span tooltip="Le type d'une grille n'est pas modifiable après sa création" placement="right">{{grilleTarif.typeGrille.nom}}</span></div>
+      <ng-template #typeModifiable>
+          <select formControlName="typeGrille"
+          [ngClass]="{ 'invalid': submittedInformations && f.typeGrille.errors }" [compareWith]="compareFn">
+          <option *ngFor="let type of listeTypeGrille" [ngValue]="type" tabindex="2">{{type.nom}}</option>
+        </select>
+      </ng-template>
+      </div>
+      <div class="formgroup full">
+        <label>Conditions particulières (apparaissent dans le devis)</label>
+        <textarea formControlName="conditions" [ngClass]="{ 'invalid': submittedInformations && f.conditions.errors }" tabindex="3"></textarea>
+      </div>
+      <div class="formgroup full">
+          <label>Commentaire sur le tarif (non visible par le client)</label>
+          <textarea formControlName="commentaire" [ngClass]="{ 'invalid': submittedInformations && f.commentaire.errors }" tabindex="4"></textarea>
+        </div>
+      <div class="action">
+        <button class="button" type="submit" tabindex="5">Valider</button>
+      </div>
+    </form>
+  </div>
+</div>

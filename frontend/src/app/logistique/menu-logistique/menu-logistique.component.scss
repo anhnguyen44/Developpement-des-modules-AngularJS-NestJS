@@ -1,0 +1,17 @@
+:host {
+  min-width: 230px;
+  margin-right: 20px;
+}
+
+.sous-menu {
+  font-size: 0.95em;
+  padding: 4px 0 4px 15px;
+}
+
+@media (max-width: 640px) {
+  :host{
+    flex-wrap: wrap;
+    min-width: 100%;
+    margin-right: 0;
+  }
+}

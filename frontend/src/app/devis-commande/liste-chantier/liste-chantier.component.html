@@ -1,0 +1,40 @@
+<app-recherche [champDeRecherches]="champDeRecherches" [queryBuild]="queryBuild" (emitQueryBuild)="setQueryBuild($event)"></app-recherche>
+<div class="content">
+  <div class="bloc">
+    <div class="table">
+      <div class="action" *ngIf="!isModal">
+        <div class="left">
+          <img src="assets/img/rounded-angle-arrow-pointing-down.png" height="24" style="margin-top: 5px;" />
+          <select [(ngModel)]="statutCible">
+            <option *ngFor="let statu of listeStatuts" [ngValue]="statu" [disabled]="satutIsParent(statu)">{{statu.nom}}</option>
+          </select> 
+          <i class="fas fa-check-circle" [class.success-text]="statutCible" style="padding-top: 5px;" (click)="changeStatusTo()"></i>
+        </div>
+        <div class="right">
+          <i class="fas fa-file-excel"></i>
+          <div routerLink="/chantier/ajouter" class="nofocus">
+            <i class="fas fa-plus"></i> Créer
+          </div>
+        </div>
+      </div>
+
+      <app-header-table [headers]="headers" [querybuild]="queryBuild" [defaultOrder]="defaultOrder" [allSelected]="isAllChecked()" [checkbox]="true" (emitQueryBuild)="setQueryBuild($event)" (emitSetAllChecked)="setAllChecked($event)"></app-header-table>
+      <div class="content">
+        <div class="row" *ngFor="let chantier of chantiers" (dblclick)="goToDetail(chantier)">
+          <div class="grow0"><input type="checkbox" [(ngModel)]="chantier.selected"></div>
+          <div>{{chantier.id}}</div>
+          <div>{{chantier.statut?.nom}}</div>
+          <div><span>{{chantier.client?.nom}} {{chantier.client?.prenom}}</span><span *ngIf="chantier.client && chantier.client.compteContacts && chantier.client.compteContacts.compte; else spanParticulier"> ({{chantier.client?.compteContacts?.compte?.raisonSociale}})</span><ng-template #spanParticulier><span> (particulier)</span></ng-template></div>
+          <div>{{chantier.nomChantier}}</div>
+          <div>{{chantier.createdAt | date:'dd-MM-yyyy'}}</div>
+          <div class="action">
+            <i class="fas fa-pencil-alt" *ngIf="!isModal" (click)="goToDetail(chantier)"></i>
+            <i class="fas fa-link" *ngIf="isModal" (click)="setChantier(chantier)"></i>
+            <i class="fas fa-trash delete-link" *ngIf="!isModal" (click)="openModaleAbandon([chantier])"></i>
+          </div>
+        </div>
+        <app-pagination [nbObjets]="nbObjets" [queryBuild]="queryBuild" (emitQueryBuild)="setQueryBuild($event)"></app-pagination>
+      </div>
+    </div>
+  </div>
+</div>

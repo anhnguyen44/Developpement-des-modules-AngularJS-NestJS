@@ -1,0 +1,18 @@
+<div class="pagination" *ngIf="nbObjets > 10 && queryBuild.pageEnCours && queryBuild.parPage">
+  <div class="parPage">
+    <div>Lignes par page</div>
+    <select (change)="changeParPage($event.target.value)">
+      <option value="10">10</option>
+      <option value="25">25</option>
+      <option value="50">50</option>
+      <option value="100">100</option>
+      <option value="250">250</option>
+      <option value="500">500</option>
+    </select>
+  </div>
+  <i class="fas fa-chevron-circle-left" (click)="onPrev()" [class.disable]="queryBuild.pageEnCours === 1"></i>
+  <div>
+    <span>{{ queryBuild.pageEnCours }}</span> sur <span>{{ totalPages() }}</span>
+  </div>
+  <i class="fas fa-chevron-circle-right" (click)="onNext()" [class.disable]="lastPage()"></i>
+</div>

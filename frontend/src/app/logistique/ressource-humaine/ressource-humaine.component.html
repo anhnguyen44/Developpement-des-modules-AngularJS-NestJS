@@ -1,0 +1,101 @@
+<app-menu-logistique></app-menu-logistique>
+<div class="content">
+    <div class="bloc">
+      <div class="formgroup">
+        <label>Référence</label>
+        <div *ngIf="ressourceHumaine?.id; else newRessourceHumaine">{{ressourceHumaine.id}}</div>
+        <ng-template #newRessourceHumaine>
+          Nouvelle Ressource Humaines
+        </ng-template>
+      </div>
+    </div>
+    <h2>
+      Information Ressource Humaine
+    </h2>
+    <div class="bloc">
+      <form [formGroup]="rhForm" (ngSubmit)="onSubmit(rhForm)">
+        <div class="formgroup full">
+          <label>Utilisateur</label>
+          <input type="text" disabled [(ngModel)]="intituleUtilisateur" [ngModelOptions]="{standalone: true}"
+                 [ngClass]="{ 'invalid': rhForm['controls'].idUtilisateur.errors && submited}">
+          <i (click)="openModalUser()" class="fas fa-user-plus"></i>
+        </div>
+
+        <div class="formgroup full">
+          <label>Agence</label>
+          <select formControlName="idBureau" [compareWith]="compare"
+                  [ngClass]="{ 'invalid': rhForm['controls'].idBureau.errors && submited}">
+            <option *ngFor="let bureau of bureaux" [value]="bureau.id">{{bureau.nom}} - {{bureau.nomCommercial}}</option>
+          </select>
+        </div>
+
+        <div class="formgroup">
+            <label>Couleur agenda</label>
+            <input type="color" formControlName="couleur" value="#ff00ff">
+          </div>
+        
+
+        <form [formGroup]="formationHabiliteForm" (ngSubmit)="onSubmitFormationHabilite(formationHabiliteForm)" *ngIf='isFormateur'>
+            <div class="formgroup full">
+                <label>Habilités pour les formations</label>
+                <select formControlName="formationHabilite" [compareWith]="compare" [ngClass]="{ 'invalid': formationHabiliteForm['controls'].formationHabilite.errors && submitedFormationHabilite}">
+                  <option *ngFor="let formation of listTypeFormations;let i = index" [ngValue]='formation'>{{formation.nomFormation}}</option>
+                </select>
+            <button type="submit" class="roundbutton nofocus"><i class="fas fa-plus-circle right btn-add"></i></button>
+            </div>
+            <div class="formgroup full" *ngFor="let for of formationHabiliteAffiche;let i=index" >
+              <label></label>
+              <div style="padding-left:1em;">{{for.formation.nomFormation}}</div>
+              <i class="fas fa-times-circle btn-remove" style="padding-right:10px" (click)="removeFormationHabilite(for)"></i>
+            </div>
+        </form>
+        
+
+        <form [formGroup]="fonctionForm" (ngSubmit)="onSubmitFonction(fonctionForm)">
+          <h3>Fonctions</h3>
+          <div class="formgroup full">
+            <label>Fonctions</label>
+            <select formControlName="fonction" [compareWith]="compare" [ngClass]="{ 'invalid': fonctionForm['controls'].fonction.errors && submitedFonction}" (change)=setEvent()>
+              <!-- <option value="null"></option> -->
+              <option  *ngFor="let fonction of listFonctions;let i = index" [ngValue]="fonction">{{fonction.nom}}</option>
+            </select>
+            <button type="submit" class="roundbutton nofocus"><i class="fas fa-plus-circle right btn-add"></i></button>
+          </div>
+          <div class="formgroup full" *ngFor="let foncAffi of fonctionsAffiche;let i=index">
+            <label></label>
+            <div style="padding-left:1em;">{{foncAffi.fonction.nom}}</div>
+            <i class="fas fa-times-circle btn-remove" style="padding-right:10px" (click)='removeFoncAffi(foncAffi)'></i>
+          </div>
+        </form>
+        
+
+        <form [formGroup]="formationValideForm" (ngSubmit)="onSubmitFormationSuivi(formationValideForm)">
+          <h3>Formations validées</h3>
+          <div class="formgroup">	
+            <label>Formation suivi</label>
+            <select formControlName="formation" [compareWith]="compare" [ngClass]="{ 'invalid': formationValideForm['controls'].formation.errors && submitedFormationSuivi}">
+              <!-- <option value="null"></option> -->
+              <option *ngFor="let for of listTypeFormations;let i = index" [ngValue]="for">{{for.nomFormation}}</option>
+            </select>
+          </div>
+          <div class="formgroup">
+            <label>Date d'obtention</label>
+            <input type="date" formControlName="date" [ngClass]="{ 'invalid': formationValideForm['controls'].date.errors && submitedFormationSuivi}">
+            <button type="submit" class="roundbutton nofocus"><i class="fas fa-plus-circle right btn-add"></i></button>
+          </div>
+          <div class="formgroup full" *ngFor="let for of formationValideAffiche;let i=index">
+              <label></label>
+              <div style="padding-left:1em;">{{for.formation.nomFormation}}</div>
+              <div style="position: absolute; right: 135px;">{{for.dateObtenu | date:'dd-MM-yyyy'}}</div>
+              <i class="fas fa-times-circle btn-remove" style="padding-right:10px" (click)="removeFormationValide(for)"></i>
+            </div>
+        </form>
+        <div class="action">
+          <button class="button" type="submit">Valider</button>
+        </div>
+      </form>
+    </div>
+</div>
+<app-modal-user *ngIf="userModal" (emitClose)="userModal = false" (emitUtilisateur)="setUser($event)"
+                [@fadeIn] [@fadeOut]></app-modal-user>
+

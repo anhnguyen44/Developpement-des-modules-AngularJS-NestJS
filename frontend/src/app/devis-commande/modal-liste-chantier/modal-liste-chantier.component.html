@@ -1,0 +1,4 @@
+<div class="content" (clickOutside)="close($event)" [delayClickOutsideInit]="true">
+  <i class="fas fa-times btn-close" (click)="close($event)"></i>
+  <app-liste-chantier-devis [isModal]="true" (emitChantier)="setChantier($event)"></app-liste-chantier-devis>
+</div>

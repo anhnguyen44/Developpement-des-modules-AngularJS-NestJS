@@ -1,0 +1,55 @@
+@import "variables";
+.tableHeader {
+  display: flex;
+  align-items: center;
+}
+
+.header .row {
+  height: 40px;
+  padding: 0;
+}
+
+.order {
+  width: 40px;
+  height: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.order>div{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  height: 10px;
+}
+
+.order .up,
+.order .down {
+  width: 100%;
+  height: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.order i {
+  margin: 0;
+  font-size: 1.5em;
+  transition: all 0.5s;
+  cursor: pointer;
+}
+
+.order i:hover,
+.order i.selected {
+  color: $couleurFondBoutton;
+}
+
+@media (max-width: 640px) {
+  .header{
+    display: none;
+  }
+}

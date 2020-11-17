@@ -1,0 +1,10 @@
+<nav class="menu-gauche">
+  <div [class.active]="activeMenu === 'franchise'" routerLink="/parametrage/franchise" *ngIf="canRenderInfoFranchise | async">Infos franchise</div>
+  <div [class.active]="activeMenu === 'bureau'" routerLink="/parametrage/bureau" *ngIf="canRenderBureau | async">Agences</div>
+  <div [class.active]="activeMenu === 'utilisateur'" routerLink="/parametrage/utilisateur/liste" *ngIf="canRenderUtilisateurs | async">Gestion des utilisateurs</div>
+  <div [class.active]="activeMenu === 'grilleTarif'" routerLink="/parametrage/grilleTarif/liste" *ngIf="canRenderGrilles | async">Gestion des grilles tarif</div>
+  <div [class.active]="true" routerLink="/parametrage/grilleTarif/ajouter" *ngIf="activeMenu === 'grilleTarif' && activeAction === 'ajouter'" class="sous-menu"><i class="fas fa-angle-double-right"></i> Informations</div>
+  <div [class.active]="activeSousMenu === 'informations'" [routerLink]="['/parametrage/grilleTarif/', activeAction, 'informations', idEntite]" *ngIf="activeMenu === 'grilleTarif' && activeAction !== 'ajouter' && activeAction !== 'liste'" class="sous-menu"><i class="fas fa-angle-double-right"></i> Informations</div>
+  <div [class.active]="activeSousMenu === 'details'" [routerLink]="['/parametrage/grilleTarif/', activeAction, 'details', idEntite]" *ngIf="activeMenu === 'grilleTarif' && activeAction === 'modifier'" class="sous-menu"><i class="fas fa-angle-double-right"></i> Détails</div>
+  <div [class.active]="activeSousMenu === 'historique'" [routerLink]="['/parametrage/grilleTarif/', activeAction, 'historique', idEntite]" *ngIf="activeMenu === 'grilleTarif' && activeAction === 'modifier'" class="sous-menu"><i class="fas fa-angle-double-right"></i> Historique</div>
+</nav>

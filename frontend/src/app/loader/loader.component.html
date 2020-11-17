@@ -1,0 +1,10 @@
+<div [class.hidden]="!show">
+  <div class="loader-overlay">
+    <div *ngIf="show" class="loader"></div>
+  </div>
+</div>
+
+<div class="spinner" *ngIf="show">
+  <div class="double-bounce1"></div>
+  <div class="double-bounce2"></div>
+</div>

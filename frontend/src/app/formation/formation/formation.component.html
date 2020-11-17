@@ -1,0 +1,115 @@
+<app-menu-formation></app-menu-formation>
+<div class="content">
+    <h2 *ngIf='!id'>Nouvelle session de formation</h2>
+    <h2 *ngIf='id'>La session de formation #{{id}}</h2>
+    <div class="bloc">
+        <form [formGroup]="infoFormationForm" (ngSubmit)="onSubmit(infoFormationForm)">
+            <!-- <div class="formgroup full">
+                <label>Type de formation *</label>
+                <select formControlName="typeFormation" [ngClass]="{ 'invalid': submited && f.typeFormation?.errors }"
+                    tabindex="0" [compareWith]="compareFn" (change)=setEvent()>
+                    <option *ngFor='let for of listeTypeFormation' [ngValue]='for'>{{for.nomFormation}}</option>
+                </select>
+            </div> -->
+            <div class="formgroup full">
+                <label>Type de formation *</label>
+                <input type="text" formControlName="typeFormation"
+                       disabled
+                    [ngClass]="{ 'invalid': submited && f.typeFormation?.errors }">
+                <i class="fab fa-apple" (click)='openTypeFormation()'></i>
+            </div>
+            <div class="formgroup full">
+                <label>Agence de franchise</label>
+                <select formControlName="bureau" [ngClass]="{ 'invalid': submited && f.bureau?.errors }" tabindex="0"
+                    [compareWith]="compareFn" (change)=setListSalles()>
+                    <option *ngFor='let bureau of listeBureau' [ngValue]='bureau'>{{bureau.nom}} -{{bureau.adresse.cp}}
+                        {{bureau.adresse.ville}}</option>
+                </select>
+            </div>
+            <div class="formgroup">
+                <label>Statut</label>
+                <select formControlName="idStatutFormation" [compareWith]="compareFn"
+                    [ngClass]="{ 'invalid': submited && f.idStatutFormation?.errors }">
+                    <option *ngFor="let key of keys" [value]="key" [label]="enumStatutSessionFormation[key] | enum">
+                    </option>
+                </select>
+            </div>
+            <div class="formgroup">
+                <label>Date début de la formation</label>
+                <input type="date" formControlName="dateDebut"
+                    [ngClass]="{ 'invalid': submited && f.dateDebut?.errors }">
+            </div>
+            <div class="formgroup">
+                <label>Nombre de jour</label>
+                <input type="number" min="1" formControlName="nbrJour"
+                    [ngClass]="{ 'invalid': submited && f.nbrJour?.errors }" disabled
+                    style="cursor: not-allowed !important;">
+            </div>
+            <div class="formgroup">
+                <label>Salle de formation affectée</label>
+                <select formControlName="salle" [ngClass]="{ 'invalid': submited && f.salle?.errors }" tabindex="0"
+                    [compareWith]="compareFn">
+                    <option *ngFor='let salle of listeSalleFormation' [ngValue]='salle'>{{salle.libelle}} -
+                        {{salle.place}} places</option>
+                </select>
+            </div>
+            <!-- <div class="formgroup">
+                <label>Formateur affecté</label>
+                <select formControlName="formateur" [ngClass]="{ 'invalid': submited && f.formateur?.errors }"
+                    tabindex="0" [compareWith]="compareFn">
+                    <option *ngFor='let formateur of  listeFormateur' [ngValue]='formateur.rh.utilisateur'>
+                        {{formateur.rh.utilisateur.prenom}} {{formateur.rh.utilisateur.nom}}</option>
+                </select>
+                <button class="roundbutton nofocus">
+                    <i class="fas fa-plus-circle right btn-add"></i>
+                </button>
+            </div> -->
+            <form [formGroup]="formateurForm" (ngSubmit)="onSubmitFormateur(formateurForm)">
+                <div class="formgroup full">
+                    <label>Fomateur</label>
+                    <select formControlName="formateur" [compareWith]="compareFn"
+                        [ngClass]="{ 'invalid': formateurForm['controls'].formateur.errors && submitedFormateur}">
+                        <option *ngFor="let formateur of listeFormateur;let i = index" [ngValue]='formateur.rh'>
+                                {{formateur.rh.utilisateur.prenom}} {{formateur.rh.utilisateur.nom}}</option>
+                    </select>
+                    <button type="submit" class="roundbutton nofocus">
+                        <i class="fas fa-plus-circle right btn-add"></i>
+                    </button>
+                </div>
+                <div class="formgroup full" *ngFor="let for of listeFormateurSubmit;let i=index">
+                    <label></label>
+                    <div style="padding-left:1em;">{{for.utilisateur.prenom}} {{for.utilisateur.nom}}</div>
+                    <i class="fas fa-times-circle btn-remove"
+                        (click)="removeFormateur(for)"></i>
+                </div>
+            </form>
+
+            <div class="formgroup full">
+                <label>Commentaire</label>
+                <textarea cols="30" rows="10" formControlName="commentaire"
+                    [ngClass]="{ 'invalid': submited && f.commentaire?.errors }"></textarea>
+            </div>
+            <div class="formgroup full">
+                <label>Phrase certificat</label>
+                <textarea cols="30" rows="10" formControlName="phrCertificat"
+                    [ngClass]="{ 'invalid': submited && f.phrCertificat?.errors }"></textarea>
+            </div>
+            <div class="formgroup">
+                <label>Heure debut de formation</label>
+                <input type="time" formControlName="heureDebutForma"
+                [ngClass]="{ 'invalid': submited && f.heureDebutForma?.errors }">
+            </div>
+            <div class="formgroup">
+                <label>Heure fin de formation</label>
+                <input type="time" formControlName="heureFinForma"
+                [ngClass]="{ 'invalid': submited && f.heureFinForma?.errors }">
+            </div>
+            <div class="action">
+                <button class="button" type="submit" tabindex="13">Valider</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- <app-type-formation *ngIf='modalTypeFormation' [modal]='true'></app-type-formation> -->
+<app-modal-liste-type-formation *ngIf='modalTypeFormation' (emitClose)='modalTypeFormation=false'
+    (emitTypeFormation)="setTypeFormation($event)"></app-modal-liste-type-formation>

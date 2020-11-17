@@ -1,0 +1,55 @@
+<div class="content" (clickOutside)="close()" [delayClickOutsideInit]="true">
+    <i class="fas fa-times btn-close" (click)="close()"></i>
+    <h2>Horaires de la zone</h2>
+    <div class="bloc" *ngIf="horairesZone && horairesZone.length">
+        <form (ngSubmit)="onSubmit()">
+            <table id="vertical-1">
+                <tr>
+                    <th>Lundi</th>
+                    <td><input type="checkbox" [(ngModel)]="horairesZone[0].isOccupe" [ngModelOptions]="{standalone: true}" [attr.disabled]="!canEdit ? '' : null"> Occupé</td>
+                    <td><input type="time" [(ngModel)]="horairesZone[0].heureDebut" [ngModelOptions]="{standalone: true}" [attr.disabled]="!canEdit ? '' : null"></td>
+                    <td>-</td>
+                    <td><input type="time" [(ngModel)]="horairesZone[0].heureFin" [ngModelOptions]="{standalone: true}" [attr.disabled]="!canEdit ? '' : null"></td>
+                </tr>
+                <tr>
+                    <th>Mardi</th>
+                    <td><input type="checkbox" [(ngModel)]="horairesZone[1].isOccupe" [ngModelOptions]="{standalone: true}" [attr.disabled]="!canEdit ? '' : null"> Occupé</td>
+                    <td><input type="time" [(ngModel)]="horairesZone[1].heureDebut" [ngModelOptions]="{standalone: true}" [attr.disabled]="!canEdit ? '' : null"></td>
+                    <td>-</td>
+                    <td><input type="time" [(ngModel)]="horairesZone[1].heureFin" [ngModelOptions]="{standalone: true}" [attr.disabled]="!canEdit ? '' : null"></td>
+                </tr>
+                <tr>
+                    <th>Mercredi</th>
+                    <td><input type="checkbox" [(ngModel)]="horairesZone[2].isOccupe" [ngModelOptions]="{standalone: true}" [attr.disabled]="!canEdit ? '' : null"> Occupé</td>
+                    <td><input type="time" [(ngModel)]="horairesZone[2].heureDebut" [ngModelOptions]="{standalone: true}" [attr.disabled]="!canEdit ? '' : null"></td>
+                    <td>-</td>
+                    <td><input type="time" [(ngModel)]="horairesZone[2].heureFin" [ngModelOptions]="{standalone: true}" [attr.disabled]="!canEdit ? '' : null"></td>
+                </tr>
+                <tr>
+                    <th>Jeudi</th>
+                    <td><input type="checkbox" [(ngModel)]="horairesZone[3].isOccupe" [ngModelOptions]="{standalone: true}" [attr.disabled]="!canEdit ? '' : null"> Occupé</td>
+                    <td><input type="time" [(ngModel)]="horairesZone[3].heureDebut" [ngModelOptions]="{standalone: true}" [attr.disabled]="!canEdit ? '' : null"></td>
+                    <td>-</td>
+                    <td><input type="time" [(ngModel)]="horairesZone[3].heureFin" [ngModelOptions]="{standalone: true}" [attr.disabled]="!canEdit ? '' : null"></td>
+                </tr>
+                <tr>
+                    <th>Vendredi</th>
+                    <td><input type="checkbox" [(ngModel)]="horairesZone[4].isOccupe" [ngModelOptions]="{standalone: true}" [attr.disabled]="!canEdit ? '' : null"> Occupé</td>
+                    <td><input type="time" [(ngModel)]="horairesZone[4].heureDebut" [ngModelOptions]="{standalone: true}" [attr.disabled]="!canEdit ? '' : null"></td>
+                    <td>-</td>
+                    <td><input type="time" [(ngModel)]="horairesZone[4].heureFin" [ngModelOptions]="{standalone: true}" [attr.disabled]="!canEdit ? '' : null"></td>
+                </tr>
+                <tr>
+                    <th>Samedi</th>
+                    <td><input type="checkbox" [(ngModel)]="horairesZone[5].isOccupe" [ngModelOptions]="{standalone: true}" [attr.disabled]="!canEdit ? '' : null"> Occupé</td>
+                    <td><input type="time" [(ngModel)]="horairesZone[5].heureDebut" [ngModelOptions]="{standalone: true}" [attr.disabled]="!canEdit ? '' : null"></td>
+                    <td>-</td>
+                    <td><input type="time" [(ngModel)]="horairesZone[5].heureFin" [ngModelOptions]="{standalone: true}" [attr.disabled]="!canEdit ? '' : null"></td>
+                </tr>
+            </table>
+            <div class="action" *ngIf="canEdit">
+                <button class="button" type="submit">Valider</button>
+            </div>
+        </form>
+    </div>
+</div>

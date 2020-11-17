@@ -1,0 +1,231 @@
+<app-menu-superadmin></app-menu-superadmin>
+<div class="content">
+  <h2>Templates Laboratoire <span><input type="checkbox" [(ngModel)]="isModeTest" /> Mode TEST</span></h2>
+  <div class="bloc" *ngIf="!isModeTest">
+    <div class="formgroup full">
+      <label for="fichier-1" id="labelFichier"></label>
+      <div class="mini-titre">Stratégie
+        <span *ngIf="templateAssocie.get(1) as template">(Indice {{template.version}} du
+          {{template.dateDebut | date: 'dd/MM/yyyy à HH:mm'}}) &nbsp; <i class="fas fa-download"
+            style="cursor: pointer;" (click)="download(template.idFichier)"></i></span>
+        <span *ngIf="!templateAssocie.get(1)">(Aucun fichier attaché pour l'instant)</span>
+      </div>
+    </div>
+    <!-- Les numéros des id correspondent à l'EnumTypeTemplate, c'est pas juste l'ordre des champs dans le HTML, attention  -->
+    <div class="formgroup full">
+      <label for="fichier-1" id="labelFichier">Fichier DOCX</label>
+      <input type="file" id="fichier-1" (change)="onFileChange($event, 1)" #fileInput><i (click)="openFileChange(1)"
+        class="fas fa-file-upload"></i>
+    </div>
+    <div class="action">
+      <button class="button" (click)="envoyer(1)" [disabled]="!fichiers.get(1)"><i class="fas fa-upload"
+          style="font-size: 20px;"></i> Mettre à jour avec le fichier</button>
+    </div>
+
+
+    <!-- Les numéros des id correspondent à l'EnumTypeTemplate, c'est pas juste l'ordre des champs dans le HTML, attention  -->
+    <div class="formgroup full">
+      <label for="fichier-2" id="labelFichier"></label>
+      <div class="mini-titre">
+        Proposition commerciale
+        <span *ngIf="templateAssocie.get(2) as template">(Indice {{template.version}} du
+          {{template.dateDebut | date: 'dd/MM/yyyy à HH:mm'}}) &nbsp; <i class="fas fa-download"
+            style="cursor: pointer;" (click)="download(template.idFichier)"></i></span>
+        <span *ngIf="!templateAssocie.get(2)">(Aucun fichier attaché pour l'instant)</span>
+      </div>
+    </div>
+    <div class="formgroup full">
+      <label for="fichier-2" id="labelFichier">Fichier DOCX</label>
+      <input type="file" id="fichier-2" (change)="onFileChange($event, 2)" #fileInput><i (click)="openFileChange(2)"
+        class="fas fa-file-upload"></i>
+    </div>
+    <div class="action">
+      <button class="button" (click)="envoyer(2)" [disabled]="!fichiers.get(2)"><i class="fas fa-upload"
+          style="font-size: 20px;"></i> Mettre à jour avec le fichier</button>
+    </div>
+
+
+    <!-- Les numéros des id correspondent à l'EnumTypeTemplate, c'est pas juste l'ordre des champs dans le HTML, attention  -->
+    <div class="formgroup full">
+      <label for="fichier-3" id="labelFichier"></label>
+      <div class="mini-titre">
+        Rapport Final METAOP
+        <span *ngIf="templateAssocie.get(3) as template">(Indice {{template.version}} du
+          {{template.dateDebut | date: 'dd/MM/yyyy à HH:mm'}}) &nbsp; <i class="fas fa-download"
+            style="cursor: pointer;" (click)="download(template.idFichier)"></i></span>
+        <span *ngIf="!templateAssocie.get(3)">(Aucun fichier attaché pour l'instant)</span>
+      </div>
+    </div>
+    <div class="formgroup full">
+      <label for="fichier-3" id="labelFichier">Fichier DOCX</label>
+      <input type="file" id="fichier-3" (change)="onFileChange($event, 3)" #fileInput><i (click)="openFileChange(3)"
+        class="fas fa-file-upload"></i>
+    </div>
+    <div class="action">
+      <button class="button" (click)="envoyer(3)" [disabled]="!fichiers.get(3)"><i class="fas fa-upload"
+          style="font-size: 20px;"></i> Mettre à jour avec le fichier</button>
+    </div>
+
+
+    <!-- Les numéros des id correspondent à l'EnumTypeTemplate, c'est pas juste l'ordre des champs dans le HTML, attention  -->
+    <div class="formgroup full">
+      <label for="fichier-4" id="labelFichier"></label>
+      <div class="mini-titre">
+        Rapport Final METAIR
+        <span *ngIf="templateAssocie.get(4) as template">(Indice {{template.version}} du
+          {{template.dateDebut | date: 'dd/MM/yyyy à HH:mm'}}) &nbsp; <i class="fas fa-download"
+            style="cursor: pointer;" (click)="download(template.idFichier)"></i></span>
+        <span *ngIf="!templateAssocie.get(4)">(Aucun fichier attaché pour l'instant)</span>
+      </div>
+    </div>
+    <div class="formgroup full">
+      <label for="fichier-4" id="labelFichier">Fichier DOCX</label>
+      <input type="file" id="fichier-4" (change)="onFileChange($event, 4)" #fileInput><i (click)="openFileChange(4)"
+        class="fas fa-file-upload"></i>
+    </div>
+    <div class="action">
+      <button class="button" (click)="envoyer(4)" [disabled]="!fichiers.get(4)"><i class="fas fa-upload"
+          style="font-size: 20px;"></i> Mettre à jour avec le fichier</button>
+    </div>
+
+
+    <!-- Les numéros des id correspondent à l'EnumTypeTemplate, c'est pas juste l'ordre des champs dans le HTML, attention  -->
+    <div class="formgroup full">
+      <label for="fichier-5" id="labelFichier"></label>
+      <div class="mini-titre">
+        Rapport Final Global
+        <span *ngIf="templateAssocie.get(5) as template">(Indice {{template.version}} du
+          {{template.dateDebut | date: 'dd/MM/yyyy à HH:mm'}}) &nbsp; <i class="fas fa-download"
+            style="cursor: pointer;" (click)="download(template.idFichier)"></i></span>
+        <span *ngIf="!templateAssocie.get(5)">(Aucun fichier attaché pour l'instant)</span>
+      </div>
+    </div>
+    <div class="formgroup full">
+      <label for="fichier-5" id="labelFichier">Fichier DOCX</label>
+      <input type="file" id="fichier-5" (change)="onFileChange($event, 5)" #fileInput><i (click)="openFileChange(5)"
+        class="fas fa-file-upload"></i>
+    </div>
+    <div class="action">
+      <button class="button" (click)="envoyer(5)" [disabled]="!fichiers.get(5)"><i class="fas fa-upload"
+          style="font-size: 20px;"></i> Mettre à jour avec le fichier</button>
+    </div>
+  </div>
+
+
+  <div class="bloc" *ngIf="isModeTest">
+    <div class="formgroup full">
+      <label for="fichier-6" id="labelFichier"></label>
+      <div class="mini-titre">[TEST] Stratégie
+        <span *ngIf="templateAssocie.get(6) as template">(Indice {{template.version}} du
+          {{template.dateDebut | date: 'dd/MM/yyyy à HH:mm'}}) &nbsp; <i class="fas fa-download"
+            style="cursor: pointer;" (click)="download(template.idFichier)" tooltip="Télécharger"></i>   Id Chantier <input type="number" [(ngModel)]="idsForTest[6-1]" style="width: 50px;" /> <i class="fas fa-print" tooltip="Imprimer un test" (click)="printTest(6)"></i></span>
+        <span *ngIf="!templateAssocie.get(6)">(Aucun fichier attaché pour l'instant)</span>
+      </div>
+    </div>
+    <!-- Les numéros des id correspondent à l'EnumTypeTemplate, c'est pas juste l'ordre des champs dans le HTML, attention  -->
+    <div class="formgroup full">
+      <label for="fichier-6" id="labelFichier">Fichier DOCX</label>
+      <input type="file" id="fichier-6" (change)="onFileChange($event, 6)" #fileInput><i (click)="openFileChange(6)"
+        class="fas fa-file-upload"></i>
+    </div>
+    <div class="action">
+      <button class="button" (click)="envoyer(6)"><i class="fas fa-upload"
+          style="font-size: 20px;"></i> Mettre à jour avec le fichier</button>
+    </div>
+
+
+    <!-- Les numéros des id correspondent à l'EnumTypeTemplate, c'est pas juste l'ordre des champs dans le HTML, attention  -->
+    <div class="formgroup full">
+      <label for="fichier-7" id="labelFichier"></label>
+      <div class="mini-titre">
+          [TEST] Proposition commerciale
+        <span *ngIf="templateAssocie.get(7) as template">(Indice {{template.version}} du
+          {{template.dateDebut | date: 'dd/MM/yyyy à HH:mm'}}) &nbsp; <i class="fas fa-download"
+            style="cursor: pointer;" (click)="download(template.idFichier)"></i>
+            Id Devis <input type="number" [(ngModel)]="idsForTest[7-1]" style="width: 50px;" /> <i class="fas fa-print" tooltip="Imprimer un test" (click)="printTest(7)"></i>
+          </span>
+        <span *ngIf="!templateAssocie.get(7)">(Aucun fichier attaché pour l'instant)</span>
+      </div>
+    </div>
+    <div class="formgroup full">
+      <label for="fichier-7" id="labelFichier">Fichier DOCX</label>
+      <input type="file" id="fichier-7" (change)="onFileChange($event, 7)" #fileInput><i (click)="openFileChange(7)"
+        class="fas fa-file-upload"></i>
+    </div>
+    <div class="action">
+      <button class="button" (click)="envoyer(7)"><i class="fas fa-upload"
+          style="font-size: 20px;"></i> Mettre à jour avec le fichier</button>
+    </div>
+
+
+    <!-- Les numéros des id correspondent à l'EnumTypeTemplate, c'est pas juste l'ordre des champs dans le HTML, attention  -->
+    <div class="formgroup full">
+      <label for="fichier-8" id="labelFichier"></label>
+      <div class="mini-titre">
+          [TEST] Rapport Final METAOP
+        <span *ngIf="templateAssocie.get(8) as template">(Indice {{template.version}} du
+          {{template.dateDebut | date: 'dd/MM/yyyy à HH:mm'}}) &nbsp; <i class="fas fa-download"
+            style="cursor: pointer;" (click)="download(template.idFichier)"></i></span>
+        <span *ngIf="!templateAssocie.get(8)">(Aucun fichier attaché pour l'instant)</span>
+      </div>
+    </div>
+    <div class="formgroup full">
+      <label for="fichier-8" id="labelFichier">Fichier DOCX</label>
+      <input type="file" id="fichier-8" (change)="onFileChange($event, 8)" #fileInput><i (click)="openFileChange(8)"
+        class="fas fa-file-upload"></i>
+    </div>
+    <div class="action">
+      <button class="button" (click)="envoyer(8)"><i class="fas fa-upload"
+          style="font-size: 20px;"></i> Mettre à jour avec le fichier</button>
+    </div>
+
+
+    <!-- Les numéros des id correspondent à l'EnumTypeTemplate, c'est pas juste l'ordre des champs dans le HTML, attention  -->
+    <div class="formgroup full">
+      <label for="fichier-9" id="labelFichier"></label>
+      <div class="mini-titre">
+          [TEST] Rapport Final METAIR
+        <span *ngIf="templateAssocie.get(9) as template">(Indice {{template.version}} du
+          {{template.dateDebut | date: 'dd/MM/yyyy à HH:mm'}}) &nbsp; <i class="fas fa-download"
+            style="cursor: pointer;" (click)="download(template.idFichier)"></i></span>
+        <span *ngIf="!templateAssocie.get(9)">(Aucun fichier attaché pour l'instant)</span>
+      </div>
+    </div>
+    <div class="formgroup full">
+      <label for="fichier-9" id="labelFichier">Fichier DOCX</label>
+      <input type="file" id="fichier-9" (change)="onFileChange($event, 9)" #fileInput><i (click)="openFileChange(9)"
+        class="fas fa-file-upload"></i>
+    </div>
+    <div class="action">
+      <button class="button" (click)="envoyer(9)"><i class="fas fa-upload"
+          style="font-size: 20px;"></i> Mettre à jour avec le fichier</button>
+    </div>
+
+
+    <!-- Les numéros des id correspondent à l'EnumTypeTemplate, c'est pas juste l'ordre des champs dans le HTML, attention  -->
+    <div class="formgroup full">
+      <label for="fichier-10" id="labelFichier"></label>
+      <div class="mini-titre">
+          [TEST] Rapport Final Global
+        <span *ngIf="templateAssocie.get(10) as template">(Indice {{template.version}} du
+          {{template.dateDebut | date: 'dd/MM/yyyy à HH:mm'}}) &nbsp; <i class="fas fa-download"
+            style="cursor: pointer;" (click)="download(template.idFichier)"></i></span>
+        <span *ngIf="!templateAssocie.get(10)">(Aucun fichier attaché pour l'instant)</span>
+      </div>
+    </div>
+    <div class="formgroup full">
+      <label for="fichier-10" id="labelFichier">Fichier DOCX</label>
+      <input type="file" id="fichier-10" (change)="onFileChange($event, 10)" #fileInput><i (click)="openFileChange(10)"
+        class="fas fa-file-upload"></i>
+    </div>
+    <div class="action">
+      <button class="button" (click)="envoyer(10)"><i class="fas fa-upload"
+          style="font-size: 20px;"></i> Mettre à jour avec le fichier</button>
+    </div>
+  </div>
+
+  <h2>Templates Formation</h2>
+  <div class="bloc">
+    [A VENIR]
+  </div>
+</div>

@@ -1,0 +1,38 @@
+<app-recherche [champDeRecherches]="champDeRecherches" [queryBuild]="queryBuild" (emitQueryBuild)="setQueryBuild($event)"></app-recherche>
+<div class="content">
+  <div class="bloc">
+    <div class="table">
+      <div class="action" *ngIf="!modal && !modalClient">
+        <div class="left">
+
+        </div>
+        <div class="right">
+          <i *ngIf="canExport" (click)="generateXlsx()" class="fas fa-file-excel"></i>
+          <div [routerLink]="['/contact', 'compte', 'ajouter']" class="nofocus">
+            <i class="fas fa-plus"></i> Créer
+          </div>
+        </div>
+      </div>
+      <app-header-table [headers]="headers" [querybuild]="queryBuild" (emitQueryBuild)="setQueryBuild($event)"></app-header-table>
+      <div class="content">
+        <div class="row" *ngFor="let compte of comptes" (dblclick)="gotoDetails(compte)">
+          <div><div class="labelTable">{{headers[0].label}}</div><span>{{compte.raisonSociale}}</span></div>
+          <div><div class="labelTable">{{headers[1].label}}</div><span>{{compte.qualite?.nom}}</span></div>
+          <div><div class="labelTable">{{headers[2].label}}</div><span>{{compte.adresse?.cp}}</span></div>
+          <div><div class="labelTable">{{headers[3].label}}</div><span>{{compte.adresse?.ville}}</span></div>
+          <div><div class="labelTable">{{headers[4].label}}</div><span>{{compte.adresse?.telephone | telephone}}</span></div>
+          <div class="action">
+            <i *ngIf="!modal && !modalClient" class="fas fa-pencil-alt" (click)="gotoDetails(compte)"></i>
+            <i *ngIf="modal || modalClient" class="fas fa-link" (click)="gotoDetails(compte)"></i>
+            <i *ngIf="compte.compteContacts.length > 0 && !modal && !modalClient" class="fas fa-trash delete-link" (click)="delete(compte)"></i>
+          </div>
+        </div>
+        <app-pagination
+                [queryBuild]="queryBuild"
+                [nbObjets]="nbObjets"
+                (emitQueryBuild)="setQueryBuild($event)"
+        ></app-pagination>
+      </div>
+    </div>
+  </div>
+</div>

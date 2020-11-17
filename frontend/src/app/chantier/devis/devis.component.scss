@@ -1,0 +1,16 @@
+:host{
+  width: 100%;
+  display: flex;
+}
+
+ul.list-align-form {
+  padding-left: 20px;
+}
+
+@media(max-width: 640px) {
+  flex-wrap: wrap;
+  .content {
+    margin-top: 100px;
+    margin-left: calc(-100% - 20px);
+  }
+}

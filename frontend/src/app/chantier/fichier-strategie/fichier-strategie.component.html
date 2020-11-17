@@ -1,0 +1,30 @@
+<app-menu-chantier *ngIf="chantier" [chantier]="chantier"></app-menu-chantier>
+<div class="content">
+  <div class="bloc">
+    <form *ngIf="chantier">
+      <div class="formgroup">
+        <label>Entièrement écrite sous COFRAC</label>
+        <input type="checkbox" [ngModel]="chantier.isCOFRAC" (ngModelChange)="changeCofrac($event)" [ngModelOptions]="{standalone: true}" />
+      </div>
+      <div class="formgroup" *ngIf="!chantier.isCOFRAC">
+        <label>Justification</label>
+        <textarea [(ngModel)]="chantier.justifNonCOFRAC" [ngModelOptions]="{standalone: true}"></textarea>
+      </div>
+      <div class="formgroup" *ngIf="chantier.besoinClient.idTypeBesoinLabo === enumTypeObjectifs.CSP">
+        <label>RDV préalable</label>
+        <input type="checkbox" [ngModel]="chantier.hasRDVPrealable" (ngModelChange)="changeRDV($event)" [ngModelOptions]="{standalone: true}" />
+      </div>
+      <div class="formgroup" *ngIf="chantier.besoinClient.idTypeBesoinLabo === enumTypeObjectifs.CSP && chantier.hasRDVPrealable">
+        <label>Texte explicatif</label>
+        <textarea [(ngModel)]="chantier.txtRDVPrealable" [ngModelOptions]="{standalone: true}"></textarea>
+      </div>
+    </form>
+    <div class="action">
+      <button type="button" class="button" (click)="generateStrategie()">
+        <i class="fas fa-print"></i> Générer le document de strategie
+      </button>
+    </div>
+  </div>
+  <app-fichier *ngIf="isLoaded" [application]="application" [groupeTypeFicher]="groupeTypeFicher" [idParent]="parentId"
+    [@fadeIn] [@fadeOut]></app-fichier>
+</div>

@@ -1,0 +1,40 @@
+<app-menu-admin-contenu></app-menu-admin-contenu>
+<div class="content">
+    <app-recherche [champDeRecherches]="champDeRecherches" [queryBuild]="queryBuild" (emitQueryBuild)="setQueryBuild($event)"></app-recherche>
+  <div class="bloc">
+    <div class="table">
+        <div class="action" *ngIf="!isModal">
+            <div class="left"></div>
+            <div class="right">
+              <i class="fas fa-file-excel"></i>
+              <div routerLink="/contenu-admin/menu/ajouter" class="nofocus">
+                <i class="fas fa-plus"></i> Créer
+              </div>
+            </div>
+        </div>
+        <app-header-table [querybuild]="queryBuild" [headers]="headers" (emitQueryBuild)="setQueryBuild($event)"></app-header-table>
+        <div class="content"  *ngIf="!isModal">
+          <div class="row" *ngFor='let menu of listeMenu;let i = index' style="cursor: pointer;" (dblclick)="gotoDetails('/contenu-admin/menu/modifier', menu)">
+            <div>{{menu.titre}}</div>
+            <div class="grow2">{{menu.url}}</div>
+            <div class="grow3">{{menu.name}}</div>
+            <div class="grow2">
+              <!-- <span>
+                <span *ngFor="let profil of menu.profils; last as isLast">{{profil.profil?.nom}}
+                  <span *ngIf="!isLast">, </span>
+                </span>
+              </span> -->
+              <span>{{menu.droitsForMenu?.nom}}</span>
+            </div>
+            <div class="action">
+                <span tooltip="Modifier" show-delay="100" hide-delay="100"><i class="fas fa-edit edit-link" (click)="gotoDetails('/contenu-admin/menu/modifier', menu)"></i></span> 
+                <span tooltip="Supprimer" show-delay="100" hide-delay="100" style="margin-left: 1em;"><i class="fas fa-trash delete-link" (click)="supprimer(menu)" *ngIf="canCreateMenu | async"></i></span> 
+            </div>
+          </div>
+        </div>
+        <!-- <div class="content" *ngIf="!isModal">
+          <div class="row" >Liste de menus</div>
+        </div> -->
+  </div>
+</div>
+</div>

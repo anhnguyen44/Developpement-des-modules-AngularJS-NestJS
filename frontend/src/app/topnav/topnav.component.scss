@@ -1,0 +1,355 @@
+@import "variables";
+
+:host {
+
+}
+
+.header-wrapper {
+    height: 180px;
+    transition: all 0.5s;
+}
+
+.header-wrapper.sticky {
+    height: 100px;
+}
+
+.header{
+    width: 100%;
+    position: fixed;
+    z-index: 9998;
+    transition: all 0.5s;
+}
+
+.sticky .header {
+    height: auto;
+}
+
+.navbar-brand a {
+    height: 120px;
+    display: flex;
+    align-items: center;
+    transition: all 0.5s;
+}
+
+.sticky .navbar-brand a{
+    height: 60px;
+}
+
+.navbar-brand img {
+   height: 80px;
+    width: auto;
+    transition: all 0.5s;
+}
+
+.sticky .navbar-brand img {
+    height: 50px;
+}
+
+.bs-topnav {
+    background: white;
+    height: 120px;
+    /*box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);*/
+    display: flex;
+    justify-content: center;
+    transition: all 0.5s;
+}
+
+.sticky .bs-topnav {
+    height: 60px;
+}
+
+.home-button {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+#navbarSupportedContent {
+    transition: all 0.5s;
+}
+
+#navbarSupportedContent{
+    display: flex;
+}
+
+.navbar-nav {
+    display: flex;
+    align-items: center;
+    transition: all 0.5s;
+}
+
+.nav-wrapper {
+    display: flex;
+    width: 1300px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav-wrapper li {
+    list-style-type: none;
+}
+
+.rounded {
+    color: $couleurTexte;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 35px;
+    height: 35px;
+    border-radius: 5px;
+    border: solid 3px $couleurBorderInput;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.sous-menu {
+    height: 60px;
+    display: flex;
+    color: white;
+    font-size: 1.8em;
+    background-color: $couleurBandeau1;
+    transition: all 0.5s;
+}
+
+.sticky .sous-menu {
+    height: 40px;
+    font-size: 1.4em;
+}
+
+.sous-menu .content {
+    width: 1300px;
+    flex-grow: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+}
+.sous-menu .left,
+.sous-menu .right{
+    flex-grow: 1;
+}
+
+.sous-menu .right{
+    background-color: $couleurBandeau2;
+}
+
+.sous-menu div a {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    height: 100%;
+    padding: 0 20px;
+}
+
+.sous-menu div a:first-child {
+  padding: 0;
+}
+
+.sous-menu span {
+    font-size: 0.7em;
+    margin: 10px;
+}
+
+.menus {
+    display: flex;
+}
+
+.menu {
+    display: flex;
+}
+
+.menuCreerWrapper {
+    position: relative;
+    height: 100%;
+    width: 150px;
+    background-color: $couleurBandeau2;
+    padding-left: 20px;
+    margin-right: -1px;
+}
+
+.menuCreer {
+    overflow: hidden;
+    font-size: 0.6em;
+    left: 0;
+    right: -600px;
+    position: absolute;
+    background: $couleurBandeau2;
+    padding-left: 10px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.menuCreer.open{
+}
+
+.menuCreer div {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.creer {
+
+}
+
+
+.menu-boutton{
+    justify-content: space-between;
+    transition: all 0.5s;
+}
+
+.menu-boutton i{
+    top: 10px;
+    left: 10px;
+}
+
+.franchise {
+    display: flex;
+    justify-content: flex-end;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+select {
+    height: 25px;
+    padding: 2px 5px;
+}
+
+#user {
+    position: relative;
+    outline: none
+}
+
+#user:hover .menuUser{
+    height: 117px;
+    opacity: 1;
+    border: solid 3px $couleurBorderInput;
+}
+
+.menuUser {
+    overflow: hidden;
+    opacity: 0;
+    display: block;
+    position: absolute;
+    height: 0;
+    right: 0;
+    top: 40px;
+    background-color: white;
+    border-radius: 5px;
+    border: solid 0px $couleurBorderInput;
+    transition: all 0.5s;
+    z-index: 9003;
+}
+
+.menuUser div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+.menuUser div i{
+    margin-right: 10px;
+}
+
+.wrapper-triangle .menu-bt-menu {
+    z-index: 9002;
+}
+
+.wrapper-triangle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.triangle {
+    border-radius: 5px;
+    position: absolute;
+    bottom: 5px;
+    width: 30px;
+    transform: rotate(45deg);
+    height: 30px;
+    z-index: 9001;
+    background-color: $couleurBandeau1;
+    transition-delay: 0.1s;
+    transition-property: all;
+    transition-duration: 0.3s;
+    transition-timing-function: ease;
+}
+
+.triangle.openTriangle {
+    bottom: -20px;
+}
+
+.sticky .triangle.openTriangle {
+    bottom: -10px;
+}
+
+@media (max-width: 640px) {
+    .header-wrapper {
+        height: 160px;
+    }
+    .nav-wrapper {
+        padding: 0 10px;
+    }
+    .navbar-brand img {
+        height: 60px;
+    }
+    .bs-topnav {
+        height: 100px;
+    }
+    #navbarSupportedContent {
+        flex-direction: column-reverse;
+        align-items: flex-end;
+    }
+    .sous-menu {
+        padding-left: 10px;
+    }
+    .menuCreerWrapper {
+        width: 50px;
+    }
+    .menuCreer {
+        right: 0;
+        left: unset;
+        padding: 20px;
+    }
+    .creer span{
+        display: none;
+    }
+    .wrapper-triangle {
+        width: 0;
+        overflow: hidden;
+    }
+    .triangle.openTriangle{
+        bottom: -30px;
+    }
+    .wrapper-triangle.openMenu {
+        width: auto;
+        overflow: unset;
+    }
+    .sous-menu span {
+        margin: 0;
+        font-size: 0.6em;
+    }
+    .menus {
+       display: flex;
+        flex-wrap: wrap;
+        font-size: 0.8em;
+        margin-right: 5px;
+        margin-left: 5px;
+    }
+    .menus span {
+        margin-right: 5px;
+    }
+    .menuCreerWrapper{
+        width: 70px;
+        padding-left: 0;
+        display: flex;
+        justify-content: center;
+    }
+}

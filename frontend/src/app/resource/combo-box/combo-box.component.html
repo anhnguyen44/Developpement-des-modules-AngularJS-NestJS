@@ -1,0 +1,18 @@
+<div class="combo-container" [formGroup]="parentForm">
+        <span class="drop-down">
+                <input *ngIf="tabindex" type="text" [formControlName]="internalFormControlName" class="input-control" [ngModel]="textToSort" (ngModelChange)="textChange($event)"
+                (keydown)="onKeyDownAction($event)" (keyup)="applyTransform($event);" (focusout)="applyTransform($event)"
+                        (focus)="onFocusEventAction()" (blur)="onBlurEventAction()" tabindex="{{tabindex}}"
+                        [class.invalid]="parentForm.controls[internalFormControlName].touched && parentForm.controls[internalFormControlName].errors" />
+                <input *ngIf="!tabindex" type="text" [formControlName]="internalFormControlName" class="input-control" [ngModel]="textToSort" (ngModelChange)="textChange($event)"
+                (keydown)="onKeyDownAction($event)" (keyup)="applyTransform($event);" (focusout)="applyTransform($event)"
+                        (focus)="onFocusEventAction()" (blur)="onBlurEventAction()"
+                        [class.invalid]="parentForm.controls[internalFormControlName].touched && parentForm.controls[internalFormControlName].errors" />
+                <button type="button" class="drop-down-button nofocus" (click)="toogleDropDown()"><i *ngIf="dummyDataList && dummyDataList.length > 0" class="fa fa-caret-down"></i></button>
+        </span>
+        <div class="data-container" *ngIf="showDropDown && dummyDataList && dummyDataList.length > 0">
+                <p *ngFor="let data of dummyDataList; let i = index" class="data-list"
+                        (click)="updateTextBox(data['id']); $event.preventDefault(); $event.stopPropagation()" [ngClass]="{highlight:checkHighlight(i)}">
+                        {{data[displayColumnName]}}</p>
+        </div>
+</div>

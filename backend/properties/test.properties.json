@@ -1,0 +1,34 @@
+{
+  "db": {
+    "host": "127.0.0.1",
+    "dbuser": "root",
+    "dbpassword": "",
+    "port": 3306,
+    "dbname": "aleaac",
+    "testsMayDropDb": "true"
+  },
+  "cors": {
+    "origin": "*"
+  },
+  "token": {
+    "secret": "aleaac"
+  },
+  "ssl": {
+    "key": null,
+    "cert": null
+  },
+  "smtp": {
+    "host": "smtp.mailtrap.io",
+    "port": 2525,
+    "auth": {
+        "user": "b71d09d7deb9fa",
+        "pass": "3c26e3113b98cb"
+    },
+    "logger": true,
+    "debug": true
+  },
+  "site": {
+    "url": "http://dev.aleacontroles.com/aleaAC",
+    "apiUrl": "http://dev.aleacontroles.com:4242/api/v1"
+  }
+}

@@ -1,0 +1,139 @@
+<app-menu-formation></app-menu-formation>
+<div class="content" style="min-height:1050px">
+    <h2 *ngIf='!id'>Nouveau stagiaire</h2>
+    <h2 *ngIf='id'>Stagiaire #{{id}}</h2>
+    <div class="bloc">
+        <form [formGroup]="stagiaireFormationForm" (ngSubmit)="onSubmit()">
+            <!-- <div class="formgroup full" *ngIf="!id">
+                <label>Contact</label>
+                <input type="text" formControlName="contact" [ngClass]="{ 'invalid': submited && f.contact?.errors }">
+                <i class="fas fa-id-card" (click)='openModalContact()'></i>
+            </div>
+            <div class="formgroup full" *ngIf="id">
+                <label>Contact</label>
+                <input type="text" formControlName="contact" [ngClass]="{ 'invalid': submited && f.contact?.errors }"
+                    disabled style="cursor: not-allowed !important;">
+            </div> -->
+            <div class="formgroup full">
+                <label>Contact</label>
+                <input type="text" formControlName="contact" [ngClass]="{ 'invalid': submited && f.contact?.errors }">
+                <i class="fas fa-id-card" (click)='openModalContact()'></i>
+            </div>
+
+            <div class="formgroup full">
+                <label>Sous-traitance</label>
+                <input type="text" formControlName="sousTraitance"
+                    [ngClass]="{ 'invalid': submited && f.sousTraitance?.errors }">
+                <i class="fas fa-building" (click)='openModalCompte()'></i>
+            </div>
+            <div class="formgroup">
+                <label>Absence totale</label>
+                <input type="checkbox" formControlName="absenceTotal"
+                    [ngClass]="{ 'invalid': submited && f.absenceTotal.errors }" (change)="isAbsenceTotal()">
+            </div>
+            <div class="formgroup" *ngIf="!isAbTotal">
+                <label>Absence partielle</label>
+                <input type="number" formControlName="absencePartielle" min="0"
+                    [ngClass]="{ 'invalid': submited && f.absencePartielle.errors }">
+            </div>
+            <div class="formgroup full">
+                <label>Dossier complet</label>
+                <input type="text" formControlName="dossierComplet"
+                    [ngClass]="{ 'invalid': submited && f.dossierComplet?.errors }">
+                <i class="far fa-file-pdf" (click)='openModalfichier()'></i>
+            </div>
+            <div class="formgroup">
+                <label>Rattrapage</label>
+                <input type="number" formControlName="rattrapage" min="0"
+                    [ngClass]="{ 'invalid': submited && f.rattrapage.errors }">
+            </div>
+            <h3>Formation validée</h3>
+            <div class="formgroup">
+                <label>Formation validée</label>
+                <input type="checkbox" formControlName="formationValide" (change)="setFormationValid()"
+                    [ngClass]="{ 'invalid': submited && f.formationValide.errors }">
+            </div>
+            <div class="formgroup" *ngIf="formaValide">
+                <label>Numéro de certificat</label>
+                <input type="number" formControlName="numCertificat"
+                    [ngClass]="{ 'invalid': submited && f.numCertificat.errors }">
+            </div>
+            <div class="formgroup" *ngIf="formaValide">
+                <label>Numéro forprev</label>
+                <input type="number" formControlName="numForprev"
+                    [ngClass]="{ 'invalid': submited && f.numForprev.errors }">
+            </div>
+            <div class="formgroup" *ngIf="formaValide">
+                <label>Phrase forprev</label>
+                <input type="text" formControlName="phraseForprev"
+                    [ngClass]="{ 'invalid': submited && f.phraseForprev.errors }">
+            </div>
+            <div class="formgroup" *ngIf="formaValide">
+                <label>Note obtenue</label>
+                <input type="number" formControlName="noteObtenu"
+                    [ngClass]="{ 'invalid': submited && f.noteObtenu.errors }">
+            </div>
+            <div class="formgroup" *ngIf="formaValide">
+                <label>Délivrer le</label>
+                <input type="date" formControlName="delivrerLe"
+                    [ngClass]="{ 'invalid': submited && f.delivrerLe.errors }">
+            </div>
+            <form *ngIf="!id">
+                <h3>Notes des compétence de stagiaires</h3>
+                <div class="formgroup" style="display:block;">
+                    <h4>Compétence pratique</h4>
+                    <ng-container *ngFor="let competenceForma of listCompetenceFormation;let i = index">
+                        <div class="formgroup full" *ngIf="competenceForma!.typePratique" style="display:block">
+                            <label style="display:block;margin-bottom:10px">{{competenceForma.dCompetence?.nom}}</label>
+                            <input type="number" (input)='afficherNote($event.target.value,competenceForma)'>
+                        </div>
+                    </ng-container>
+                </div>
+                <div class="formgroup" style="display:block;">
+                    <h4>Compétence théorique</h4>
+                    <ng-container *ngFor="let competenceForma2 of listCompetenceFormation;let i = index">
+                        <div class="formgroup full" *ngIf="!competenceForma2!.typePratique" style="display:block">
+                            <label
+                                style="display:block;margin-bottom:10px">{{competenceForma2.dCompetence?.nom}}</label>
+                            <input type="number" (input)='afficherNote($event.target.value,competenceForma2)'>
+                        </div>
+                    </ng-container>
+                </div>
+            </form>
+            
+            <form *ngIf="id">
+                <h3>Notes des compétence de stagiaires</h3>
+                <div class="formgroup" style="display:block;">
+                    <h4>Compétence pratique</h4>
+                    <ng-container *ngFor="let competenceForma of listCompetenceFormation;let i = index">
+                        <div class="formgroup full" *ngIf="competenceForma.competence?.typePratique">
+                            <label>{{competenceForma.competence?.dCompetence?.nom}}</label>
+                            <input type="number" (input)='afficherNote($event.target.value,competenceForma.competence)' [value]="competenceForma.note">
+                        </div>
+                    </ng-container>
+                </div>
+                <div class="formgroup" style="display:block;">
+                    <h4>Compétence théorique</h4>
+                    <ng-container *ngFor="let competenceForma2 of listCompetenceFormation;let i = index">
+                        <div class="formgroup full" *ngIf="!competenceForma2.competence?.typePratique">
+                            <label>{{competenceForma2.competence?.dCompetence?.nom}}</label>
+                            <input type="number" (input)='afficherNote($event.target.value,competenceForma2.competence)' [value]="competenceForma2.note">
+                        </div>
+                    </ng-container>
+                </div>
+            </form>
+            <div class="action">
+                <button class="button" type="submit" tabindex="13">Valider</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+<app-modal-contact [type]="'liste-contact'" *ngIf="modalContact" (emitClose)="modalContact=false"
+    (emitContact)="setContact($event)"></app-modal-contact>
+<app-modal-contact [type]="'liste-compte'" *ngIf="modalCompte" (emitClose)="modalCompte=false"
+    (emitCompte)="setCompte($event)"></app-modal-contact>
+<app-modal-fichier *ngIf="modalFichier && idSessionFormation" (emitClose)="modalFichier=false"
+    (emitFichier)='setFichier($event)' [application]="'formation'"
+    [groupeTypeFicher]="groupeTypeFicher" [TypeFichier]="TypeFichier" [idParent]="idSessionFormation">
+</app-modal-fichier>

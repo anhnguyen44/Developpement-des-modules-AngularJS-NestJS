@@ -1,0 +1,79 @@
+<div class="onglet">
+  <div class="button compte" [class.active]="typeAffichage === 'intervention'" (click)="changeType('intervention')">Intervention</div>
+  <div class="button contact" [class.active]="typeAffichage === 'logistique'" (click)="changeType('logistique')">Logistique</div>
+</div>
+<app-planning
+        *ngIf="entites"
+        [entites]="entites"
+        [type]="typeAffichage"
+        [bureaux]="bureaux"
+        [idBureau]="idBureau"
+        (emitIdBureau)="setIdBureau($event)"
+        (emitInterval)="setInterval($event)">
+</app-planning>
+<div class="bloc legende" *ngIf="entites">
+  <div class="detailLegende" *ngIf="typeAffichage === 'intervention'">
+    <div class="flex"><div class="square" style="background-color: #f39f1f"></div>En Saisie</div>
+    <div class="flex"><div class="square" style="background-color: #00BC0E"></div>En préparation</div>
+    <div class="flex"><div class="square" style="background-color: #1d2ef3"></div>Prêt pour le terrain</div>
+    <div class="flex"><div class="square" style="background-color: #8457a9"></div>Sur le terrain</div>
+    <div class="flex"><div class="square" style="background-color: #f31904"></div>Terminée</div>
+  </div>
+  <div class="legendeLogistique" *ngIf="typeAffichage === 'logistique'">
+    <div><input type="checkbox" checked (change)="checkRessourceHumaine($event.target.checked)">Ressources Humaines</div>
+    <div class="detailLegende">
+      <div class="flex" *ngFor="let rh of listeRessourceHumaines">
+        <input type="checkbox" [(ngModel)]="rh.checked" (change)="parseEntite()">
+        <div class="square" [ngStyle]="{'background-color': rh.couleur}"></div>
+        {{rh.utilisateur.nom}} {{rh.utilisateur.prenom}}
+      </div>
+    </div>
+  </div>
+  <div class="legendeLogistique" *ngIf="typeAffichage === 'logistique'">
+    <div><input type="checkbox" checked (change)="checkPompe($event.target.checked)">Pompes</div>
+    <div class="detailLegende">
+      <div class="flex" *ngFor="let pompe of listePompes">
+        <input type="checkbox" [(ngModel)]="pompe.checked" (change)="parseEntite()">
+        <div class="square" [ngStyle]="{'background-color': pompe.couleur}"></div>
+        {{pompe.libelle}}
+      </div>
+    </div>
+  </div>
+  <div class="legendeLogistique" *ngIf="typeAffichage === 'logistique'">
+    <div><input type="checkbox" checked (change)="checkSalle($event.target.checked)">Salles</div>
+    <div class="detailLegende">
+      <div class="flex" *ngFor="let salle of listeSalles">
+        <input type="checkbox" [(ngModel)]="salle.checked" (change)="parseEntite()">
+        <div class="square" [ngStyle]="{'background-color': salle.couleur}"></div>
+        {{salle.libelle}}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="bloc" *ngIf="typeAffichage === 'intervention' && entites">
+  <div class="table">
+    <div class="action">
+      <div class="right">
+
+      </div>
+      <div class="left">
+        <div *ngIf="idParent && application === 'chantier'" (click)="goToNew()"><i class="fas fa-plus"></i> Créer</div>
+      </div>
+    </div>
+    <app-header-table [headers]="headers" [querybuild]="queryBuild" (emitQueryBuild)="setQueryBuild($event)"></app-header-table>
+    <div class="content">
+      <div class="row" *ngFor="let intervention of interventionsBureaux" (dblclick)="goTo(intervention)">
+        <div>{{intervention.id}}</div>
+        <div>{{intervention.libelle}}</div>
+        <div>{{enumStatutIntervention[intervention.idStatut]}}</div>
+        <div>{{intervention.rendezVous.dateHeureDebut | date:'dd-MM-yyyy hh:mm'}}</div>
+        <div>{{intervention.rendezVous.dateHeureFin | date:'dd-MM-yyyy hh:mm'}}</div>
+        <div><span *ngIf="intervention.dateValidation">{{intervention.dateValidation | date:'dd-MM-yyyy'}}</span></div>
+        <div class="action"><i class="fas fa-pencil-alt" (click)="goTo(intervention)"></i></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

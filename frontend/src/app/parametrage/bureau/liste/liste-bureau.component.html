@@ -1,0 +1,56 @@
+
+<app-menu-parametrage *ngIf="!isSuperAdmin && !superAdminFranchiseId"></app-menu-parametrage>
+<app-menu-superadmin *ngIf="isSuperAdmin && !isInsideFranchiseSA"></app-menu-superadmin>
+<div class="content">
+  <app-recherche [champDeRecherches]="champDeRecherches" [queryBuild]="queryBuild" (emitQueryBuild)="setQueryBuild($event)" *ngIf="!isSuperAdmin"></app-recherche>
+  
+  <div *ngIf="isSuperAdmin && !isInsideFranchiseSA">
+    <h2>Choix de la franchise</h2>
+    <div class="bloc">
+      <div class="formgroup full">
+        <label>Franchise</label>
+        <select [(ngModel)]="franchiseId" (change)='changeFranchise()'>
+          <option *ngFor="let franchise of listeFranchise" [value]="franchise.id">{{franchise.nomPrenomSignature}} - {{franchise.raisonSociale}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="bloc">
+      <div class="table">
+        <div class="action">
+          <div class="left">
+
+          </div>
+          <div class="right">
+              <div (click)="exportAll()" class="nofocus" *ngIf="isSuperAdmin">
+                <i class="fas fa-file-excel"></i> Exporter tous les bureaux
+              </div>
+            <div routerLink="/parametrage/bureau/ajouter" class="nofocus" *ngIf="(canCreateBureau | async) && !superAdminFranchiseId">
+              <i class="fas fa-plus"></i> Créer
+            </div>
+            <div [routerLink]="['/superadmin/bureau/ajouter/', superAdminFranchiseId]" class="nofocus" *ngIf="(canCreateBureau | async) && superAdminFranchiseId">
+              <i class="fas fa-plus"></i> Créer
+            </div>
+          </div>
+        </div>
+        <app-header-table [headers]="headers" [querybuild]="queryBuild" (emitQueryBuild)="setQueryBuild($event)"></app-header-table>
+        <div class="content">
+          <div class="row" *ngFor="let bureau of bureaux" (dblclick)="gotoDetails(bureau)">
+            <div><div class="labelTable">Id</div><span>{{bureau.id}}</span></div>
+            <div><div class="labelTable">Nom</div><span>{{bureau.nom}} ({{bureau.nomCommercial}}) - {{bureau.adresse?.cp}} {{bureau.adresse?.ville}}</span></div>
+            <div>
+              <div class="labelTable">Agence principale</div>
+              <span *ngIf="bureau.bPrincipal"><i class="fas fa-check"></i></span>
+            </div>
+            <div class="action">
+              <i class="fas fa-pencil-alt" (click)="gotoDetails(bureau)"></i>
+              <i *ngIf="!bureau.bPrincipal && bureaux.length > 1" class="fas fa-trash" style="color: brown;" (click)="delete(bureau)"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

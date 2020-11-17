@@ -1,0 +1,17 @@
+<div class="bloc">
+  <div class="table">
+    <app-header-table [querybuild]="queryBuild" [headers]="headers" [defaultOrder]="defaultOrder" (emitQueryBuild)="setQueryBuild($event)"></app-header-table>
+    <div class="content">
+      <div class="row" *ngFor="let historique of historiques">
+        <div class="grow1"><div class="labelTable">Utilisateur</div><span>{{historique.utilisateur.prenom}} {{historique.utilisateur.nom}}</span></div>
+        <div class="grow1"><div class="labelTable">Date</div><span>{{historique.date | date : 'dd-MM-yyyy à HH:mm'}}</span></div>
+        <div class="grow3 description"><div class="labelTable">Description</div><span [innerHtml]="historique.description"></span></div>
+      </div>
+    </div>
+  </div>
+  <app-pagination
+          [nbObjets]="nbObjets"
+          [queryBuild]="queryBuild"
+          (emitQueryBuild)="setQueryBuild($event)"
+  ></app-pagination>
+</div>

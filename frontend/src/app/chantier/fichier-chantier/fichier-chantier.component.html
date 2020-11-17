@@ -1,0 +1,17 @@
+<app-menu-chantier></app-menu-chantier>
+<div class="content">
+  <div class="bloc">
+    <div class="formgroup">
+      <label>Référence</label>
+      <div *ngIf="chantier?.id; else newDevis">{{chantier?.id}}</div>
+      <ng-template #newDevis>
+        <img src="assets/img/ajax-loader-dark.gif" alt="Attente de réponse du serveur..." />
+      </ng-template>
+    </div>
+    <div class="formgroup" *ngIf="chantier?.id">
+      <label>Nom du chantier</label>
+      <div>{{chantier?.nomChantier}}</div>
+    </div>
+  </div>
+  <app-fichier *ngIf="chantier" [application]="application" [groupeTypeFicher]="groupeTypeFicher" [idParent]="chantier.id" [@fadeIn] [@fadeOut]></app-fichier>
+</div>

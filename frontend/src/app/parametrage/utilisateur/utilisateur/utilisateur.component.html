@@ -1,0 +1,242 @@
+<app-menu-parametrage *ngIf="!superAdminId; else superAdminMenu"></app-menu-parametrage>
+<ng-template #superAdminMenu>
+  <app-menu-superadmin></app-menu-superadmin>
+</ng-template>
+<div class="content">
+  <div class="bloc" *ngIf="id">
+    <div class="formgroup">
+      <label>Référence</label>
+      <div>{{id}}</div>
+    </div>
+    <div class="formgroup" *ngIf="superAdminId && id != currentUser.id">
+      <label>Se connecter en tant que</label>
+      <div><button type="button" class="button" (click)="impersonate()">Connexion</button></div>
+    </div>
+  </div>
+  <h2>Informations</h2>
+  <div class="bloc">
+    <form [formGroup]="informationsForm" (ngSubmit)="onSubmitInformations()">
+      <div class="formgroup">
+        <label>Civilité</label>
+        <select formControlName="civilite" [ngClass]="{ 'invalid': submittedInformations && f.civilite.errors }"
+          [compareWith]="compareFn" tabindex="1">
+          <option *ngFor="let civilit of listeCivilite;let i = index" [ngValue]="civilit">{{civilit.nom}}</option>
+        </select>
+      </div>
+      <div class="formgroup" formGroupName="adresse">
+        <label>Adresse</label>
+        <input formControlName="adresse" [ngClass]="{ 'invalid': submittedInformations && fAdresse.adresse.errors }"
+          tabindex="7">
+      </div>
+
+      <div class="formgroup">
+        <label>Nom</label>
+        <input formControlName="nom" [ngClass]="{ 'invalid': submittedInformations && f.nom.errors }"
+          oninput="this.value = this.value.toUpperCase()" tabindex="2">
+      </div>
+      <div class="formgroup" formGroupName="adresse">
+        <label>Complément adresse</label>
+        <input formControlName="complement"
+          [ngClass]="{ 'invalid': submittedInformations && fAdresse.complement.errors }" tabindex="8">
+      </div>
+
+      <div class="formgroup">
+        <label>Prenom</label>
+        <input formControlName="prenom" [ngClass]="{ 'invalid': submittedInformations && f.prenom.errors }"
+          tabindex="3">
+      </div>
+
+      <div class="formgroup" formGroupName="adresse">
+        <label>Code Postal</label>
+        <app-cp-ville [isRechercheVille]="false" [parentForm]="adresseForm" [internalFormControlName]="'cp'" (emitCP)="setCP($event)" [tabindex]="9"></app-cp-ville>
+      </div>
+      <div class="formgroup" formGroupName="adresse">
+        <label>Téléphone</label>
+        <input formControlName="telephone"
+               [value]="adresseForm.get('telephone')!.value | telephone"
+               [ngClass]="{ 'invalid': submittedInformations && fAdresse.telephone.errors }"
+          tabindex="4">
+      </div>
+      <div class="formgroup" formGroupName="adresse">
+        <label>Ville</label>
+          <app-cp-ville [isRechercheVille]="true" [parentForm]="adresseForm" [internalFormControlName]="'ville'" (emitCP)="setCP($event)" [tabindex]="10"></app-cp-ville>
+      </div>
+      <div class="formgroup">
+        <label>Mobile</label>
+        <input formControlName="mobile"
+               [value]="informationsForm.get('mobile')!.value | telephone"
+               [ngClass]="{ 'invalid': submittedInformations && f.mobile.errors }"
+          tabindex="5">
+      </div>
+      <div class="formgroup">
+        <label>Raison Sociale</label>
+        <input formControlName="raisonSociale"
+          [ngClass]="{ 'invalid': submittedInformations && f.raisonSociale.errors }" tabindex="11">
+      </div>
+      <div class="formgroup" formGroupName="adresse">
+        <label>Fax</label>
+        <input formControlName="fax"
+               [value]="adresseForm.get('fax')!.value | telephone"
+               [ngClass]="{ 'invalid': submittedInformations && fAdresse.fax.errors }"
+          tabindex="6">
+      </div>
+      <div class="formgroup" formGroupName="adresse">
+        <label>Email de contact</label>
+        <input formControlName="email" [ngClass]="{ 'invalid': submittedInformations && fAdresse.email.errors }"
+          tabindex="12">
+      </div>
+      <h3></h3>
+      <div class="formgroup">
+        <label>Qualité</label>
+        <select formControlName="qualite" [ngClass]="{ 'invalid': submittedInformations && f.qualite.errors }"
+          [compareWith]="compareFn" (change)="qualiteChange()" tabindex="13">
+          <option *ngFor="let qualit of listeQualites" [ngValue]="qualit">{{qualit?.nom}}</option>
+        </select>
+      </div>
+      <div class="formgroup">
+        <label>Fonction</label>
+        <select formControlName="fonction" [ngClass]="{ 'invalid': submittedInformations && f.fonction.errors }"
+          [compareWith]="compareFn" tabindex="14">
+          <option *ngFor="let fonc of listeFonction" [ngValue]="fonc">{{fonc?.nom}}</option>
+        </select>
+      </div>
+      <div class="formgroup full" *ngIf="id && utilisateur && utilisateur.isInterne">
+        <label>Franchise principale</label>
+        <select formControlName="franchisePrincipale"
+          [ngClass]="{ 'invalid': submittedInformations && f.franchisePrincipale.errors }" [compareWith]="compareFn"
+          tabindex="15">
+          <option *ngFor="let franch of listeFranchisesUser" [ngValue]="franch">{{franch?.raisonSociale}}</option>
+        </select>
+      </div>
+      <div class="formgroup" *ngIf="id && utilisateur && utilisateur.isInterne && (currentUser.id === utilisateur.id || superAdminId === id)">
+        <label for="fichier-1" id="labelFichier">Signature (Image)</label>
+        <input type="file" id="fichier-1" (change)="onFileChange($event, 1)" #fileInput><i (click)="openFileChange(1)"
+          class="fas fa-file-upload"></i>
+      </div>
+      <div class="formgroup" *ngIf="id && utilisateur && utilisateur.isInterne && (currentUser.id === utilisateur.id || superAdminId === id) && signatureUrl">
+        <label for="fichier-1" id="labelFichier">Prévisualisation (Image)</label>
+        <img src="{{signatureUrl}}" />
+      </div>
+      <div class="action" *ngIf="id">
+        <button class="button" type="button" (click)="resetForm(informationsForm)" tabindex="16" [disabled]="informationsForm.pristine"><i class="fas fa-undo"></i> Annuler</button>
+        <button class="button" type="submit" tabindex="17" [disabled]="informationsForm.pristine"><i class="fas fa-save"></i> Enregistrer</button>
+      </div>
+    </form>
+  </div>
+
+
+  <h2>Identifiants</h2>
+  <div class="bloc">
+    <form [formGroup]="identifiantsForm" (ngSubmit)="onSubmitIdentifiants()">
+      <div class="formgroup">
+        <label>Login</label>
+        <input formControlName="login" [ngClass]="{ 'invalid': submittedIdentifiants && fIdentifiants.login.errors }"
+          tabindex="18">
+      </div>
+      <div class="formgroup">
+        <label>Mot de passe</label>
+        <input type="password" formControlName="motDePasse"
+          [ngClass]="{ 'invalid': submittedIdentifiants && fIdentifiants.motDePasse.errors }" tabindex="20">
+      </div>
+
+      <div class="formgroup">
+        <label>Login Google Agenda</label>
+        <input formControlName="loginGoogleAgenda"
+          [ngClass]="{ 'invalid': submittedIdentifiants && fIdentifiants.loginGoogleAgenda.errors }" tabindex="19">
+      </div>
+      <div class="formgroup">
+        <label>Confirmation</label>
+        <input type="password" formControlName="motDePasseConfirmation"
+          [ngClass]="{ 'invalid': submittedIdentifiants && fIdentifiants.motDePasseConfirmation.errors }" tabindex="21">
+      </div>
+
+      <div class="action">
+        <button class="button" type="button" (click)="resetForm(identifiantsForm)" tabindex="22" [disabled]="identifiantsForm.pristine"><i class="fas fa-undo"></i> Annuler</button>
+        <button class="button" type="submit" tabindex="23" [disabled]="identifiantsForm.pristine"><i class="fas fa-save"></i> Enregistrer</button>
+      </div>
+    </form>
+  </div>
+
+  <h2 *ngIf="id && (canSeeBlocDroits | async)">Droits</h2>
+  <div class="bloc" *ngIf="id && (canSeeBlocDroits | async)">
+    <form [formGroup]="droitsForm" *ngIf="(canSeeDroitsUser | async)" (ngSubmit)="onSubmitDroits()">
+      <div class="formgroup" *ngIf="id && utilisateur && !utilisateur.isInterne">
+        <label>Utilisateur parent<i class="fas fa-question-circle" tooltip="Au niveau des professionnels, pour les entreprises qui ont besoin de plusieurs niveaux de gestion, par exemple le directeur régional peut voir les affaires de toutes les agences de la région"></i></label>
+        <select formControlName="utilisateurParent"
+          [ngClass]="{ 'invalid': submittedDroits && fDroits.utilisateurParent.errors }" [compareWith]="compareFn"  tabindex="24">
+          <option [ngValue]="null">Aucun</option>
+          <option *ngFor="let userCreated of listeUsersDisponibles" [ngValue]="userCreated">{{userCreated.nom + ' ' +
+            userCreated.prenom}}</option>
+        </select>
+      </div>
+      <div class="formgroup" *ngIf="id != currentUser.id">
+        <label>Suspendu</label>
+        <input type="checkbox" formControlName="isSuspendu"
+          [ngClass]="{ 'invalid': submittedDroits && fDroits.isSuspendu.errors }" tabindex="25">
+      </div>
+      <div class="formgroup" *ngIf="id == currentUser.id" tooltip="Vous ne pouvez pas vous suspendre vous-même.">
+        <label>Suspendu</label>
+        <input type="checkbox" formControlName="isSuspendu"
+          [ngClass]="{ 'invalid': submittedDroits && fDroits.isSuspendu.errors }" readonly disabled onclick="return false;" style="cursor: not-allowed;">
+      </div>
+      <h3 *ngIf="id && utilisateur && utilisateur.isInterne">Gestion du personnel</h3>
+      <div class="formgroup" *ngIf="id && utilisateur && utilisateur.isInterne">
+        <label>Habilité</label>
+        <input type="checkbox" formControlName="isHabilite"
+          [ngClass]="{ 'invalid': submittedDroits && fDroits.isHabilite.errors }" tabindex="26">
+      </div>
+
+      <div class="formgroup" *ngIf="fDroits.isHabilite.value && id && utilisateur && utilisateur.isInterne">
+        <label>Niveau habilitation</label>
+        <input type="radio" formControlName="niveauHabilitation"
+          [ngClass]="{ 'invalid': submittedDroits && fDroits.niveauHabilitation.errors }" [value]="1" tabindex="27"> 1
+        <input type="radio" formControlName="niveauHabilitation"
+          [ngClass]="{ 'invalid': submittedDroits && fDroits.niveauHabilitation.errors }" [value]="2" tabindex="28"> 2
+        <input type="radio" formControlName="niveauHabilitation"
+          [ngClass]="{ 'invalid': submittedDroits && fDroits.niveauHabilitation.errors }" [value]="3" tabindex="29"> 3
+      </div>
+      <div class="formgroup" *ngIf="fDroits.isHabilite.value && id && utilisateur && utilisateur.isInterne">
+        <label>Date validité habilitaion</label>
+        <input type="date" formControlName="dateValiditeHabilitation"
+          [ngClass]="{ 'invalid': submittedDroits && fDroits.dateValiditeHabilitation.errors }" tabindex="30">
+      </div>
+      <div class="action">
+        <button class="button" type="button" (click)="resetForm(droitsForm)" tabindex="31" [disabled]="droitsForm.pristine"><i class="fas fa-undo"></i> Annuler</button>
+        <button class="button" type="submit" tabindex="32" [disabled]="droitsForm.pristine"><i class="fas fa-save"></i> Enregistrer</button>
+      </div>
+    </form>
+
+
+    <form id="profils" [formGroup]="profilsForm" *ngIf="cansSeeProfilsUser" (ngSubmit)="onSubmitProfils()">
+      <h3>Profils</h3>
+      <div class="formgroup">
+        <label>Profil</label>
+        <select formControlName="newProfil" [ngClass]="{ 'invalid': submittedProfils && fProfils.newProfil.errors }"
+          [compareWith]="compareFn" tabindex="33">
+          <option *ngFor="let prof of listeProfils" [ngValue]="prof">{{prof?.nom}}</option>
+        </select>
+      </div>
+      <div class="formgroup">
+        <label>Franchise</label>
+        <select formControlName="newProfilFranchise"
+          [ngClass]="{ 'invalid': submittedProfils && fProfils.newProfilFranchise.errors }" [compareWith]="compareFn">
+          <option *ngFor="let fran of listeFranchises" [ngValue]="fran" tabindex="34">{{fran?.raisonSociale}}</option>
+        </select> <button type="submit" class="roundbutton nofocus" tabindex="35"><i
+            class="fas fa-plus-circle right btn-add"></i></button>
+      </div>
+
+
+      <div *ngFor="let profil of utilisateur?.profils" class="formgroup full">
+        <div class="formgroup" *ngIf="profil.profil != null">
+          <label></label>
+          <div style="text-align:center;">{{profil.profil?.nom}}</div>
+        </div>
+        <div class="formgroup" *ngIf="profil.franchise != null">
+          <label></label>
+          <div style="text-align:center;">{{profil.franchise?.raisonSociale}}</div> <i
+            class="fas fa-times-circle right btn-remove" (click)="removeProfile(profil)"></i>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

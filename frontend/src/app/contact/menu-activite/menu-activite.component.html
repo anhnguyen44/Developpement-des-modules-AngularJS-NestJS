@@ -1,0 +1,5 @@
+<nav class="menu-gauche">
+  <div *ngIf="idActivite" [class.active]="activeMenu === 'information'" [routerLink]="['/contact/activite/', idActivite,  'modifier']">Information</div>
+  <div *ngIf="!idActivite" [class.active]="activeMenu === 'information'" [routerLink]="['/contact/activite/ajouter']">Informations</div>
+  <div *ngIf="idActivite" [class.active]="activeMenu === 'historique'" [routerLink]="['/contact/activite/', idActivite,  'historique']">Historique</div>
+</nav>

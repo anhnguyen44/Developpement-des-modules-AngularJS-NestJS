@@ -1,0 +1,113 @@
+<app-menu-parametrage *ngIf="!superAdminFranchiseId && !superAdminId"></app-menu-parametrage>
+<app-menu-superadmin *ngIf="superAdminFranchiseId || superAdminId"></app-menu-superadmin>
+<div class="content">
+  <div class="bloc" *ngIf="bureau?.id">
+    <div class="formgroup">
+      <label>Référence</label>
+      <div>{{bureau.id}}</div>
+    </div>
+  </div>
+  <h2>Informations</h2>
+  <div class="bloc">
+    <form [formGroup]="bureauForm" (ngSubmit)="onSubmit(bureauForm)">
+      <div class="formgroup">
+        <label>Nom bureau</label>
+        <input type="text" formControlName="nom"
+          [ngClass]="{ 'invalid': bureauForm['controls'].nom.errors && submited}" tabindex="1">
+      </div>
+      <div class="formgroup">
+        <label>Principal</label>
+        <input type="checkbox" formControlName="bPrincipal" [checked]="bureau?.bPrincipal" tabindex="6">
+      </div>
+
+      <div class="formgroup" formGroupName="adresse">
+        <label>Téléphone</label>
+        <input type="text" formControlName="telephone"
+          [ngClass]="{ 'invalid': bureauForm['controls'].adresse['controls'].telephone.errors && submited}" tabindex="2">
+      </div>
+
+      <div class="formgroup" formGroupName="adresse">
+        <label>Adresse</label>
+        <input type="text" formControlName="adresse"
+          [ngClass]="{ 'invalid': bureauForm['controls'].adresse['controls'].adresse.errors && submited}" tabindex="7">
+      </div>
+
+      <div class="formgroup">
+        <label>Portable</label>
+        <input type="text" formControlName="portable" tabindex="3">
+      </div>
+
+      <div class="formgroup" formGroupName="adresse">
+        <label>Complement</label>
+        <input type="text" formControlName="complement" tabindex="8">
+      </div>
+
+      <div class="formgroup" formGroupName="adresse">
+        <label>Fax</label>
+        <input type="text" formControlName="fax" tabindex="4">
+      </div>
+
+      <div class="formgroup" formGroupName="adresse">
+        <label>Code Postal</label>
+        <!-- <input type="text" formControlName="cp"
+          [ngClass]="{ 'invalid': bureauForm['controls'].adresse['controls'].cp.errors && submited}"> -->
+        <app-cp-ville [isRechercheVille]="false" [parentForm]="adresseFrom" [internalFormControlName]="'cp'"
+          (emitCP)="setCP($event)" [tabindex]="9"></app-cp-ville>
+      </div>
+
+      <div class="formgroup" formGroupName="adresse">
+        <label>Email</label>
+        <input type="text" formControlName="email"
+          [ngClass]="{ 'invalid': bureauForm['controls'].adresse['controls'].email.errors && submited}" tabindex="5">
+      </div>
+
+      <div class="formgroup" formGroupName="adresse">
+        <label>Ville</label>
+        <!-- <input type="text" formControlName="ville"
+               [ngClass]="{ 'invalid': bureauForm['controls'].adresse['controls'].ville.errors && submited}"> -->
+        <app-cp-ville [isRechercheVille]="true" [parentForm]="adresseFrom" [internalFormControlName]="'ville'"
+          (emitCP)="setCP($event)" [tabindex]="10"></app-cp-ville>
+      </div>
+
+
+      <div class="formgroup" *ngIf="superAdminId">
+        <label>Numéro d'accréditation COFRAC</label>
+        <input formControlName="numeroAccreditation" [ngClass]="{ 'invalid': submittedInformations && f.numeroAccreditation.errors }">
+      </div>
+      <div class="formgroup" *ngIf="superAdminId">
+        <label>Validité accréditation COFRAC</label>
+        <input type="date" formControlName="dateValiditeAccreditation" [ngClass]="{ 'invalid': submittedInformations && f.dateValiditeAccreditation.errors }">
+      </div>
+
+      <div class="formgroup full" *ngIf="superAdminId">
+        <label>Nom commercial (equiv. label minisite URL)</label>
+        <input formControlName="nomCommercial" [ngClass]="{ 'invalid': submittedInformations && f.nomCommercial.errors }">
+      </div>
+
+      <h3>Alertes</h3>
+      <div class="formgroup">
+        <label>Seuil filtre 43-269</label>
+        <input type="number" value="50" tabindex="11">
+      </div>
+      <div class="formgroup">
+        <label>Seuil filtre 43-050</label>
+        <input type="number" value="50" tabindex="12">
+      </div>
+      <div class="formgroup">
+        <label>Jour avant étalonage pompe</label>
+        <input type="number" value="15" tabindex="13">
+      </div>
+      <div class="formgroup">
+        <label>Jour avant validation pompe</label>
+        <input type="number" value="15" tabindex="14">
+      </div>
+      <div class="formgroup">
+        <label>Jour avant vérification annexe pompe</label>
+        <input type="number" value="15" tabindex="15">
+      </div>
+      <div class="action">
+        <button type="submit" class="button" tabindex="16">Valider</button>
+      </div>
+    </form>
+  </div>
+</div>

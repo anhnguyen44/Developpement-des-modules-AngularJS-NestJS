@@ -1,0 +1,9 @@
+node_modules
+.idea
+npm-debug.log
+dist
+coverage
+.log
+.vscode
+shared/package-lock.json
+lerna-debug.log

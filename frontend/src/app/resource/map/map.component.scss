@@ -1,0 +1,27 @@
+@import "variables";
+
+:host {
+  width: 100%;
+}
+
+#legend-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: .8em;
+  justify-content: center;
+}
+
+#legend-container > div {
+  // justify-content: center;
+  height: 41px;
+}
+
+#legend-container > div span {
+  position: relative;
+  top: 12px;
+  margin-left: calc(25px + .6em)
+}
+
+#legend-container > div + div {
+  margin-left: 1.5em;
+}

@@ -1,0 +1,5 @@
+<div class="content" (clickOutside)="close($event)" [delayClickOutsideInit]="true">
+    <i class="sub fas fa-times btn-close" (click)="close($event)"></i>
+  <app-processus [idProcessus]="idProcessus" [isNew]="isNew" [idCompte]="idCompte" [isModal]="true" (emitProcessus)="setProcessus($event)" (emitClose)="close($event)"></app-processus>
+</div>
+

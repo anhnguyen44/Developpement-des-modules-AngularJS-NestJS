@@ -1,0 +1,185 @@
+<app-menu-chantier></app-menu-chantier>
+<div class="content">
+    <div class="bloc">
+        <div class="formgroup">
+            <label>Référence</label>
+            <div *ngIf="chantier?.id; else newChantier">{{chantier?.id}}</div>
+            <ng-template #newChantier>
+                <img src="assets/img/ajax-loader-dark.gif" alt="Attente de réponse du serveur..." />
+            </ng-template>
+        </div>
+        <div class="formgroup">
+            <label>Nom du chantier</label>
+            <input type="text" [ngModel]="chantier?.nomChantier" (ngModelChange)="chantier.nomChantier = $event;"
+                [ngModelOptions]="{standalone: true}" [ngClass]="{ 'invalid': submitted && !chantier.nomChantier}">
+        </div>
+    </div>
+    <h2>
+        Besoin client
+    </h2>
+    <div class="bloc">
+        <form [formGroup]="formBesoin" (ngSubmit)="onSubmit()">
+            <div class="formgroup">
+                <label>Date de la demande</label>
+                <input type="date" formControlName="dateDemande" [value]="besoinClient?.dateDemande">
+            </div>
+            <!-- <div class="formgroup">
+                <label>Adresse de la mission</label>
+                <input type="text" formControlName="adresseMission" disabled><i class="fas fa-map" (click)="openModalSiteIntervention()"></i>
+            </div> -->
+            <div class="formgroup"
+                [style.visibility]="formBesoin.controls['idTypeBesoinLabo'].value == 1 && formBesoin.controls['ss4'].value ? 'visible' : 'hidden'"
+                [@fadeIn] [@fadeOut]>
+                <label>Date de la demande SS4</label>
+                <input type="date" formControlName="dateDemandeSS4" [value]="besoinClient?.dateDemandeSS4">
+            </div>
+            <div class="formgroup full">
+                <label></label>
+                <div>
+                    <span>
+                        <input type="radio" formControlName="idTypeBesoinLabo" [value]="1"
+                            [checked]="besoinClient?.idTypeBesoinLabo == null || besoinClient?.idTypeBesoinLabo == 1 || besoinClient?.idTypeBesoinLabo == 1">
+                        Code du Travail &#160;&#160;&#160;&#160;
+                    </span>
+                    <span>
+                        <input type="radio" formControlName="idTypeBesoinLabo" [value]="2"
+                            [checked]="besoinClient?.idTypeBesoinLabo == 2 || besoinClient?.idTypeBesoinLabo == 2"> Code
+                        de la Santé Publique
+                    </span>
+                </div>
+            </div>
+            <div class="formgroup full" *ngIf="formBesoin.controls['idTypeBesoinLabo'].value == 1" [@fadeIn] [@fadeOut]>
+                <label>Type de chantier</label>
+                <div>
+                    <input type="checkbox" formControlName="ss3" (change)="checkSS3()"> Retrait ou encapsulage de MPCA
+                    [<b>SS3</b>]<br />
+                    <input type="checkbox" formControlName="ss4"> Entretien ou maintenance (TEM) sur ou à proximité de
+                    MPCA [<b>SS4</b>]
+                </div>
+            </div>
+            <div class="formgroup full">
+                <label>Périmètre d'investigation</label>
+                <textarea formControlName="perimetreGlobal"></textarea>
+            </div>
+            <div class="formgroup full">
+                <label>Documents transmis par le client ou joints au dossier</label>
+                <div>
+                    <span [@fadeIn] [@fadeOut]><input type="checkbox" name="pdre" [checked]="documentsPresents[9]"
+                            disabled> Plan du périmètre d'investigation
+                        <i *ngIf="formBesoin.controls['idTypeBesoinLabo'].value == 2 && !documentsPresents[9]"
+                            tooltip="Obligatoire en Code de la Santé Publique ou pour une stratégie Spatiale en Code du Travail. Il est possible de joindre des plans par batiment dans l'onglet suivant."
+                            class="fas fa-exclamation-triangle" style="color: orange;"></i>
+                        &#160;&#160;&#160;&#160;</span>
+                    <span *ngIf="formBesoin.controls['idTypeBesoinLabo'].value == 1 && formBesoin.controls['ss3'].value"
+                        [@fadeIn] [@fadeOut]><input type="checkbox" name="pdre" [checked]="documentsPresents[0]"
+                            disabled> PDRE
+                        &#160;&#160;&#160;&#160;</span>
+                    <span *ngIf="formBesoin.controls['idTypeBesoinLabo'].value == 1 && formBesoin.controls['ss3'].value"
+                        [@fadeIn] [@fadeOut]><input type="checkbox" name="listeprocess" [checked]="documentsPresents[1]"
+                            disabled> Liste des
+                        processus &#160;&#160;&#160;&#160;</span>
+                    <span *ngIf="formBesoin.controls['idTypeBesoinLabo'].value == 1 && formBesoin.controls['ss4'].value"
+                        [@fadeIn] [@fadeOut]><input type="checkbox" name="modeop" [checked]="documentsPresents[2]"
+                            disabled> Mode opératoire
+                        &#160;&#160;&#160;&#160;</span>
+                    <span *ngIf="formBesoin.controls['idTypeBesoinLabo'].value == 1" [@fadeIn] [@fadeOut]><input
+                            type="checkbox" name="pic" [checked]="documentsPresents[3]" disabled> Plan d'Installation
+                        Chantier (PIC)
+                        &#160;&#160;&#160;&#160;</span>
+                    <span *ngIf="formBesoin.controls['idTypeBesoinLabo'].value == 1" [@fadeIn] [@fadeOut]
+                        disabled><input type="checkbox" name="planninginfo" [checked]="documentsPresents[4]" disabled>
+                        Planning des informations
+                        &#160;&#160;&#160;&#160;</span>
+                    <span><input type="checkbox" name="reperageamiante" [checked]="documentsPresents[5]" disabled>
+                        Repérage amiante
+                        &#160;&#160;&#160;&#160;</span>
+                    <span><input type="checkbox" name="photos" [checked]="documentsPresents[6]" disabled> Photos
+                        &#160;&#160;&#160;&#160;</span>
+                    <span *ngIf="formBesoin.controls['idTypeBesoinLabo'].value == 2" [@fadeIn] [@fadeOut]><input
+                            type="checkbox" name="plans" [checked]="documentsPresents[7]" disabled> Plans
+                        &#160;&#160;&#160;&#160;</span>
+                    <span *ngIf="formBesoin.controls['idTypeBesoinLabo'].value == 2" [@fadeIn] [@fadeOut]><input
+                            type="checkbox" name="pdreentrepretrait" [checked]="documentsPresents[8]" disabled> PDRE de
+                        l'entreprise de retrait</span>
+                </div>
+            </div>
+            <h3>Informations fournies<span style="float: right; cursor: pointer;"
+                    (click)="displayInfos = !displayInfos; $event.preventDefault(); $event.stopPropagation();"><i
+                        class="fas fa-chevron-down" *ngIf="!displayInfos"></i>
+                    <i class="fas fa-chevron-up" *ngIf="displayInfos"></i></span></h3>
+            <div style="width: 100%;" *ngIf="displayInfos" [@fadeIn] [@fadeOut]>
+                <app-informations-besoin *ngIf="chantier?.idBesoinClient" [idParent]="chantier.idBesoinClient">
+                </app-informations-besoin>
+            </div>
+            <h3>Fichiers joints<span style="float: right; cursor: pointer;"
+                    (click)="displayFichiers = !displayFichiers; $event.preventDefault(); $event.stopPropagation();"><i
+                        class="fas fa-chevron-down" *ngIf="!displayFichiers"></i>
+                    <i class="fas fa-chevron-up" *ngIf="displayFichiers"></i></span></h3>
+            <div *ngIf="displayFichiers" [@fadeIn] [@fadeOut] style="width: 100%;">
+                <div *ngIf="chantier?.id; else enregistreDabord" style="width: 100%;">
+                    <app-fichier [groupeTypeFicher]="groupeTypeFicher" [application]="'chantier'"
+                        [idParent]="chantier?.id" (emitFichier)="updateDocumentsFournis()"
+                        (emitDelete)="updateDocumentsFournis()">
+                    </app-fichier>
+                </div>
+                <ng-template #enregistreDabord>
+                    <div>
+                        Veuillez enregistrer le chaniter avant d'y rattacher des fichiers.
+                    </div>
+                </ng-template>
+            </div>
+            <h3>Objectifs</h3>
+            <div class="formgroup full" *ngIf="formBesoin.controls['idTypeBesoinLabo'].value == 1" [@fadeIn] [@fadeOut]>
+                <label>Objectif de la mesure (CT)</label>
+                <div formGroupName="objectifsCT">
+                    <p *ngFor="let momObjPT of listeMomentsObjectifsPendantTravaux">
+                        <b>{{momObjPT.nom}}</b><br />
+                        <span *ngFor="let obj of listeObjectifParMoment[momObjPT.id]">
+                            <span *ngIf="obj.idType == 1" tooltip="{{obj.description}}" show-delay="200"
+                                hide-delay="200">
+                                <input type="checkbox" name="{{obj.lettre}}" formControlName="{{obj.code}}" />
+                                {{obj.nom}} [<b>{{obj.lettre}}</b>]<br />
+                            </span>
+                        </span>
+                    </p>
+                </div>
+            </div>
+            <div class="formgroup full" *ngIf="formBesoin.controls['idTypeBesoinLabo'].value == 2" [@fadeIn] [@fadeOut]>
+                <label>Objectif de la mesure (CSP)</label>
+                <div formGroupName="objectifsCSP">
+                    <p *ngFor="let momObjHT of listeMomentsObjectifsHorsTravaux">
+                        <b>{{momObjHT.nom}}</b><br />
+                        <span *ngFor="let obj of listeObjectifParMoment[momObjHT.id]">
+                            <span *ngIf="obj.idType == 2" tooltip="{{obj.description}}" show-delay="200" hide-delay="200">
+                                <input type="checkbox" name="{{obj.lettre}}" formControlName="{{obj.code}}" />
+                                {{obj.nom}} [<b>{{obj.lettre}}</b>]<br />
+                            </span>
+                        </span>
+                    </p>
+                </div>
+            </div>
+
+            <h3>Autres</h3>
+            <div class="formgroup full">
+                <label>Type d'intervention/descriptif du chantier</label>
+                <textarea formControlName="descriptifChantier"></textarea>
+            </div>
+            <div class="formgroup full">
+                <label>Effectif prévu</label>
+                <textarea formControlName="effectifPrevu"></textarea>
+            </div>
+            <div class="formgroup full">
+                <label>Points particuliers ou autres demandes</label>
+                <textarea formControlName="commentaires"></textarea>
+            </div>
+            <div class="action">
+                <button class="button">Abandonner le devis</button>
+                <button class="button">Enregistrer</button>
+                <button class="button" type="button" (click)="onSubmit(true)">Suivant</button>
+            </div>
+        </form>
+    </div>
+</div>
+<app-modal-site-intervention *ngIf="modalSiteIntervention" [isOnlyCreate]="false"
+    [modalSiteIntervention]="modalSiteIntervention" [for]="'select'" (emitClose)="closeModalSiteIntervention()">
+</app-modal-site-intervention>

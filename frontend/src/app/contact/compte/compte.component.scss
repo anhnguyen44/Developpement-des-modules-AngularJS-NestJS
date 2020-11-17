@@ -1,0 +1,29 @@
+@import '../../../variables';
+
+:host{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.roundbutton {
+  padding-left: 1em;
+  border: none;
+  background: none;
+  font-size: 1em;
+}
+
+.btn-add {
+  color: seagreen;
+  cursor: pointer;
+}
+
+.btn-disabled {
+  color: $couleurTexteDisabled;
+}
+
+@media (max-width: 640px) {
+  :host{
+    flex-wrap: wrap;
+  }
+}

@@ -1,0 +1,93 @@
+<div class="login">
+  <div class="bloc" id="bloc">
+    <div class="innerLogin">
+      <div class="image">
+        <img src="./assets/img/logo-alea-controles-sans-aucun-doute.png" alt="Home Button">
+      </div>
+      <form *ngIf="!isFormMdpOublie" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="formgroup full">
+          <input type="text" id="mail" formControlName="login" placeholder="Email"
+            [ngClass]="{ 'danger': submitted && f.login.errors }" />
+        </div>
+        <div class="formgroup full">
+          <input type="password" id="motdepasse" formControlName="motDePasse" placeholder="Mot de passe"
+            [ngClass]="{ 'danger': submitted && f.motDePasse.errors }">
+        </div>
+        <div class="formgroup full">
+          <button type="submit" class="button full">
+            Connexion
+          </button>
+        </div>
+        <div class="link" (click)="isFormMdpOublie = !isFormMdpOublie">Mot de passe oublié ?</div>
+      </form>
+      <form *ngIf="isFormMdpOublie" [formGroup]="oubliForm" (ngSubmit)="onSubmitOubli()">
+        <div class="formgroup full">
+          <input type="text" id="mail" formControlName="login" placeholder="Email"
+            [ngClass]="{ 'danger': submitted && fOubli.login.errors }" />
+        </div>
+        <!-- <div class="formgroup full" style="transform:scale(1.325);transform-origin:0 0; margin-bottom: 20px;"> -->
+        <div class="formgroup full">
+          <re-captcha (resolved)="resolved($event)" formControlName="recaptchaReactive">
+          </re-captcha>
+        </div>
+        <div class="formgroup full">
+          <button type="submit" class="button full" [class.disabled]="oubliForm.invalid">
+            Envoyer
+          </button>
+        </div>
+        <div class="link" (click)="isFormMdpOublie = !isFormMdpOublie">Retourner à la connexion</div>
+      </form>
+    </div>
+  </div>
+  <div>
+    <div class="img-login"></div>
+    <div style="z-index: 800;">
+      <div style="font-size: 2.2em; text-align: center; margin-bottom: 2em;">
+        Parce que le pire est prévisible,<br />
+        Aléa Contrôles <span class="color-highlight">s'engage</span> pour le meilleur
+      </div>
+      <div>
+        <ul class="checkmark">
+          <li>Prévenir</li>
+          <li>Protéger</li>
+          <li>Former</li>
+          <li>Repérer</li>
+          <li>Analyser</li>
+        </ul>
+      </div>
+
+      <carousel #carousel="carousel" [showControls]="true" *ngIf="displayCarousel">
+        <!-- <ng-container *ngFor="let item of items;"> -->
+        <ng-container *carouselItem>
+          <div class="carte-carousel">
+            <h1 style="color: #EC7323;">De nombreux services à votre disposition</h1>
+            <i class="fas fa-file-contract" style="font-size: 4em;"></i><br />
+            <div style="font-size: 1.5em;margin-top: 1em;">
+              Accéder à l'ensemble de vos rapports 
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *carouselItem>
+          <div class="carte-carousel">
+              <h1 style="color: #EC7323;">De nombreux services à votre disposition</h1>
+              <i class="fas fa-calculator" style="font-size: 4em;"></i><br />
+              <div style="font-size: 1.5em;margin-top: 1em;">
+                Calculer vos VLEP
+              </div>
+          </div>
+        </ng-container>
+        <ng-container *carouselItem>
+          <div class="carte-carousel">
+              <h1 style="color: #EC7323;">De nombreux services à votre disposition</h1>
+              <i class="fas fa-newspaper" style="font-size: 4em;"></i><br />
+              <div style="font-size: 1.5em;margin-top: 1em;">
+                Accéder à votre veille réglementaire
+              </div>
+          </div>
+        </ng-container>
+        <!-- </ng-container> -->
+      </carousel>
+      <app-spacer [height]="100"></app-spacer>
+    </div>
+  </div>
+</div>

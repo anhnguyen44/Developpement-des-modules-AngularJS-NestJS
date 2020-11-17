@@ -1,0 +1,60 @@
+<app-menu-logistique></app-menu-logistique>
+
+<div class="content">
+
+  <h2>Stock</h2>
+  <div class="bloc">
+    <div class="subBloc" *ngFor="let bureau of bureaux">
+      <h4>{{bureau.nom}} - {{bureau.nomCommercial}}</h4>
+      <div class="formgroup">
+        <label>Type : {{enumTypeFiltre[1]}}</label>
+        <div>{{getCountFiltre(bureau.id, 1)}} pcs</div>
+      </div>
+      <div class="formgroup">
+        <label>Type : {{enumTypeFiltre[2]}}</label>
+        <div>{{getCountFiltre(bureau.id, 2)}} pcs</div>
+      </div>
+    </div>
+  </div>
+
+
+  <app-recherche [champDeRecherches]="champDeRecherches" [queryBuild]="queryBuild" (emitQueryBuild)="setQueryBuild($event)"></app-recherche>
+  <div class="bloc">
+    <div class="table">
+      <div class="action">
+        <div class="left">
+
+        </div>
+        <div class="right">
+          <i class="fas fa-file-excel"></i>
+          <div [routerLink]="['/logistique', 'lot-filtre', 'ajouter']" class="nofocus">
+            <i class="fas fa-plus"></i> Créer
+          </div>
+        </div>
+      </div>
+      <app-header-table [headers]="headers" [querybuild]="queryBuild" (emitQueryBuild)="setQueryBuild($event)"></app-header-table>
+      <div class="content">
+        <div class="row" *ngFor="let lotFiltre of lotFiltres" (dblclick)="goToDetail(lotFiltre)">
+          <div><div class="labelTable">Ref</div>{{lotFiltre.ref}}</div>
+          <div><div class="labelTable">Bureau</div>{{lotFiltre.bureau.nom}}</div>
+          <div>
+            <div class="labelTable">Conforme</div>
+            <span *ngIf="lotFiltre.dateReception && lotFiltre.isConforme"><i class="fas fa-check"></i></span>
+            <span *ngIf="lotFiltre.dateReception && !lotFiltre.isConforme"><i class="fas fa-times"></i></span>
+          </div>
+          <div>
+            <div class="labelTable">Type</div>
+            {{enumTypeFiltre[lotFiltre.idTypeFiltre]}}
+          </div>
+          <div><div class="labelTable" *ngIf="lotFiltre.isConforme">Stock</div><span *ngIf="lotFiltre.isConforme">{{lotFiltre.stock}} / {{lotFiltre.stockTotal}}</span></div>
+          <div class="action"><i class="fas fa-pencil-alt" (click)="goToDetail(lotFiltre)"></i></div>
+        </div>
+        <app-pagination
+                [queryBuild]="queryBuild"
+                [nbObjets]="nbObjets"
+                (emitQueryBuild)="setQueryBuild($event)"
+        ></app-pagination>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,43 @@
+<app-menu-parametrage *ngIf="!superAdminId; else superAdminMenu"></app-menu-parametrage>
+<ng-template #superAdminMenu>
+  <app-menu-superadmin></app-menu-superadmin>
+</ng-template>
+<div class="content">
+  <div class="bloc">
+    <div class="formgroup">
+      <label>Référence</label>
+      <div>{{grilleTarif?.reference}}</div>
+    </div>
+    <div class="formgroup">
+      <label>Type de grille</label>
+      <div>{{grilleTarif?.typeGrille.nom}}</div>
+    </div>
+  </div>
+
+  <!-- <h2>Détails</h2> -->
+  <div class="bloc">
+    <form (ngSubmit)="onSubmitInformations()" style="width: 100%;" [formGroup]="lignesForm">
+      <div style="width: 100%;" *ngFor="let cont of lignesForm.get('items')!['controls']; let i = index;"
+        formArrayName="items">
+        <div [formArrayName]="i">
+          <h3>{{cont.controls.categorie.value.nom}}</h3>
+          <div *ngFor="let prdPT of cont.get('lignes').controls; let j = index;"
+            formArrayName="lignes">
+            <div class="formgroup full">
+              <label>{{prdPT.controls.produit.value.nom}}</label>
+              <div [formGroupName]="j">
+                P.U. HT : <input formControlName="prixUnitaire" /> €
+                <span *ngIf="prdPT.controls.produit.value.hasTemps" style="margin-left: 2em;">Temps unitaire : <input
+                    formControlName="tempsUnitaire" />
+                  Unité de temps : <input formControlName="uniteTemps" /></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="action">
+        <button class="button" type="submit" tabindex="5">Valider</button>
+      </div>
+    </form>
+  </div>
+</div>

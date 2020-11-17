@@ -1,0 +1,81 @@
+<div class="header-wrapper" [class.sticky]="isSticky">
+  <div class="header">
+    <nav class="navbar sticky-top navbar-toggleable-sm navbar-light bs-topnav" [class.sticky]="isSticky">
+      <div class="nav-wrapper">
+        <a routerLink="/" class="navbar-brand">
+          <img src="./assets/img/logo-alea-controles-sans-aucun-doute.png" alt="Logo AléaContrôles">
+        </a>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <div class="franchise" *ngIf="loggedIn()">
+            <div *ngIf="franchises.length > 1; else monoFranchise">
+              <select [(ngModel)]="franchise" [compareWith]="compareFranchise" (change)="changeFranchise(franchise)">
+                <option *ngFor="let franchise of franchises" [ngValue]="franchise">{{franchise.nomPrenomSignature}}</option>
+              </select>
+            </div>
+            <ng-template #monoFranchise>
+              {{franchise?.nomPrenomSignature}}
+            </ng-template>
+          </div>
+          <div class="navbar-nav ml-auto">
+            <div class="nav-item" *ngIf="!loggedIn()">
+              <a class="nav-link" routerLink="login">
+                <b>Connexion</b>
+              </a>
+            </div>
+            <div class="nav-item" *ngIf="loggedIn()">
+              <div [class.badge1]="nbNotif > 0" class="rounded" id="user" attr.data-badge="{{nbNotif}}">
+                <i class="fas fa-user"></i>
+                <div class="menuUser">
+                  <div class="link" routerLink="notifications" style="white-space: nowrap"><i class="fas fa-bell"></i>
+                    Notifications</div>
+                  <div class="link" routerLink="profile" style="white-space: nowrap"><i class="fas fa-user-cog"></i> Mon
+                    compte</div>
+                  <div class="link" (click)="logOut()"><i class="fas fa-sign-out-alt"></i> Déconnexion</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="sous-menu" *ngIf="loggedIn()">
+      <div class="left"></div>
+      <div class="content">
+        <a (click)="menu()" class="menu-boutton" [class.grow1]="state === 'open'">
+          <i class="fas" [class.fa-times]="state === 'open'" [class.fa-bars]="state === 'close'"></i>
+          <div class="wrapper-triangle" [class.openMenu]="state === 'open'">
+            <span class="menu-bt-menu">Menu</span>
+            <div class="triangle" [class.openTriangle]="state === 'open'"></div>
+          </div>
+          <span></span>
+        </a>
+        <div class="menus" *ngIf="state === 'close'" [@fadeIn] [@fadeOut]>
+          <div class="menu" *ngFor="let menu of menus; index as i">
+            <span *ngIf="menu.lien" [routerLink]="[menu.lien]" style="cursor: pointer;"
+              class="nofocus">{{menu.nom}}</span>
+            <span *ngIf="!menu.lien">{{menu.nom}}</span>
+            <span *ngIf="i < menus.length - 1"> <i class="fas fa-angle-double-right"></i> </span>
+          </div>
+        </div>
+        <div class="menuCreerWrapper">
+          <a class="creer" (click)="menuCreer()"><i class="fas fa-plus"></i> <span>Créer</span></a>
+          <div class="menuCreer" [@menuAnimation]="stateCreer" (clickOutside)="closeMenuCreer()"
+            [exclude]="'.sous-menu'">
+            <div (click)="closeMenuCreer()" routerLink="/devis-commande/ajouter">Devis</div>
+            <div (click)="closeMenuCreer()" routerLink="/chantier/ajouter">Chantier</div>
+            <div (click)="closeMenuCreer()" routerLink="/contact/contact/0/activite/ajouter">Activité</div>
+            <div (click)="closeMenuCreer()" routerLink="/contact/compte/ajouter">Compte</div>
+            <div (click)="closeMenuCreer()" routerLink="/contact/contact/ajouter">Contact</div>
+            <div (click)="closeMenuCreer()" routerLink="/contenu-admin/menu/ajouter">Menu</div>
+            <div (click)="closeMenuCreer()" routerLink="/contenu-admin/contenu/ajouter">Contenu</div>
+          </div>
+        </div>
+      </div>
+      <div class="right"></div>
+    </div>
+  </div>
+</div>
+<app-menu *ngIf="loggedIn()" (emitCloseMenu)="closeMenu()" [@menuAnimation]="state"
+  [listMenuPricipal]='listMenuPricipal' [listeMenuVisible]='listeMenuVisible' [listeContenu]='listeContenu'></app-menu>

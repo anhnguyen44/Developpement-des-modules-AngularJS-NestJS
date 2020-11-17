@@ -1,0 +1,17 @@
+<app-menu-devis-commande></app-menu-devis-commande>
+<div class="content">
+  <div class="bloc">
+    <div class="formgroup">
+      <label>Référence</label>
+      <div *ngIf="devisCommande?.id; else newDevis">{{devisCommande?.id}}</div>
+      <ng-template #newDevis>
+        Nouveau Devis
+      </ng-template>
+    </div>
+    <div class="formgroup" *ngIf="devisCommande?.id">
+      <label>Version</label>
+      <div>{{devisCommande?.version}}</div>
+    </div>
+  </div>
+  <app-fichier *ngIf="devisCommande" [application]="application" [groupeTypeFicher]="groupeTypeFicher" [idParent]="devisCommande.id" [@fadeIn] [@fadeOut]></app-fichier>
+</div>

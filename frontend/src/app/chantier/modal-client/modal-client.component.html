@@ -1,0 +1,6 @@
+<div class="content" (clickOutside)="close($event)" [delayClickOutsideInit]="true">
+    <i class="fas fa-times btn-close" (click)="close($event)"></i>
+  <app-page-liste-interlocuteur-chantier *ngIf="modalClient && !modalCreate" [isOnlyContact]="isOnlyContact" [queryBuildContact]="queryBuildContact" [modalClient]="modalClient" (emitCompte)="setClient($event)" (emitContact)="setClient($event)" (emitNouveauContact)="setNouveauContact($event)"></app-page-liste-interlocuteur-chantier>
+  <app-contact *ngIf="modalCreate" [modal]="true" (emitContact)="setContact($event)"></app-contact>
+</div>
+

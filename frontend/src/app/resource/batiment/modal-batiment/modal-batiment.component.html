@@ -1,0 +1,43 @@
+<div class="content">
+  <i class="sub fas fa-times btn-close" (click)="close()"></i>
+  <h2>Ajout d'un batiment</h2>
+  <div class="bloc">
+    <form>
+      <div class="formgroup full">
+        <label>Nom du batiment</label>
+        <input type="text" [(ngModel)]="batiment.nom" [ngModelOptions]="{standalone: true}">
+      </div>
+      <div class="formgroup full" *ngIf="typeBatiments">
+        <label>Type de batiment</label>
+        <select [(ngModel)]="batiment.typeBatiment" [ngModelOptions]="{standalone: true}" [compareWith]="compareFn">
+          <option *ngFor="let typeBatiment of typeBatiments" [ngValue]="typeBatiment">{{typeBatiment.nom}}</option>
+        </select>
+      </div>
+      <div class="formgroup full">
+        <label>Description</label>
+        <textarea [(ngModel)]="batiment.description" [ngModelOptions]="{standalone: true}"></textarea>
+      </div>
+
+      <h3>Plans de périmètre d'investigation</h3>
+      <div style="width: 100%;">
+        <div style="padding-bottom: 12px;">
+          <div *ngIf="!batiment.id">Veuillez enregistrer le batiment d'abord.</div>
+        </div>
+        <app-fichier *ngIf="batiment.id" [TypeFichier]="typeFichierPerimetre" [application]="'batiment'"
+          [idParent]="batiment.id">
+        </app-fichier>
+      </div>
+      <h3>Plans</h3>
+      <div style="width: 100%;">
+        <app-fichier *ngIf="batiment.id" [TypeFichier]="TypeFichier" [application]="'batiment'"
+          [idParent]="batiment.id">
+        </app-fichier>
+      </div>
+      <div *ngIf="!batiment.id">Veuillez sauvegarder d'abord</div>
+      <div class="action">
+        <div class="button" (click)="envoyer()">Enregistrer</div>
+        <div class="button" (click)="envoyer(true)">Enregistrer et fermer</div>
+      </div>
+    </form>
+  </div>
+</div>

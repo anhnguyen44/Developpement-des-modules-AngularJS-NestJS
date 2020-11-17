@@ -1,0 +1,106 @@
+<app-menu-chantier *ngIf="chantier" [chantier]="chantier"></app-menu-chantier>
+<div class="content" *ngIf="!idStrategie">
+    <h2>Liste des stratégies</h2>
+    <div class="bloc">
+        <div class="action" *ngIf="!displayInitGeneral">
+            <button type="button" class="button"
+                *ngIf="!canValidateStrategie && !isValidationEnCours && !isStrategieValidee" (click)="askValidation()">
+                <i class="fas fa-user-check"></i> Faire valider la stratégie
+            </button>
+            <button type="button" class="button" *ngIf="!canValidateStrategie && isValidationEnCours" disabled>
+                <i class="fas fa-user-check"></i> Validation en cours
+            </button>
+            <button type="button" class="button" *ngIf="canValidateStrategie && !isStrategieValidee"
+                (click)="validate()">
+                <i class="fas fa-check"></i> Valider la stratégie
+            </button>
+            <button type="button" class="button" *ngIf="isStrategieValidee" (click)="unlock()">
+                <i class="fas fa-unlock"></i> Modifier la stratégie
+            </button>
+        </div>
+        <div class="action" *ngIf="displayInitGeneral">
+            <button type="button" class="button" (click)="initFromBesoin()">
+                <i class="fas fa-cogs"></i> Initialiser à partir du besoin client
+                <img *ngIf="isInitialisationEnCours" src="assets/img/ajax-loader.gif" style="margin-left: 0.5em;" />
+            </button>
+        </div>
+        <h3 *ngIf="besoin?.ss3 && besoin?.ss4 && besoin?.idTypeBesoinLabo == '1'">SS3</h3>
+        <accordion *ngIf="besoin?.ss3 && besoin?.idTypeBesoinLabo == '1' && strategiesSS3">
+            <group *ngFor="let strat of strategiesSS3"
+                title="Stratégie {{strat.reference}} ({{enumTypeStrategie[strat.typeStrategie]}}) [{{strat.description}}]"
+                [isEditable]="!strat.generated" [isDeletable]="!strat.generated" [idGroup]="strat.id"
+                (deleteGroupById)="deleteStrategie($event)" (editGroupById)="editStrategie(strat, 'SS3')">
+                <app-liste-zone-intervention [idStrategie]="strat.id" [canEdit]="!isStrategieValidee">
+                </app-liste-zone-intervention>
+            </group>
+        </accordion>
+        <div class="action" *ngIf="besoin?.ss3 && besoin?.idTypeBesoinLabo == '1' && !isStrategieValidee">
+            <div type="button" *ngIf="displayInitSS3" class="button" (click)="initFromBesoin('SS3')">
+                <i class="fas fa-cogs"></i> Initialiser SS3
+                <img *ngIf="isInitialisationEnCours" src="assets/img/ajax-loader.gif" style="margin-left: 0.5em;" />
+            </div>
+            <button type="button" class="button" (click)="openLaModalStrategie('SS3')"><i class="fas fa-plus"></i>
+                Ajouter une stratégie</button>
+        </div>
+
+        <h3 *ngIf="besoin?.ss3 && besoin?.ss4 && besoin?.idTypeBesoinLabo == '1'">SS4</h3>
+        <accordion *ngIf="besoin?.ss4 && besoin?.idTypeBesoinLabo == '1' && strategiesSS4">
+            <group *ngFor="let strat of strategiesSS4"
+                title="Stratégie {{strat.reference}} ({{enumTypeStrategie[strat.typeStrategie]}}) [{{strat.description}}]"
+                [isEditable]="true" [isDeletable]="true" [idGroup]="strat.id"
+                (deleteGroupById)="deleteStrategie($event)" (editGroupById)="editStrategie(strat, 'SS4')">
+                <app-liste-zone-intervention [idStrategie]="strat.id" [canEdit]="!isStrategieValidee">
+                </app-liste-zone-intervention>
+            </group>
+        </accordion>
+        <div class="action" *ngIf="besoin?.ss4 && besoin?.idTypeBesoinLabo == '1' && !isStrategieValidee">
+            <button type="button" *ngIf="displayInitSS4" class="button" (click)="initFromBesoin('SS4')">
+                <i class="fas fa-cogs"></i> Initialiser SS4
+                <img *ngIf="isInitialisationEnCours" src="assets/img/ajax-loader.gif" style="margin-left: 0.5em;" />
+            </button>
+            <button type="button" class="button" (click)="openLaModalStrategie('SS4')"><i class="fas fa-plus"></i>
+                Ajouter une stratégie</button>
+        </div>
+
+        <accordion *ngIf="besoin?.idTypeBesoinLabo == '2' && strategiesCSP">
+            <group *ngFor="let strat of strategiesCSP"
+                title="Stratégie {{strat.reference}} ({{enumTypeStrategie[strat.typeStrategie]}}) [{{strat.description}}]"
+                [isEditable]="!strat.generated" [isDeletable]="!strat.generated" [idGroup]="strat.id"
+                (deleteGroupById)="deleteStrategie($event)" (editGroupById)="editStrategie(strat, '')">
+                <app-liste-zone-intervention [idStrategie]="strat.id" [canEdit]="!isStrategieValidee">
+                </app-liste-zone-intervention>
+            </group>
+        </accordion>
+        <div class="action" *ngIf="besoin?.idTypeBesoinLabo == '2' && !isStrategieValidee">
+            <button type="button" class="button" (click)="openLaModalStrategie()"><i class="fas fa-plus"></i> Ajouter
+                une stratégie</button>
+        </div>
+    </div>
+</div>
+<div class="content" *ngIf="idStrategie">
+    <h2>Stratégie {{strategie?.reference}} ({{enumTypeStrategie[strategie?.typeStrategie]}})</h2>
+    <div class="bloc">
+        <div class="action" *ngIf="!displayInitGeneral">
+            <button type="button" class="button"
+                *ngIf="!canValidateStrategie && !isValidationEnCours && !isStrategieValidee" (click)="askValidation()">
+                <i class="fas fa-user-check"></i> Faire valider la stratégie
+            </button>
+            <button type="button" class="button" *ngIf="!canValidateStrategie && isValidationEnCours" disabled>
+                <i class="fas fa-user-check"></i> Validation en cours
+            </button>
+            <button type="button" class="button" *ngIf="canValidateStrategie && !isStrategieValidee"
+                (click)="validate()">
+                <i class="fas fa-check"></i> Valider la stratégie
+            </button>
+            <button type="button" class="button" *ngIf="isStrategieValidee" (click)="unlock()">
+                <i class="fas fa-unlock"></i> Modifier la stratégie
+            </button>
+        </div>
+    </div>
+    <div class="bloc">
+        <app-liste-zone-intervention *ngIf="strategie" [idStrategie]="strategie.id"></app-liste-zone-intervention>
+    </div>
+</div>
+<app-modal-strategie *ngIf="openModalStrategie" [infos]="besoin" [sousSection]="sousSectionModal"
+    [nextNumber]="nextNumberModal" [strategie]="strategieModal" (emitClose)="closeModalStrategie()"
+    (emitStrategie)="addStrategieFromModal($event)"></app-modal-strategie>

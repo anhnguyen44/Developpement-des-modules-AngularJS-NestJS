@@ -1,0 +1,158 @@
+<div class="bloc">
+  <div class="formgroup">
+    <label>Réfèrence</label>
+    <div *ngIf="intervention?.id; else pasInterventionRef">{{intervention?.id}}</div>
+    <ng-template #pasInterventionRef>Nouvelle intervention</ng-template>
+  </div>
+  <div class="formgroup">
+    <label>Statut</label>
+    <div *ngIf="intervention?.id; else pasInterventionStatut">
+      {{enumStatutIntervention[intervention.idStatut]}}
+    </div>
+    <ng-template #pasInterventionStatut>SAISIE</ng-template>
+  </div>
+</div>
+
+<h2>Techniciens</h2>
+<div class="bloc">
+  <form [formGroup]="interventionForm" (ngSubmit)="onSubmit(interventionForm)">
+    <div class="table">
+      <div class="action">
+        <div class="left"></div>
+        <div class="right">
+          <div (click)="openModalRessourceHumaine()" *ngIf="isEditable"><i class="fas fa-plus"></i> Ajouter</div>
+        </div>
+      </div>
+      <div class="header">
+        <div class="row">
+          <div>Nom</div>
+          <div>Prenom</div>
+          <div class="action" *ngIf="isEditable">
+            Action
+          </div>
+        </div>
+      </div>
+      <div class="content" *ngIf="interventionForm!.get('rendezVous')">
+        <div class="row"
+             *ngFor="let rdvRh of interventionForm!.get('rendezVous')['controls']!.rendezVousRessourceHumaines!.value">
+          <div><div class="labelTable">Nom</div>{{rdvRh.ressourceHumaine.utilisateur.nom}}</div>
+          <div><div class="labelTable">Prénom</div>{{rdvRh.ressourceHumaine.utilisateur.prenom}}</div>
+          <div class="action" *ngIf="isEditable">
+            <i class="fas fa-unlink" (click)="removeRendezVousRessourceHumaine(rdvRh)"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Pompes</h3>
+
+    <div class="formgroup">
+      <label>Nombre pompes environemental</label>
+      <input type="number" formControlName="nbPompeEnvi" *ngIf="isEditable; else noEditNbPompeEnvi">
+      <ng-template #noEditNbPompeEnvi>{{intervention.nbPompeEnvi}}</ng-template>
+    </div>
+    <div class="formgroup">
+      <label>Nombre pompes META OP</label>
+      <input type="number" formControlName="nbPompeMeta" *ngIf="isEditable; else noEditNbPompeMeta">
+      <ng-template #noEditNbPompeMeta>{{intervention.nbPompeMeta}}</ng-template>
+    </div>
+    <div class="formgroup">
+      <label>Stock pompes environemental</label>
+      <div>{{stockPompeEnvi}}</div>
+    </div>
+    <div class="formgroup">
+      <label>Stock pompes META OP</label>
+      <div>{{stockPompeMeta}}</div>
+    </div>
+    <div class="alert" *ngIf="((stockPompeEnvi - interventionForm.get('nbPompeEnvi')!.value) < 0 || (stockPompeMeta - interventionForm.get('nbPompeMeta')!.value) < 0) && isEditable">
+      Attention vous n'avez pas suffisament de pompe disponible pour cette intervention à cette date.
+    </div>
+
+    <div class="table" *ngIf="(stockPompeEnvi - interventionForm.get('nbPompeEnvi')!.value) < 0 && getInterventionPompeEnvi().length > 0 && isEditable">
+      <h3>Intervention avec pompe Environemental dans cet intervalle</h3>
+      <div class="header">
+        <div class="row">
+          <div>Ref</div>
+          <div>Libellè</div>
+          <div>Nombre</div>
+          <div class="action">Action</div>
+        </div>
+      </div>
+      <div class="content">
+        <span *ngFor="let intervention of interventionsPompe">
+          <div class="row" *ngIf="intervention.nbPompeEnvi > 0 && intervention.id !== interventionForm.get('id').value">
+            <div>{{intervention.id}}</div>
+            <div>{{intervention.libelle}}</div>
+            <div>{{intervention.nbPompeEnvi}}</div>
+            <div class="action">
+              <i class="fas fa-eye" [routerLink]="['/intervention', intervention.id, 'information']"></i>
+            </div>
+          </div>
+        </span>
+      </div>
+    </div>
+
+    <div class="table" *ngIf="(stockPompeMeta - interventionForm.get('nbPompeMeta')!.value) < 0 && getInterventionPompeMeta().length > 0 && isEditable">
+      <h3>Intervention avec pompe Meta Op dans cet intervalle</h3>
+      <div class="header">
+        <div class="row">
+          <div>Ref</div>
+          <div>Libellè</div>
+          <div>Nombre</div>
+          <div class="action" && isEditable>Action</div>
+        </div>
+      </div>
+      <div class="content">
+        <span *ngFor="let intervention of interventionsPompe">
+          <div class="row" *ngIf="intervention.nbPompeMeta > 0 && intervention.id !== interventionForm.get('id').value">
+            <div>{{intervention.id}}</div>
+            <div>{{intervention.libelle}}</div>
+            <div>{{intervention.nbPompeMeta}}</div>
+            <div class="action" && isEditable>
+              <i class="fas fa-eye" [routerLink]="['/intervention', intervention.id, 'information']"></i>
+            </div>
+          </div>
+        </span>
+      </div>
+    </div>
+
+    <h3>Filtres</h3>
+    <div class="formgroup">
+      <label>Nombre filtres environemental</label>
+      <input type="number" formControlName="nbFiltreEnvi" *ngIf="isEditable; else noEditNbFiltreEnvi">
+      <ng-template #noEditNbFiltreEnvi>{{intervention.nbFiltreEnvi}}</ng-template>
+    </div>
+    <div class="formgroup">
+      <label>Nombre filtres META OP</label>
+      <input type="number" formControlName="nbFiltreMeta" *ngIf="isEditable; else noEditNbFiltreMeta">
+      <ng-template #noEditNbFiltreMeta>{{intervention.nbFiltreMeta}}</ng-template>
+    </div>
+    <div class="formgroup">
+      <label>Stock filtres environemental</label>
+      <div>{{stockFiltreEnvi}}</div>
+    </div>
+    <div class="formgroup">
+      <label>Stock filtres META OP</label>
+      <div>{{stockFiltreMeta}}</div>
+    </div>
+    <div class="alert" *ngIf="((stockFiltreMeta - interventionForm.get('nbFiltreMeta')!.value) < 0 || (stockFiltreEnvi - interventionForm.get('nbFiltreEnvi')!.value) < 0) && isEditable">
+      Attention vous n'avez pas suffisament de Filtre disponible pour cette intervention.
+    </div>
+    <div class="action" *ngIf="isEditable">
+      <div class="button" (click)="calculFiltrePompe()">Calcul filtres / pompes</div>
+      <button class="button">Valider</button>
+      <div class="button" (click)="departTerrain(interventionForm)" *ngIf="interventionForm.get('idStatut')!.value < enumStatutIntervention.DEPART_TERRAIN">
+        Départ terrain
+      </div>
+    </div>
+  </form>
+</div>
+
+<app-modal-ressource-humaine *ngIf="modalRessourceHumaine"
+                             [ressourceHumainesAjoutees]="interventionForm.get('rendezVous')['controls'].rendezVousRessourceHumaines.value"
+                             [idBureau]="interventionForm.get('idBureau').value"
+                             [rendezVous]="interventionForm.get('rendezVous').value"
+                             (emitRessourceHumaine)="setRessourceHumaine($event)"
+                             (emitClose)="closeRessourceHumaineModal()"
+                             [@fadeIn] [@fadeOut]
+></app-modal-ressource-humaine>

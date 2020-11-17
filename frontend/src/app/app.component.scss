@@ -1,0 +1,19 @@
+.app-page {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.app-page.borderless-page {
+    max-width: none;
+    padding-top: 0;
+}
+
+@media (max-width: 640px) {
+    .app-page {
+        padding-top: 10px;
+    }
+}
+

@@ -1,0 +1,14 @@
+{
+    "type": "mysql",
+  "host": "192.168.0.1",
+  "port": 3306,
+  "username": "aleaac",
+  "password": "8ICUDoQkiEzMKYAO",
+  "database": "aleaAC",
+  "migrations": [
+    "migration/*.ts']"
+  ],
+  "cli": {
+    "migrationsDir": "migration"
+  }
+}

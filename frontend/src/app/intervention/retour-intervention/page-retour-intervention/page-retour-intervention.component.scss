@@ -1,0 +1,29 @@
+@import "variables";
+:host{
+  width: 100%;
+}
+
+.listeBoutton {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.listeBoutton > div {
+  width: 30%;
+  min-width: 250px;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  cursor: pointer;
+  transition: all 0.5s;
+  margin-bottom: 10px;
+}
+
+.listeBoutton > div:hover,
+.listeBoutton > div.selected{
+  background-color: $couleurFondBoutton;
+  color: $couleurBoutton;
+}

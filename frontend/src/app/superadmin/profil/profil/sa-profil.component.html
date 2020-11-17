@@ -1,0 +1,51 @@
+<app-menu-superadmin></app-menu-superadmin>
+<div class="content">
+  <div class="bloc" *ngIf="id">
+    <div class="formgroup">
+      <label>Référence</label>
+      <div>{{id}}</div>
+    </div>
+  </div>
+  <h2>Profil</h2>
+  <div class="bloc">
+    <form [formGroup]="profilForm" (ngSubmit)="onSubmitProfil()">
+      <div class="formgroup">
+        <label>Nom</label>
+        <input type="text" formControlName="nom" [ngClass]="{ 'invalid': submittedProfil && fProfil.nom.errors }" tabindex="1">
+      </div>
+      <div class="formgroup">
+        <label>Visible par les franchisés</label>
+        <input type="checkbox" formControlName="isVisibleFranchise" [ngClass]="{ 'invalid': submittedProfil && fProfil.isVisibleFranchise.errors }" tabindex="2">
+      </div>
+
+      <div class="action">
+          <button class="button" type="submit" tabindex="13">Valider</button>
+        </div>
+    </form>
+  </div>
+
+  <h2 *ngIf="id">Droits</h2>
+  <div  *ngIf="id" class="bloc">
+    <form [formGroup]="droitsForm" (ngSubmit)="onSubmitDroits()">
+      <div class="formgroup">
+        <label>Droit</label>
+        <select formControlName="newDroit" [ngClass]="{ 'invalid': submittedDroits && fDroits.newDroit.errors }"
+          [compareWith]="compareFn">
+          <option *ngFor="let droit of listeDroits" [ngValue]="droit">{{droit?.nom + ' (' + droit?.code + ')'}}</option>
+        </select> <button type="submit" class="roundbutton nofocus"><i class="fas fa-plus-circle right btn-add"></i></button>
+      </div>
+    </form>
+
+    <div *ngFor="let droit of profil?.droits" class="formgroup full">
+      <div class="formgroup" *ngIf="droit.nom != null">
+        <label></label>
+        <div style="text-align:center;">{{droit.nom}}</div>
+      </div>
+      <div class="formgroup" *ngIf="droit.code != null">
+        <label></label>
+        <div style="text-align:center;">{{droit.code}} ({{droit.niveau}})</div> <i class="fas fa-times-circle right btn-remove"
+          (click)="removeDroit(droit)"></i>
+      </div>
+    </div>
+  </div>
+</div>

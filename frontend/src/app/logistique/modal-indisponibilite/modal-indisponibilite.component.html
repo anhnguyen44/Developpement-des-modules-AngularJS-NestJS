@@ -1,0 +1,55 @@
+<div class="content" (clickOutside)="emitClose.emit()" [delayClickOutsideInit]="true">
+  <i class="fas fa-times btn-close" (click)="emitClose.emit()"></i>
+  <h2>Ajout indisponibilité</h2>
+  <div class="bloc">
+    <form [formGroup]="indispoForm">
+      <div class="formgroup">
+        <label>Date début indisponibilité</label>
+        <input type="date" formControlName="dateDebut" (change)="parseDateDebut()">
+      </div>
+      <div class="formgroup">
+        <label>Heure début indisponibilité</label>
+        <input type="time" formControlName="heureDebut" (change)="parseDateDebut()">
+      </div>
+      <div class="formgroup">
+        <label>Date fin indisponibilité</label>
+        <input type="date" formControlName="dateFin" (change)="parseDateFin()">
+      </div>
+      <div class="formgroup">
+        <label>Heure fin indisponibilité</label>
+        <input type="time" formControlName="heureFin" (change)="parseDateFin()">
+      </div>
+      <div class="formgroup full">
+        <label>Motif</label>
+        <input type="text" formControlName="nom">
+      </div>
+      <div class="action">
+        <div class="button" (click)="onSubmit(indispoForm)">
+          Ajouter
+        </div>
+      </div>
+    </form>
+
+    <h3>Liste indisponibilité</h3>
+    <div class="table">
+      <div class="header">
+        <div class="row">
+          <div>Motif</div>
+          <div>Début</div>
+          <div>Fin</div>
+          <div class="action">Action</div>
+        </div>
+
+      </div>
+      <div class="content">
+        <div class="row" *ngFor="let rdv of rendezVous">
+          <div>{{rdv.nom}}</div>
+          <div>{{rdv.dateHeureDebut | date :'yyyy/MM/dd hh:mm'}}</div>
+          <div>{{rdv.dateHeureFin | date :'yyyy/MM/dd hh:mm'}}</div>
+          <div class="action"><i class="fas fa-trash" (click)="deleteIndispo(rdv)"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

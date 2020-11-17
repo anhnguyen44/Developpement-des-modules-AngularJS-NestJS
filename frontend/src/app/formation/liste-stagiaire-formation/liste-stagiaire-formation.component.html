@@ -1,0 +1,114 @@
+<app-menu-formation></app-menu-formation>
+<div class="content">
+    <app-recherche [champDeRecherches]="champDeRecherches" [queryBuild]="queryBuild"
+        (emitQueryBuild)="setQueryBuild($event)"></app-recherche>
+    <div class="bloc" *ngIf="numberStagiaire">
+        <div class="cocher" style="padding: 0px;float: left;top: 11px;position: relative;">
+            <input type="checkbox" [(ngModel)]="checkAll" (change)='allCoche(checkAll)'>
+        </div>
+        <div class="action" style="width: 90%;float: left;margin-top: 0">
+            <div class="left" style="width: 69%;float: left;">
+                <div class="action" style="margin-top: 0;">
+                    <button class="button" (click)="openModalGeneration()" [class.disable]="!listIdStagiaireChecked.length">Générer</button>
+                    <button class="button" (click)="deleteMany()"  [class.disable]="!listIdStagiaireChecked.length">Supprimer</button>
+                    <button class="button" (click)="envoyerDossier()"  [class.disable]="!listIdStagiaireChecked.length">Envoyer dossier</button>
+                </div>
+            </div>
+            <div class="right" style="float: left;">
+                <div class="nofocus" (click)="openModalStagiaire()" style="cursor:pointer;float:right"
+                    *ngIf="numberStagiaire<capaciteSalle">
+                    <i class="fas fa-plus"></i> Créer
+                </div>
+                <div class="nofocus" (click)=limitCreate() style="cursor:pointer;float:right"
+                    *ngIf="numberStagiaire==capaciteSalle" aria-disabled="true">
+                    <i class="fas fa-plus"></i> Créer
+                </div>
+                <div style="float:right;position: relative;top: 3px;padding-right: 13px;">{{numberStagiaire}} stagiaires
+                    / {{capaciteSalle}} places</div>
+            </div>
+        </div>
+    </div>
+    <div *ngFor="let ele of listeFormationContact;let i = index" class="bloc stagiaire" (dblclick)="openModalStagiaire(ele.idFormation,ele.idContact,'modifier')">
+        <div class="cocherStagiaire">
+            <input type="checkbox" style="cursor: pointer;" [(ngModel)]="listeFormationContact[i].checked"
+                   (change)='boxChecked(listeFormationContact[i].checked,ele)' [checked]='checkAll'>
+        </div>
+        <div class="infoStagiaire">
+            <div class="form">
+                <div class="formgroup full">
+                    <label>Prénom Nom</label>
+                    <div>{{ele.contact?.prenom}} {{ele.contact?.nom}}</div>
+                </div>
+                <div class="formgroup full">
+                    <label>Raison sociale</label>
+                    <div>{{ele.sousTraitance?.raisonSociale}}</div>
+                </div>
+                <div class="formgroup full">
+                    <label>Email</label>
+                    <div>{{ele.contact?.adresse?.email}}</div>
+                </div>
+                <div class="formgroup">
+                    <label>Date de naissance</label>
+                    <div>{{ele.contact?.anniversaire | date:'dd-MM-yyyy'}}</div>
+                </div>
+                <div class="formgroup">
+                    <label>Rattrapage</label>
+                    <div>{{ele.rattrapage}}</div>
+                </div>
+                <div class="formgroup" *ngIf="ele.absenceTotal">
+                    <label>Absence totale</label>
+                    <div><i class="fas fa-check"></i></div>
+                </div>
+                <div class="formgroup" *ngIf="ele.absenceTotal">
+                </div>
+                <div class="formgroup" *ngIf="!ele.absenceTotal">
+                    <label>Absence totale</label>
+                    <div><i class="fas fa-times"></i></div>
+                </div>
+                <div class="formgroup" *ngIf="!ele.absenceTotal">
+                    <label>Absence partielle</label>
+                    <div>{{ele.absencePartielle}} jours</div>
+                </div>
+                <div class="formgroup" *ngIf="ele.formationValide">
+                    <label>Numéro certificats</label>
+                    <div>{{ele.numCertificat}}</div>
+                </div>
+                <div class="formgroup" *ngIf="ele.formationValide">
+                    <label>Numéro forprev</label>
+                    <div>{{ele.numForprev}}</div>
+                </div>
+                <div class="formgroup" *ngIf="ele.formationValide">
+                    <label>Note obtenue</label>
+                    <div>{{ele.noteObtenu}}</div>
+                </div>
+                <div class="formgroup" *ngIf="ele.formationValide">
+                    <label>Délivrer le</label>
+                    <div>{{ele.delivrerLe | date:'dd-MM-yyyy'}}</div>
+                </div>
+                <div class="formgroup full" *ngIf="ele.dossierComplet?.id">
+                    <label>Dossier Complet</label>
+                    <div *ngIf="ele.dossierComplet?.id">
+                        <a class="link" href="http://localhost:4242/api/v1/fichier/affiche/{{ele.dossierComplet?.keyDL}}">
+                            {{ele.dossierComplet?.nom}}
+                        </a>
+                    </div>
+                </div>
+                <div class="formgroup" *ngIf='ele.dateEnvoiDossier'>
+                    <label>Date dossier envoyé</label>
+                    <div>{{ele.dateEnvoiDossier | date:'dd-MM-yyyy'}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="actionStagiaire">
+            <div class="delete">
+                <i class="fas fa-trash" (click)="supprimer(ele.id)"></i>
+            </div>
+            <div class="modifier">
+                <i class="fas fa-edit" (click)="openModalStagiaire(ele.idFormation,ele.idContact,'modifier')"></i>
+            </div>
+        </div>
+    </div>
+</div>
+<app-modal-generation *ngIf="modalGeneration" (emitCloseModeCheckAll)='setOffCheckAll($event)'
+    (emitClose)="modalGeneration=false" [idSession]='id' [listStagiaireCoche]="listIdStagiaireChecked"
+    [listStagiaireChecked]="listStagiaireChecked"></app-modal-generation>

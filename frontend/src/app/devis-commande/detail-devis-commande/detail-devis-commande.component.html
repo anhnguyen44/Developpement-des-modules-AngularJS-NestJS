@@ -1,0 +1,136 @@
+<app-menu-devis-commande></app-menu-devis-commande>
+<div class="content">
+  <div class="bloc">
+    <div class="formgroup">
+      <label>Référence</label>
+      <div *ngIf="devisCommande?.id; else newDevis">{{devisCommande?.id}}</div>
+      <ng-template #newDevis>
+        Nouveau Devis
+      </ng-template>
+    </div>
+      <div class="formgroup" *ngIf="devisCommande?.id">
+          <label>Version</label>
+          <div>{{devisCommande?.version}}</div>
+          <div *ngIf="!devisCommande.versionFigee && isDevis" [class.disable]="devisCommande.isModifie"  class="button small" (click)="figeDevis()"><i class="fas fa-lock-open"></i></div>
+          <div *ngIf="devisCommande.versionFigee || !isDevis" [class.disable]="!isDevis" class="button small" (click)="figeDevis()"><i class="fas fa-lock"></i></div>
+      </div>
+  </div>
+    <h2>Mission</h2>
+    <div class="bloc" *ngIf="devisCommande">
+        <div class="formgroup full">
+            <label>Mission</label>
+            <input *ngIf="!devisCommande.versionFigee" type="text" [(ngModel)]="devisCommande.mission" (change)="changeText()">
+            <div *ngIf="devisCommande.versionFigee">{{devisCommande.mission}}</div>
+        </div>
+    </div>
+
+    <h2>Detail devis</h2>
+    <div class="bloc" *ngIf="devisCommande">
+        <div class="action" *ngIf="devisCommande.idChantier && (!devisCommande.devisCommandeDetails || devisCommande.devisCommandeDetails.length === 0)">
+            <button type="button" class="button" (click)="initFromChantier()">
+                <i class="fas fa-cogs"></i> Initialiser à partir du chantier
+                <img *ngIf="isInitFromChantierEnCours" src="assets/img/ajax-loader.gif" style="margin-left: 0.5em;" />
+            </button>
+        </div>
+        <div class="table">
+            <div class="header">
+                <div class="row">
+                    <div class="grow4">Description</div>
+                    <div class="grow2">Montant HT</div>
+                    <div class="grow2">Montant remisé</div>
+                    <div class="grow2">Quantité</div>
+                    <div class="grow1">Total HT</div>
+                    <div *ngIf="!devisCommande?.versionFigee" class="action">Action</div>
+                </div>
+            </div>
+            <div class="content" *ngIf="devisCommande && !devisCommande?.versionFigee">
+                <div class="row" *ngFor="let detailDevisCommande of devisCommande.devisCommandeDetails">
+                    <div class="grow4"><textarea [(ngModel)]="detailDevisCommande.description"></textarea></div>
+                    <div class="grow2"><div class="labelTable">Montant HT</div><input type="number" [(ngModel)]="detailDevisCommande.montantHT" (change)="calculLigne(detailDevisCommande)"></div>
+                    <div class="grow2"><div class="labelTable">Montant remisé</div><input type="number" [(ngModel)]="detailDevisCommande.montantRemise" (change)="calculLigne(detailDevisCommande)"></div>
+                    <div class="grow2"><div class="labelTable">Quantité</div><input type="number" [(ngModel)]="detailDevisCommande.quantite" (change)="calculLigne(detailDevisCommande)"></div>
+                    <div class="grow1"><div class="labelTable">Total HT</div>{{detailDevisCommande.totalHT}} €</div>
+                    <div class="action"><i class="fas fa-trash" (click)="deleteDetail(detailDevisCommande)"></i></div>
+                </div>
+            </div>
+            <div class="content" *ngIf="devisCommande && devisCommande.versionFigee">
+                <div class="row" *ngFor="let detailDevisCommande of devisCommande.devisCommandeDetails">
+                    <div class="grow4">{{detailDevisCommande.description}}</div>
+                    <div class="grow2">{{detailDevisCommande.montantHT}}</div>
+                    <div class="grow2">{{detailDevisCommande.montantRemise}}</div>
+                    <div class="grow2">{{detailDevisCommande.quantite}}</div>
+                    <div class="grow1">{{detailDevisCommande.totalHT}} €</div>
+                </div>
+            </div>
+            <div class="totalDevisWrapper" *ngIf="devisCommande">
+                <div class="totalDevis">
+                    <div>
+                        <div>Total HT</div>
+                        <div>{{devisCommande.totalHT}} €</div>
+                    </div>
+                    <div>
+                        <div>Total Remise HT</div>
+                        <div>{{devisCommande.totalRemiseHT}} €</div>
+                    </div>
+                    <div>
+                        <div class="tva">
+                            <div>Total TVA </div>
+                            <select *ngIf="!devisCommande.versionFigee" [(ngModel)]="devisCommande.tauxTVA" (change)="calculTotal()">
+                                <option value="2.1">2,1%</option>
+                                <option value="5.5">5,5%</option>
+                                <option value="8.5">8,5%</option>
+                                <option value="19.6">19,6%</option>
+                                <option value="20.0">20,0%</option>
+                            </select>
+                            <div *ngIf="devisCommande.versionFigee">&nbsp;( {{devisCommande.tauxTVA}} %) </div>
+                        </div>
+
+                        <div>{{devisCommande.totalTVA}} €</div>
+                    </div>
+                    <div>
+                        <div>Total TTC</div>
+                        <div>{{devisCommande.totalTTC}} €</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="action">
+            <div class="button" [class.disable]="devisCommande?.versionFigee" (click)="openModalProduit()">Ajouter un produit</div>
+            <div class="button" [class.disable]="devisCommande?.versionFigee" (click)="ajoutLigne()">Ajouter une ligne</div>
+        </div>
+    </div>
+
+    <h2>Commentaire</h2>
+    <div class="bloc" *ngIf="devisCommande">
+        <div class="formgroup full">
+            <label>Commentaire interne</label>
+            <textarea *ngIf="!devisCommande.versionFigee" [(ngModel)]="devisCommande.commentaireInterne" (change)="changeText()"></textarea>
+            <div *ngIf="devisCommande.versionFigee">{{devisCommande.commentaireInterne}}</div>
+        </div>
+        <div class="formgroup full">
+            <label>Commentaire devis</label>
+            <textarea *ngIf="!devisCommande.versionFigee" [(ngModel)]="devisCommande.commentaireDevis" (change)="changeText()"></textarea>
+            <div *ngIf="devisCommande.versionFigee">{{devisCommande.commentaireDevis}}</div>
+        </div>
+        <div class="action">
+            <div class="button" (click)="imprimer()">Imprimer</div>
+            <div class="button" (click)="envoyerMail()">Envoyer par mail</div>
+            <div class="button" (click)="confirmerCommande()" *ngIf="isDevis && devisCommande.idStatutCommande < enumStatutCommande.COMMANDE_TERMINEE">Confirmer la commande</div>
+        <!-- </div>
+        <div class="action"> -->
+            <div class="button" (click)="enregistrer()">Enregistrer</div>
+            <div class="button" (click)="fermer()">Fermer</div>
+        </div>
+    </div>
+</div>
+
+<app-modal-produit *ngIf="modalProduit"
+                   [modalProduit]="modalProduit"
+                   [grilleTarifSpecifiques]="grilleTarifs"
+                   [typeDevis]="devisCommande.typeDevis"
+                   (emitTarifDetail)="setTarifDetail($event)"
+                   (emitClose)="modalProduit = false"
+                   [@fadeIn] [@fadeOut]
+></app-modal-produit>
+<app-modal-mail *ngIf="mail" [mail]="mail" (emitClose)="setCloseMail()" [@fadeIn] [@fadeOut]></app-modal-mail>

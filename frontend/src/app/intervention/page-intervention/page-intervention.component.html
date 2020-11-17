@@ -1,0 +1,7 @@
+<app-menu-intervention [isNew]="isNew" [intervention]="intervention" [type]="type" *ngIf="type !== 'liste' && (isNew || (intervention && intervention.id))"></app-menu-intervention>
+<app-liste-intervention *ngIf="type === 'liste'"></app-liste-intervention>
+<app-intervention [intervention]="intervention" [isNew]="isNew" *ngIf="type === 'information' && (isNew || (intervention && intervention.id))"></app-intervention>
+<app-preparation-intervention [intervention]="intervention" *ngIf="type === 'preparation' && (isNew || (intervention && intervention.id))"></app-preparation-intervention>
+<app-depart-intervention [intervention]="intervention" *ngIf="type === 'depart-terrain' && (isNew || (intervention && intervention.id))"></app-depart-intervention>
+<app-page-retour-intervention [intervention]="intervention" *ngIf="type === 'retour-terrain' && (isNew || (intervention && intervention.id))"></app-page-retour-intervention>
+<app-historique *ngIf="idIntervention && type === 'historique'" [application]="'intervention'" [idParent]="idIntervention"></app-historique>

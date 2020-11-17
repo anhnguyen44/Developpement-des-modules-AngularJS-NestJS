@@ -1,0 +1,23 @@
+<div class="content">
+  <i class="fas fa-times btn-close" (click)="close()"></i>
+  <h2>Ajout d'une information</h2>
+  <div class="bloc">
+    <form>
+      <div class="formgroup full" tooltip="Non divulgué au client">
+        <label tooltip="Non divulgué au client">Informateur</label>
+        <input type="text" [(ngModel)]="informationsBesoin.informateur" [ngModelOptions]="{standalone: true}">
+      </div>
+      <div class="formgroup full">
+        <label>Libellé</label>
+        <input type="text" [(ngModel)]="informationsBesoin.libelle" [ngModelOptions]="{standalone: true}">
+      </div>
+      <div class="formgroup full">
+          <label>Contenu</label>
+          <textarea [(ngModel)]="informationsBesoin.contenu" [ngModelOptions]="{standalone: true}"></textarea>
+        </div>
+      <div class="action">
+        <div class="button" (click)="envoyer()">Envoyer</div>
+      </div>
+    </form>
+  </div>
+</div>

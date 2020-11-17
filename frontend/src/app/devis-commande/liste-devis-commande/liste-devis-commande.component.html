@@ -1,0 +1,59 @@
+<app-recherche [champDeRecherches]="champDeRecherches" [queryBuild]="queryBuild" (emitQueryBuild)="setQueryBuild($event)"></app-recherche>
+<div class="content">
+  <div class="bloc">
+    <div class="table">
+      <div class="action" *ngIf="!idParent">
+        <div class="left">
+          <img src="assets/img/rounded-angle-arrow-pointing-down.png" height="24" style="margin-top: 5px;" />
+          <select [(ngModel)]="statutCible">
+            <option *ngFor="let statu of listeStatuts" [ngValue]="statu" [disabled]="satutIsParent(statu)">{{statu.nom}}</option>
+          </select> 
+          <i class="fas fa-check-circle" [class.success-text]="statutCible" style="padding-top: 5px;" (click)="changeStatusTo()"></i>
+        </div>
+        <div class="right">
+          <i (click)="generateXlsx()" class="fas fa-file-excel"></i>
+          <div routerLink="/devis-commande/ajouter" class="nofocus">
+            <i class="fas fa-plus"></i> Créer
+          </div>
+        </div>
+      </div>
+
+      <app-header-table [headers]="headers" [querybuild]="queryBuild" [allSelected]="isAllChecked()" [defaultOrder]="defaultOrder" [checkbox]="true" (emitQueryBuild)="setQueryBuild($event)" (emitSetAllChecked)="setAllChecked($event)"></app-header-table>
+      <div class="content">
+        <div class="row" *ngFor="let devisCommande of devisCommandes" (dblclick)="goToDetail(devisCommande)">
+          <div class="grow0"><input type="checkbox" [(ngModel)]="devisCommande.selected" (change)='activeButton()'></div>
+          <div><div class="labelTable">{{headers[0].label}}</div><span>{{devisCommande.id}}</span></div>
+          <div><div class="labelTable">{{headers[1].label}}</div>
+            <span>{{devisCommande.contact?.nom}} {{devisCommande.contact?.prenom}}</span>
+            <span *ngIf="devisCommande.contact && devisCommande.contact.compteContacts && devisCommande.contact.compteContacts.compte; else spanParticulier"> ({{devisCommande.contact?.compteContacts?.compte?.raisonSociale}})</span>
+            <ng-template #spanParticulier><span> (particulier)</span></ng-template></div>
+          <div><div class="labelTable">{{headers[2].label}}</div><span>{{devisCommande.statut.nom}}</span></div>
+          <div><div class="labelTable">{{headers[3].label}}</div><span>{{enumTypeDevis[devisCommande.typeDevis] | enum}}</span></div>
+          <div><div class="labelTable">{{headers[4].label}}</div><span>{{devisCommande.mission  | truncate:[30, '...']}}</span></div>
+          <div><div class="labelTable">{{headers[5].label}}</div><span>{{devisCommande.dateCreation | date:'dd-MM-yyyy'}}</span></div>
+          <div><div class="labelTable">{{headers[6].label}}</div><span>{{devisCommande.totalHT | currency:'EUR':'symbol'}}</span></div>
+          <div class="action" *ngIf='!idFormation'>
+            <i class="fas fa-pencil-alt" *ngIf="!isModal" (click)="goToDetail(devisCommande)"></i>
+            <i class="fas fa-link" *ngIf="isModal" (click)="emitDevis(devisCommande)"></i>
+            <i class="fas fa-trash delete-link" *ngIf="!idParent && !isModal"  (click)="openModaleAbandon([devisCommande])"></i>
+            <i class="fas fa-unlink" *ngIf="idParent" (click)="unlinkDevis(devisCommande)"></i>
+          </div>
+          <div class="action" *ngIf='idFormation'>
+            <i class="fas fa-eye" *ngIf="!isModal" (click)="goToDetail(devisCommande)"></i>
+            <i class="fas fa-eye" *ngIf="isModal" (click)="emitDevis(devisCommande)"></i>
+            <i class="fas fa-trash delete-link" *ngIf="!idParent && !isModal"  (click)="openModaleAbandon([devisCommande])"></i>
+            <i class="fas fa-unlink" *ngIf="idParent" (click)="unlinkDevis(devisCommande)"></i>
+          </div>
+        </div>
+        <app-pagination [nbObjets]="nbObjets" [queryBuild]="queryBuild" (emitQueryBuild)="setQueryBuild($event)"></app-pagination>
+      </div>
+    </div>
+  </div>
+  <div class="action" *ngIf='idFormation'>
+    <button class="button" style="margin:0px auto" (click)="genererConvention('conventionEntreprise')" *ngIf='idFormation && isActiveButton'>Générer convention</button>
+    <div class="button" style="margin:0px auto;cursor:not-allowed;"  *ngIf='idFormation && !isActiveButton' [class.disable]='!isActiveButton' >Générer convention</div>
+    <button class="button" style="margin:0px auto" (click)="genererConvention('feuilleEmargementParEntreprise')" *ngIf='idFormation && isActiveButton'>Générer feuille émargement de présence par entreprise</button>
+    <div class="button" style="margin:0px auto;cursor:not-allowed;" *ngIf='idFormation && !isActiveButton' [class.disable]='!isActiveButton' >Générer feuille émargement de présence par entreprise</div>
+  </div>
+</div>
+<app-modal-abandon-commande *ngIf="openModalAbandon" [infos]="infosAbandon" (emitRaison)="setRaisonAbandon($event)" (emitClose)="openModalAbandon = false" [@fadeIn] [@fadeOut]></app-modal-abandon-commande>

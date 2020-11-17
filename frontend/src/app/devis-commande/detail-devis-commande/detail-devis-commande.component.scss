@@ -1,0 +1,63 @@
+@import "variables";
+:host{
+  width: 100%;
+  display: flex;
+}
+
+.totalDevisWrapper{
+  margin: 20px 0;
+  width: 100%;
+  justify-content: flex-end;
+  display: flex;
+}
+
+.totalDevis {
+  width: 50%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.totalDevis>div{
+  padding: 5px;
+  width: 100%;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+input,
+textarea{
+  width: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.totalDevis>div:nth-child(odd){
+  background-color: $couleurFondTr1;
+}
+
+.totalDevis>div:nth-child(even){
+  background-color: $couleurFondTr2;
+}
+
+.totalDevis .tva {
+  display: flex;
+  align-items: center;
+}
+
+.totalDevis select {
+  margin-left: 5px;
+  width: auto;
+  flex-grow: unset;
+}
+
+@media (max-width: 640px) {
+  :host{
+    flex-wrap: wrap;
+  }
+
+  .totalDevis {
+    width: 100%;
+  }
+}

@@ -1,0 +1,150 @@
+
+  <div class="full" *ngIf="prelevement.zoneIntervention.milieu === 0 || prelevement.zoneIntervention.milieu === 2">
+    <div class="conditions">
+      <div class="headerCondition">
+          <label>Condition Ambiante</label>
+          <div>Temp°</div>
+          <div>Pression</div>
+          <div>Humidité</div>
+      </div>
+      <div class="conditionContent">
+          <label>Avant</label>
+        <div>
+          <input type="number" [(ngModel)]="prelevement.conditionTemperatureAvant" (ngModelChange)="checkPrelevement()" *ngIf="isEditable">
+          <span *ngIf="!isEditable">{{prelevement.conditionTemperatureAvant}}</span>
+        </div>
+        <div>
+          <input type="number" [(ngModel)]="prelevement.conditionPressionAvant" (ngModelChange)="checkPrelevement()" *ngIf="isEditable">
+          <span *ngIf="!isEditable">{{prelevement.conditionPressionAvant}}</span>
+        </div>
+        <div>
+          <input type="number" [(ngModel)]="prelevement.conditionHumiditeAvant" (ngModelChange)="checkPrelevement()" *ngIf="isEditable">
+          <span *ngIf="!isEditable">{{prelevement.conditionHumiditeAvant}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="full" *ngIf="prelevement.zoneIntervention.milieu === 1 || prelevement.zoneIntervention.milieu === 2">
+    <div class="meteoWrapper">
+      <label>Métèo</label>
+      <div class="meteo meteoHeader">
+        <div class="pluis">
+          <div>
+            <i class="fas fa-sun"></i>
+          </div>
+          <div>
+            <i class="fas fa-tint"></i>
+          </div>
+          <div>
+            <i class="fas fa-tint"></i>
+            <i class="fas fa-tint"></i>
+          </div>
+          <div>
+            <i class="fas fa-tint"></i>
+            <i class="fas fa-tint"></i>
+            <i class="fas fa-tint"></i>
+          </div>
+        </div>
+        <div>Dir. vent</div>
+        <div>Vit. vent</div>
+        <div>Temp.</div>
+        <div>Humi.</div>
+        <div>Pres.</div>
+      </div>
+    </div>
+    <div class="meteoWrapper">
+      <label>Avant</label>
+      <div class="meteo">
+        <div class="pluis">
+          <div>
+            <input type="radio" name="pluieAvant" [value]="enumPluie.AUCUNE" [(ngModel)]="prelevement.pluieAvant" (ngModelChange)="checkPrelevement()" *ngIf="isEditable">
+            <span *ngIf="!isEditable"><i *ngIf="prelevement.pluieAvant === enumPluie.AUCUNE" class="fas fa-check"></i></span>
+          </div>
+          <div>
+            <input type="radio" name="pluieAvant" [value]="enumPluie.FAIBLE" [(ngModel)]="prelevement.pluieAvant" (ngModelChange)="checkPrelevement()" *ngIf="isEditable">
+            <span *ngIf="!isEditable"><i *ngIf="prelevement.pluieAvant === enumPluie.FAIBLE" class="fas fa-check"></i></span>
+          </div>
+          <div>
+            <input type="radio" name="pluieAvant" [value]="enumPluie.MOYENNE" [(ngModel)]="prelevement.pluieAvant" (ngModelChange)="checkPrelevement()" *ngIf="isEditable">
+            <span *ngIf="!isEditable"><i *ngIf="prelevement.pluieAvant === enumPluie.MOYENNE" class="fas fa-check"></i></span>
+          </div>
+          <div>
+            <input type="radio" name="pluieAvant" [value]="enumPluie.FORTE" [(ngModel)]="prelevement.pluieAvant" (ngModelChange)="checkPrelevement()" *ngIf="isEditable">
+            <span *ngIf="!isEditable"><i *ngIf="prelevement.pluieAvant === enumPluie.FORTE" class="fas fa-check"></i></span>
+          </div>
+        </div>
+        <div>
+          <select [(ngModel)]="prelevement.directionVentAvant" (ngModelChange)="checkPrelevement()" *ngIf="isEditable">
+            <option value="N">N</option>
+            <option value="NO">NO</option>
+            <option value="O">O</option>
+            <option value="SO">SO</option>
+            <option value="S">S</option>
+            <option value="SE">SE</option>
+            <option value="E">E</option>
+            <option value="NE">NE</option>
+          </select>
+          <span *ngIf="!isEditable">{{prelevement.directionVentAvant}}</span>
+        </div>
+        <div>
+          <input type="number" [(ngModel)]="prelevement.vistesseVentAvant" (ngModelChange)="checkPrelevement()" *ngIf="isEditable">
+          <span *ngIf="!isEditable">{{prelevement.vistesseVentAvant}}</span>
+        </div>
+        <div>
+          <input type="number" [(ngModel)]="prelevement.temperatureAvant" (ngModelChange)="checkPrelevement()" *ngIf="isEditable">
+          <span *ngIf="!isEditable">{{prelevement.temperatureAvant}}</span>
+        </div>
+        <div>
+          <input type="number" [(ngModel)]="prelevement.humiditeAvant" (ngModelChange)="checkPrelevement()" *ngIf="isEditable">
+          <span *ngIf="!isEditable">{{prelevement.humiditeAvant}}</span>
+        </div>
+        <div>
+          <input type="number" [(ngModel)]="prelevement.pressionAvant" (ngModelChange)="checkPrelevement()" *ngIf="isEditable">
+          <span *ngIf="!isEditable">{{prelevement.pressionAvant}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+<div class="form">
+  <div class="formgroup full">
+    <label>Localisation</label>
+    <textarea [(ngModel)]="prelevement.localisation"></textarea>
+  </div>
+  <div class="formgroup">
+    <label>Pompe</label>
+    <select [(ngModel)]="prelevement.affectationsPrelevement[0].pompe" (ngModelChange)="changePompe(prelevement.affectationsPrelevement[0], $event)" [compareWith]="compare">
+      <option *ngFor="let pompe of pompes" [ngValue]="pompe">{{pompe.libelle}}</option>
+    </select>
+  </div>
+  <div class="formgroup">
+    <label>Filtre</label>
+    <select [(ngModel)]="prelevement.affectationsPrelevement[0].filtre" (ngModelChange)="changeFiltre(prelevement.affectationsPrelevement[0], $event)" [compareWith]="compare">
+      <option *ngFor="let filtre of filtres" [ngValue]="filtre">{{filtre.ref}}</option>
+    </select>
+  </div>
+  <div class="formgroup">
+    <label>Date début</label>
+    <input type="date" [(ngModel)]="prelevement.affectationsPrelevement[0].dateDebut" (change)="parseDateHeureDebut(prelevement.affectationsPrelevement[0])">
+  </div>
+  <div class="formgroup">
+    <label>Heure début</label>
+    <input type="time" [(ngModel)]="prelevement.affectationsPrelevement[0].heureDebut" (change)="parseDateHeureDebut(prelevement.affectationsPrelevement[0])">
+  </div>
+  <div class="formgroup">
+    <label>Date fin</label>
+    <input type="date" [(ngModel)]="prelevement.affectationsPrelevement[0].dateFin" (change)="parseDateHeureFin(prelevement.affectationsPrelevement[0])">
+  </div>
+  <div class="formgroup">
+    <label>Heure fin</label>
+    <input type="time" [(ngModel)]="prelevement.affectationsPrelevement[0].heureFin" (change)="parseDateHeureFin(prelevement.affectationsPrelevement[0])">
+  </div>
+  <div class="formgroup full">
+    <label>Commentaire</label>
+    <textarea [(ngModel)]="prelevement.affectationsPrelevement[0].commentaire"></textarea>
+  </div>
+
+  <div class="full" *ngIf="prelevement.idStatutPrelevement === enumStatutPrelevement.POSE">
+    Depose
+  </div>
+</div>
+

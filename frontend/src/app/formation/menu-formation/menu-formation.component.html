@@ -1,0 +1,11 @@
+<nav class="menu-gauche">
+  <!-- <div [class.active]="activeMenu === 'information'" [routerLink]="['/devis-commande', id, 'modifier']" *ngIf="id">Informations</div> -->
+  <div [class.active]="activeMenu === 'information'" *ngIf="id"  [routerLink]="['/formation', id, 'modifier']">Informations</div>
+  <div [class.active]="activeMenu === 'information'" *ngIf="!id">Informations</div>
+  <!-- <div [class.active]="activeMenu === 'detail'" [routerLink]="['/devis-commande', id, 'detail']" *ngIf="id">Détails</div> -->
+  <!-- <div [class.active]="activeMenu === 'detail'" *ngIf="id">Détails</div> -->
+  <div [class.active]="activeMenu === 'stagiaire'" [routerLink]="['/formation', id, 'stagiaire']" *ngIf="id">Stagiaires</div>
+  <div [class.active]="activeMenu === 'devis'"*ngIf="id" [routerLink]="['/formation', id, 'devis']">Devis</div>
+  <div [class.active]="activeMenu === 'historique'"*ngIf="id"  [routerLink]="['/formation', id, 'historique']">Historique</div>
+  
+</nav>

@@ -1,0 +1,103 @@
+<form [formGroup]="informationsForm" (ngSubmit)="onSubmit()">
+    <div class="formgroup o1">
+        <label>Nom</label>
+        <input formControlName="nom" type="text" tabindex="1"
+            [ngClass]="{ 'invalid': submitted && informationsForm['controls'].nom.errors}">
+    </div>
+    <div class="formgroup o1">
+        <label>Code</label>
+        <input type="text" formControlName="code" type="text" tabindex="2">
+    </div>
+    <h3 class="o2"></h3>
+    <div class="formgroup o2">
+        <label>Accès en hauteur nécessaire</label>
+        <input type="checkbox" formControlName="accesHauteurNecessaire" tabindex="3">
+    </div>
+
+    <div class="formgroup o3" formGroupName="adresse">
+        <label>Adresse</label>
+        <input formControlName="adresse" type="text" tabindex="7"
+            [ngClass]="{ 'invalid': submitted && adresseForm['controls'].adresse.errors}">
+    </div>
+
+    <div class="formgroup o2">
+        <label>&Eacute;lectricité sur place</label>
+        <input type="checkbox" formControlName="electriciteSurPlace" tabindex="4">
+    </div>
+
+    <div class="formgroup o3" formGroupName="adresse">
+        <label>Complement</label>
+        <input formControlName="complement" type="text" tabindex="8">
+    </div>
+
+    <div class="formgroup o2">
+        <label>Combles</label>
+        <input type="checkbox" formControlName="combles" tabindex="5">
+    </div>
+
+    <div class="formgroup o3">
+        <label>Code postal</label>
+        <app-cp-ville [isRechercheVille]="false" [parentForm]="adresseForm" [internalFormControlName]="'cp'"
+            (emitCP)="setCP($event)" [tabindex]="9"></app-cp-ville>
+    </div>
+    <div class="formgroup o2">
+        <label>Digicode</label>
+        <input type="text" formControlName="digicode" tabindex="6">
+    </div>
+
+    <div class="formgroup o3">
+        <label>Ville</label>
+        <app-cp-ville [isRechercheVille]="true" [parentForm]="adresseForm" [internalFormControlName]="'ville'"
+            (emitCP)="setCP($event)" [tabindex]="10"></app-cp-ville>
+    </div>
+
+    <h3 class="o4"></h3>
+    <div class="formgroup o4">
+        <label>Latitude précise (facultatif)</label>
+        <input type="text" formControlName="latitude" tabindex="11">
+    </div>
+
+    <div class="formgroup o4">
+        <label>Longitude précise (facultatif)</label>
+        <input type="text" formControlName="longitude" tabindex="12">
+    </div>
+
+    <h3 class="o4">Bâtiments & Définition du périmètre d'investigation<span style="float: right; cursor: pointer;"
+            (click)="displayBatiments = !displayBatiments; $event.preventDefault(); $event.stopPropagation();"><i
+                class="fas fa-chevron-down" *ngIf="!displayBatiments"></i>
+            <i class="fas fa-chevron-up" *ngIf="displayBatiments"></i></span></h3>
+    <div *ngIf="displayBatiments" [@fadeIn] [@fadeOut] style="width: 100%;" class="o4">
+        <div *ngIf="id; else enregistreDabord" style="width: 100%;">
+            <app-batiment [TypeFichier]="typeFichierPlanBatiment" [idParent]="id"></app-batiment>
+        </div>
+        <ng-template #enregistreDabord>
+            <div>
+                Veuillez enregistrer le site d'intervention avant d'y rattacher des bâtiments.
+            </div>
+        </ng-template>
+    </div>
+
+    <h3 class="o4">Fichiers joints<span style="float: right; cursor: pointer;"
+            (click)="displayFichiers = !displayFichiers; $event.preventDefault(); $event.stopPropagation();"><i
+                class="fas fa-chevron-down" *ngIf="!displayFichiers"></i>
+            <i class="fas fa-chevron-up" *ngIf="displayFichiers"></i></span></h3>
+    <div class="o4" *ngIf="displayFichiers" [@fadeIn] [@fadeOut] style="width: 100%;">
+        <div *ngIf="id; else enregistreDabord" style="width: 100%;">
+            <app-fichier [TypeFichier]="typeFichierPjSite" [application]="'site-prelevement'" [idParent]="id">
+            </app-fichier>
+        </div>
+        <ng-template #enregistreDabord>
+            <div>
+                Veuillez enregistrer le site d'intervention avant d'y rattacher des fichiers.
+            </div>
+        </ng-template>
+    </div>
+
+
+    <div class="action o4">
+        <button class="button" type="submit" tabindex="13">Enregistrer <img *ngIf="isSaving"
+                src="assets/img/ajax-loader.gif" style="margin-left: 0.5em;" /></button>
+        <button class="button" type="button" (click)="onSubmit(true)" tabindex="13">Enregistrer et fermer <img
+                *ngIf="isSavingAndClose" src="assets/img/ajax-loader.gif" style="margin-left: 0.5em;" /></button>
+    </div>
+</form>

@@ -1,0 +1,29 @@
+<app-menu-superadmin></app-menu-superadmin>
+<div class="content">
+  <div class="bloc" *ngIf="id">
+    <div class="formgroup">
+      <label>Référence</label>
+      <div>{{id}}</div>
+    </div>
+  </div>
+  <h2>Droit</h2>
+  <div class="bloc">
+    <form [formGroup]="droitForm" (ngSubmit)="onSubmitDroit()">
+      <div class="formgroup">
+        <label>Nom</label>
+        <input type="text" formControlName="nom" [ngClass]="{ 'invalid': submittedDroit && fDroit.nom.errors }" tabindex="1">
+      </div>
+      <div class="formgroup">
+          <label>Code</label>
+          <input type="text" formControlName="code" [ngClass]="{ 'invalid': submittedDroit && fDroit.code.errors }" tabindex="3">
+        </div>
+        <div class="formgroup">
+          <label>Niveau</label>
+          <input type="number" formControlName="niveau" [ngClass]="{ 'invalid': submittedDroit && fDroit.niveau.errors }" tabindex="4">
+        </div>
+      <div class="action">
+          <button class="button" type="submit" tabindex="5">Valider</button>
+        </div>
+    </form>
+  </div>
+</div>

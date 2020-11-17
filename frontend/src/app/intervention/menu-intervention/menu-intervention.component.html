@@ -1,0 +1,23 @@
+<nav class="menu-gauche">
+    <div [routerLink]="['/intervention', intervention.id,  'information']"
+         [class.active]="type === 'information'"
+         *ngIf="!isNew">Information</div>
+
+    <div [routerLink]="['/intervention', 'ajouter']"
+         [class.active]="isNew"
+         *ngIf="isNew">Information</div>
+
+    <div [routerLink]="['/intervention', intervention.id,  'preparation']"
+         [class.active]="type === 'preparation'"
+         *ngIf="!isNew && intervention && intervention.idStatut >= enumStatutIntervention.VALIDE">Preparation</div>
+
+    <div [routerLink]="['/intervention', intervention.id,  'depart-terrain']"
+         [class.active]="type === 'depart-terrain'"
+         *ngIf="!isNew && intervention && intervention.idStatut >= enumStatutIntervention.DEPART_TERRAIN">Depart Terrain</div>
+
+    <div [routerLink]="['/intervention', intervention.id,  'retour-terrain']"
+         [class.active]="type === 'retour-terrain'"
+         *ngIf="!isNew && intervention && intervention.idStatut >= enumStatutIntervention.RETOUR_TERRAIN">Retour Terrain</div>
+
+    <div *ngIf="!isNew" [routerLink]="['/intervention', intervention.id,  'historique']" [class.active]="type === 'historique'">Historique</div>
+</nav>

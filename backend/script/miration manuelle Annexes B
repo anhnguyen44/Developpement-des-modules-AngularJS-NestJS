@@ -1,0 +1,134 @@
+-- Migration manuelle pour pouvoir désactiver le check des clefs étrangères parce que c'ets le bordel
+TRUNCATE TABLE `objectif`;
+
+
+INSERT INTO `objectif` (`id`, `nom`, `code`, `description`, `lettre`, `idType`, `idMomentObjectif`, `isMesureOperateur`, `isObligatoireCOFRAC`, `SAFibreParLitre`, `limiteSup`, `isPeriodique`, `conditionsApplication`, `duree`, `frequence`, `hasTempsCalcule`, `simulationObligatoire`) VALUES
+(1, 'Surveillance Périodique Liste A', 'A', 'Liste A - CSP R. 1334-25 et 27, NF X43-050', 'A', 2, 1, 0, 1, '0.30', NULL, 0, 'Liste A - CSP R. 1334-25 et 27, NF X43-050', '24h minimum', '-', 1, 1),
+(2, 'Mesure après note 3 à l\'issue de l\'état de conservation des matériaux', 'B', 'Liste A', 'B', NULL, 1, 0, 1, '0.30', NULL, 0, 'Liste A', '24h minimum', '-', 1, 1),
+(3, 'Mesure suite à mise en oeuvre de mesures conservatoires', 'C', 'Liste A - CSP R. 1334-29, NF X43-050\r\nListe B - Arrêté du 02/12/2012 Liste B art 5, NF X43-050\r\n', 'C', 2, 1, 0, 1, '0.30', NULL, 0, 'Liste A - CSP R. 1334-29, NF X43-050\r\nListe B - Arrêté du 02/12/2012 Liste B art 5, NF X43-050\r\n', '24h minimum', '-', 1, 1),
+(4, 'Surveillance périodique (matériaux autres que liste A)', 'D', 'Autres que liste A', 'D', NULL, 1, 0, 1, NULL, '5.00', 0, 'Autres que liste A', '24h minimum', '-', 1, 1),
+(5, 'Mesure suite à incident', 'E', 'Tous matériaux', 'E', NULL, 2, 0, 0, NULL, '5.00', 0, 'Tous matériaux', '4h minimum', '-', 1, 1),
+(6, 'Mesure suite à incident après nettoyage', 'F', 'Tous matériaux', 'F', NULL, 2, 0, 0, NULL, '5.00', 0, 'Tous matériaux', '4h minimum', '-', 1, 1),
+(7, 'Etat initial', 'G', 'Tous matériaux - CT R.4412-127', 'G', 1, 3, 0, 1, '0.30', NULL, 0, 'Tous matériaux - CT R.4412-127', '24h minimum', '-', 1, 1),
+(8, 'Texte à définir', 'AnnexeB_F1_6Pt0', 'Texte à définir b', 'Annexe B-FB1 à -FB6 Pt0', 1, 3, 0, 0, NULL, NULL, 0, '', '4h', 'Selon l\'analyse de risques.', 1, 0),
+(9, 'Texte à définir 1', 'AnnexeB_F7Pt0', 'Texte à définir 1b', 'Annexe B-FB7 Pt0', 1, 3, 0, 0, NULL, NULL, 0, '', '4h', 'Selon l\'analyse de risques.', 1, 0),
+(10, 'Texte à définir 2', 'AnnexeB_F8Pt0', 'Texte à définir 2b', 'Annexe B-FB8 Pt0', 1, 3, 0, 0, NULL, NULL, 0, '', '4h', 'Selon l\'analyse de risques.', 1, 0),
+(11, 'Texte à définir 3', 'AnnexeB_F9Pt0', 'Texte à définir 3b', 'Annexe B-FB9 Pt0', 1, 3, 0, 0, NULL, NULL, 0, '', '4h', 'Selon l\'analyse de risques.', 1, 0),
+(12, 'Texte à définir 4', 'AnnexeB_F10Pt0', 'Texte à définir 4b', 'Annexe B-FB10 Pt0', 1, 3, 0, 0, NULL, NULL, 0, '', '4h', 'Selon l\'analyse de risques.', 1, 0),
+(13, 'Texte à définir 5', 'AnnexeB_F12Pt0', 'Texte à définir 5b', 'Annexe B-FB12 Pt0', 1, 3, 0, 0, NULL, NULL, 0, '', '4h', 'Selon l\'analyse de risques.', 1, 0),
+(14, 'Texte à définir 6', 'AnnexeB_F15Pt0', 'Texte à définir 6b', 'Annexe B-FB15 Pt0 (2)', 2, 3, 0, 0, NULL, NULL, 0, '', '4h à 8h', 'Selon l\'analyse de risques.', 1, 0),
+(15, 'Texte à définir 7', 'AnnexeB_F16Pt0', 'Texte à définir 7b', 'Annexe B-FB16 Pt0 (2)', 2, 3, 0, 0, NULL, NULL, 0, '', '4h à 8h', 'Selon l\'analyse de risques.', 1, 0),
+(16, 'Mesure d\'ambiance pendant les travaux préparatoires', 'H', 'Tous matériaux - NF X43-050', 'H', NULL, 4, 0, 0, NULL, NULL, 0, 'Tous matériaux - NF X43-050', 'Pas de durée minimum A définir en fonction de la durée de l’activité Durée définie dans la stratégie', 'selon l’analyse de risques.', 0, 0),
+(17, 'Mesure sur opérateur pendant travaux préparatoires', 'I', 'Tous matériaux - XP X43-269', 'I', 1, 4, 1, 0, '1.00', NULL, 0, 'Tous matériaux - XP X43-269', 'Pas de durée minimum A définir en fonction de la durée de l’activité Durée définie dans la stratégie', 'selon l’analyse de risques.', 0, 0),
+(18, 'Mesure sur opérateur pendant travaux pour validation du processus', 'J', 'Tous matériaux - CT R. 4412-128 / XP X43-269', 'J', 1, 5, 1, 1, '1.00', NULL, 1, 'Tous matériaux - CT R. 4412-128 / XP X43-269', 'Pas de durée minimum A définir en fonction de la durée de l’activité Durée définie dans la stratégie', 'selon l’analyse de risques.', 0, 0),
+(19, 'Mesure sur opérateur pendant travaux pour surveillance', 'K', 'Tous matériaux - XP X43-269', 'K', 1, 5, 1, 0, '1.00', NULL, 1, 'Tous matériaux - XP X43-269', 'Pas de durée minimum A définir en fonction de la durée de l’activité Durée définie dans la stratégie', 'selon l’analyse de risques.', 0, 0),
+(20, 'Mesure environnementale dans les locaux maintenus en activité', 'L', 'Tous matériaux - CT R. 4412-128 3°/NF X43-050', 'L', 1, 5, 0, 1, NULL, '5.00', 1, 'Tous matériaux - CT R. 4412-128 3°/NF X43-050', '4h minimum', 'selon l’analyse de risques,  au minimum une fois par semaine', 1, 0),
+(21, 'Mesure environnementale chantier dans les locaux affectés par travaux', 'M', 'Tous matériaux - CT R. 4412-128 3°/NF X43-050', 'M', 1, 5, 0, 1, NULL, '5.00', 1, 'Tous matériaux - CT R. 4412-128 3°/NF X43-050', '4h minimum', 'selon l’analyse de risques,  au minimum une fois par semaine', 1, 1),
+(22, 'Mesure environnementale chantier dans les locaux affectés par travaux en extérieur', 'MExt', 'Tous matériaux - CT R. 4412-128 3°/NF X43-050', 'M extérieur', 1, 5, 0, 1, NULL, '5.00', 1, 'Tous matériaux - CT R. 4412-128 3°/NF X43-050', '4h minimum', 'selon l’analyse de risques,  au minimum une fois par semaine', 1, 0),
+(23, 'Mesure aux rejets des extracteurs', 'N', 'Tous matériaux - CT R. 4412-128 4°/NF X43-050', 'N', 1, 5, 0, 1, NULL, '5.00', 1, 'Tous matériaux - CT R. 4412-128 4°/NF X43-050', '4h minimum', '1 au début de la phase de  retrait   1 après tout changement de  filtre THE   1 par semaine par groupe  d’extracteurs', 1, 0),
+(24, 'Mesure d\'ambiance en zone de traitement', 'O', 'Tous matériaux - NF X43-050', 'O', NULL, 5, 0, 0, NULL, NULL, 1, 'Tous matériaux - NF X43-050', 'Pas de durée minimum A définir en fonction de la durée de l’activité Durée définie dans la stratégie', 'selon l’analyse de risques.', 0, 0),
+(25, 'Mesure dans la zone d\'approche du SAS personnel', 'P', 'Tous matériaux - CT R. 4412-128 1°/NF X43-050', 'P', 1, 5, 0, 1, NULL, '5.00', 1, 'Tous matériaux - CT R. 4412-128 1°/NF X43-050', '4h minimum', 'au minimum une fois par semaine', 1, 0),
+(26, 'Mesure en zone de récupération', 'Q', 'Tous matériaux - CT R. 4412-128 2°/NF X43-050', 'Q', 1, 5, 0, 1, NULL, '5.00', 1, 'Tous matériaux - CT R. 4412-128 2°/NF X43-050', '4h minimum', 'selon l’analyse de risques,  au minimum une fois par semaine', 1, 0),
+(27, 'Mesure dans le compartiment vestiaire de l\'unité mobile de décontamination', 'R', 'Tous matériaux - CT R. 4412-128 1°/NF X43-050', 'R', 1, 5, 0, 1, NULL, '5.00', 1, 'Tous matériaux - CT R. 4412-128 1°/NF X43-050', '4h minimum', 'selon l’analyse de risques,  au minimum une fois par semaine', 1, 0),
+(28, 'Mesure en zone d\'approche du SAS déchets', 'S', 'Tous matériaux - CT R. 4412-128 1°/NF X43-050', 'S', 1, 5, 0, 1, NULL, '5.00', 1, 'Tous matériaux - CT R. 4412-128 1°/NF X43-050', '4h minimum', 'selon l’analyse de risques,  au minimum une fois par semaine', 1, 0),
+(29, 'Texte à définir 8', 'AnnexeB_F1', 'Texte à définir 8b', 'Annexe B-FB1', 1, 5, 0, 0, NULL, NULL, 0, '', 'Pas de durée minimum. A définir en fonction de la durée de l\'activité. Durée définie dans la stratégie.', 'selon l\'analyse de risques.', 0, 0),
+(30, 'Texte à définir 9', 'AnnexeB_F2', 'Texte à définir 9b', 'Annexe B-FB2', 1, 5, 0, 0, NULL, NULL, 0, '', 'Pas de durée minimum. A définir en fonction de la durée de l\'activité. Durée définie dans la stratégie.', 'selon l\'analyse de risques.', 0, 0),
+(31, 'Texte à définir 10', 'AnnexeB_F3', 'Texte à définir 10b', 'Annexe B-FB3', 1, 5, 0, 0, NULL, NULL, 0, '', 'Pas de durée minimum. A définir en fonction de la durée de l\'activité. Durée définie dans la stratégie.', 'selon l\'analyse de risques.', 0, 0),
+(32, 'Texte à définir 11', 'AnnexeB_F4', 'Texte à définir 11b', 'Annexe B-FB4', 1, 5, 0, 0, NULL, NULL, 0, '', 'Pas de durée minimum. A définir en fonction de la durée de l\'activité. Durée définie dans la stratégie.', 'selon l\'analyse de risques.', 0, 0),
+(33, 'Texte à définir 12', 'AnnexeB_F5', 'Texte à définir 12b', 'Annexe B-FB5', 1, 5, 0, 0, NULL, NULL, 0, '', 'Pas de durée minimum. A définir en fonction de la durée de l\'activité. Durée définie dans la stratégie.', 'selon l\'analyse de risques.', 0, 0),
+(34, 'Texte à définir 13', 'AnnexeB_F6', 'Texte à définir 13b', 'Annexe B-FB6', 1, 5, 0, 0, NULL, NULL, 0, '', 'Pas de durée minimum. A définir en fonction de la durée de l\'activité. Durée définie dans la stratégie.', 'selon l\'analyse de risques.', 0, 0),
+(35, 'Texte à définir 14', 'AnnexeB_F7', 'Texte à définir 14b', 'Annexe B-FB7', 1, 5, 0, 0, NULL, NULL, 0, '', 'Pas de durée minimum. A définir en fonction de la durée de l\'activité. Durée définie dans la stratégie.', 'selon l\'analyse de risques.', 0, 0),
+(36, 'Texte à définir 15', 'AnnexeB_F8', 'Texte à définir 15b', 'Annexe B-FB8', 1, 5, 0, 0, NULL, NULL, 0, '', 'Pas de durée minimum. A définir en fonction de la durée de l\'activité. Durée définie dans la stratégie.', 'selon l\'analyse de risques.', 0, 0),
+(37, 'Texte à définir 16', 'AnnexeB_F9', 'Texte à définir 16b', 'Annexe B-FB9', 1, 5, 0, 0, NULL, NULL, 0, '', 'Pas de durée minimum. A définir en fonction de la durée de l\'activité. Durée définie dans la stratégie.', 'selon l\'analyse de risques.', 0, 0),
+(38, 'Texte à définir 17', 'AnnexeB_F10', 'Texte à définir 17b', 'Annexe B-FB10', 1, 5, 0, 0, NULL, NULL, 0, '', 'Pas de durée minimum. A définir en fonction de la durée de l\'activité. Durée définie dans la stratégie.', 'selon l\'analyse de risques.', 0, 0),
+(39, 'Texte à définir 18', 'AnnexeB_F12', 'Texte à définir 18b', 'Annexe B-FB12', 1, 5, 0, 0, NULL, NULL, 0, '', 'Pas de durée minimum. A définir en fonction de la durée de l\'activité. Durée définie dans la stratégie.', 'selon l\'analyse de risques.', 0, 0),
+(40, 'Texte à définir 19', 'AnnexeB_F14', 'Texte à définir 19b', 'Annexe B-FB14 (2)', 2, 5, 0, 0, NULL, NULL, 0, '', '24h minimum', '-', 1, 0),
+(41, 'Texte à définir 20', 'AnnexeB_F15', 'Texte à définir 20b', 'Annexe B-FB15 (2)', 2, 5, 0, 0, NULL, NULL, 0, '', '24h minimum', '-', 1, 0),
+(42, 'Texte à définir 21', 'AnnexeB_F16', 'Texte à définir 21b', 'Annexe B-FB16 (2)', 2, 5, 0, 0, NULL, NULL, 0, '', '24h minimum', '-', 1, 0),
+(43, 'Texte à définir 22', 'AnnexeB_F17', 'Texte à définir 22b', 'Annexe B-FB17 (1)', 2, 5, 0, 0, NULL, NULL, 0, '', '24h minimum', '-', 1, 0),
+(44, '2ème restitution', 'Y', 'Liste A et B - CSP R. 1334-29-3 NF X43-050\r\nAutres que Liste A et B - NF X43-050', 'Y', 2, 8, 0, 1, '0.30', '5.00', 0, 'Liste A et B - CSP R. 1334-29-3 NF X43-050\r\nAutres que Liste A et B - NF X43-050', '24h minimum', '-', 1, 2),
+(45, 'Mesure en zone avant examen visuel', 'T', 'Tous matériaux - NF X43-050', 'T', NULL, 6, 0, 0, NULL, '5.00', 0, 'Tous matériaux - NF X43-050', '4h minimum', '-', 1, 0),
+(46, 'Mesure libératoire ou 1ère restitution', 'U', 'Tous matériaux - CT R. 4412-140/NF X43-050', 'U', 1, 6, 0, 1, '0.30', NULL, 0, 'Tous matériaux - CT R. 4412-140/NF X43-050', '24h minimum', '-', 1, 1),
+(47, 'Mesure de fin de chantier / extérieur', 'V', 'Tous matériaux', 'V', 1, 6, 0, 0, '0.30', NULL, 0, 'Tous matériaux', '24h minimum', '-', 1, 2),
+(48, 'Mesure avant retrait des MPC en SS4', 'W', 'Tous matériaux -NF X43-050', 'W', NULL, 7, 0, 0, NULL, '5.00', 0, 'Tous matériaux -NF X43-050', 'de 4 à 24h', '', 1, 1),
+(49, 'Mesure de fin de travaux en SS4', 'X', 'Tous matériaux - NF X43-050', 'X', NULL, 7, 0, 0, NULL, '5.00', 0, 'Tous matériaux - NF X43-050', 'de 4 à 24h', '', 1, 1);
+
+
+UPDATE prelevement SET idObjectif = 49 WHERE idObjectif = 35;
+UPDATE echantillonnage SET idObjectif = 49 WHERE idObjectif = 35;
+
+UPDATE prelevement SET idObjectif = 48 WHERE idObjectif = 34;
+UPDATE echantillonnage SET idObjectif = 48 WHERE idObjectif = 34;
+
+UPDATE prelevement SET idObjectif = 47 WHERE idObjectif = 33;
+UPDATE echantillonnage SET idObjectif = 47 WHERE idObjectif = 33;
+
+UPDATE prelevement SET idObjectif = 46 WHERE idObjectif = 32;
+UPDATE echantillonnage SET idObjectif = 46 WHERE idObjectif = 32;
+
+UPDATE prelevement SET idObjectif = 45 WHERE idObjectif = 31;
+UPDATE echantillonnage SET idObjectif = 45 WHERE idObjectif = 31;
+
+UPDATE prelevement SET idObjectif = 44 WHERE idObjectif = 30;
+UPDATE echantillonnage SET idObjectif = 44 WHERE idObjectif = 30;
+
+
+
+UPDATE prelevement SET idObjectif = 35 WHERE idObjectif = 29;
+UPDATE echantillonnage SET idObjectif = 35 WHERE idObjectif = 29;
+
+UPDATE prelevement SET idObjectif = 34 WHERE idObjectif = 28;
+UPDATE echantillonnage SET idObjectif = 34 WHERE idObjectif = 28;
+
+UPDATE prelevement SET idObjectif = 33 WHERE idObjectif = 27;
+UPDATE echantillonnage SET idObjectif = 33 WHERE idObjectif = 27;
+
+UPDATE prelevement SET idObjectif = 32 WHERE idObjectif = 26;
+UPDATE echantillonnage SET idObjectif = 32 WHERE idObjectif = 26;
+
+UPDATE prelevement SET idObjectif = 31 WHERE idObjectif = 25;
+UPDATE echantillonnage SET idObjectif = 31 WHERE idObjectif = 25;
+
+UPDATE prelevement SET idObjectif = 30 WHERE idObjectif = 24;
+UPDATE echantillonnage SET idObjectif = 30 WHERE idObjectif = 24;
+
+UPDATE prelevement SET idObjectif = 29 WHERE idObjectif = 23;
+UPDATE echantillonnage SET idObjectif = 29 WHERE idObjectif = 23;
+
+UPDATE prelevement SET idObjectif = 28 WHERE idObjectif = 22;
+UPDATE echantillonnage SET idObjectif = 28 WHERE idObjectif = 22;
+
+UPDATE prelevement SET idObjectif = 27 WHERE idObjectif = 21;
+UPDATE echantillonnage SET idObjectif = 27 WHERE idObjectif = 21;
+
+UPDATE prelevement SET idObjectif = 26 WHERE idObjectif = 20;
+UPDATE echantillonnage SET idObjectif = 26 WHERE idObjectif = 20;
+
+UPDATE prelevement SET idObjectif = 25 WHERE idObjectif = 19;
+UPDATE echantillonnage SET idObjectif = 25 WHERE idObjectif = 19;
+
+UPDATE prelevement SET idObjectif = 24 WHERE idObjectif = 18;
+UPDATE echantillonnage SET idObjectif = 24 WHERE idObjectif = 18;
+
+UPDATE prelevement SET idObjectif = 23 WHERE idObjectif = 17;
+UPDATE echantillonnage SET idObjectif = 23 WHERE idObjectif = 17;
+
+
+
+UPDATE prelevement SET idObjectif = 21 WHERE idObjectif = 16;
+UPDATE echantillonnage SET idObjectif = 21 WHERE idObjectif = 16;
+
+UPDATE prelevement SET idObjectif = 20 WHERE idObjectif = 15;
+UPDATE echantillonnage SET idObjectif = 20 WHERE idObjectif = 15;
+
+UPDATE prelevement SET idObjectif = 19 WHERE idObjectif = 14;
+UPDATE echantillonnage SET idObjectif = 19 WHERE idObjectif = 14;
+
+UPDATE prelevement SET idObjectif = 18 WHERE idObjectif = 13;
+UPDATE echantillonnage SET idObjectif = 18 WHERE idObjectif = 13;
+
+UPDATE prelevement SET idObjectif = 17 WHERE idObjectif = 12;
+UPDATE echantillonnage SET idObjectif = 17 WHERE idObjectif = 12;
+
+UPDATE prelevement SET idObjectif = 16 WHERE idObjectif = 11;
+UPDATE echantillonnage SET idObjectif = 16 WHERE idObjectif = 11;

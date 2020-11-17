@@ -1,0 +1,6 @@
+<div class="onglet">
+    <div class="button compte" *ngIf="!isOnlyContact" [class.active]="typeAffichage === 'compte'" (click)="changeType('compte')">Compte</div>
+    <div class="button contact" [class.active]="typeAffichage === 'contact' || isOnlyContact" (click)="changeType('contact')">Contact</div>
+</div>
+<app-liste-contact *ngIf="typeAffichage === 'contact' || isOnlyContact" [modalClient]="modalClient" [queryBuild]="queryBuildContact" (emitContact)="setContact($event)" (emitNouveau)="setNouveauContact($event)"></app-liste-contact>
+<app-liste-compte *ngIf="typeAffichage === 'compte' && !isOnlyContact" [modalClient]="modalClient" (emitCompte)="setCompte($event)"></app-liste-compte>

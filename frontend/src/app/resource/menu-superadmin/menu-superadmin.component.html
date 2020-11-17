@@ -1,0 +1,17 @@
+<nav class="menu-gauche">
+  <div [class.active]="activeMenu === 'franchise'" routerLink="/superadmin/franchise/liste">Franchises</div>
+  <div [class.active]="activeMenu === 'bureau'" routerLink="/superadmin/bureau/liste">Agences</div>
+  <div [class.active]="activeMenu === 'utilisateur'" routerLink="/superadmin/utilisateur/liste">Gestion des utilisateurs</div>
+  <div [class.active]="activeMenu === 'templates'" routerLink="/superadmin/templates">Templates</div>
+  
+
+  <!-- DEV ONLY -->
+  <hr style="border: solid 0.5px #AAA; width: 60%;" *ngIf="isDev | async" />
+  <div [class.active]="activeMenu === 'produit'" routerLink="/superadmin/produit/liste" *ngIf="isDev | async">Gestion des produits</div>
+  <div [class.active]="activeMenu === 'profil'" routerLink="/superadmin/profil/liste" *ngIf="isDev | async">Profils</div>
+  <div [class.active]="activeMenu === 'droit'" routerLink="/superadmin/droit/liste" *ngIf="isDev | async">Droits</div>
+  <div [class.active]="activeMenu === 'typefichier'" routerLink="/superadmin/typefichier" *ngIf="isDev | async">Type fichiers</div>
+  <div [class.active]="activeMenu === 'typeformation'" routerLink="/superadmin/typeformation" *ngIf="isDev | async">Type formations</div>
+  <div [class.active]="activeMenu === 'domaineCompetence'" routerLink="/superadmin/domaineCompetence" *ngIf="isDev | async">Domaine Compétence</div>
+  <div [class.active]="activeMenu === 'importliste'" routerLink="/superadmin/importliste" *ngIf="isDev | async">Import/Export listes</div>
+</nav>

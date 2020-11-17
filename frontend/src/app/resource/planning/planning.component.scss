@@ -1,0 +1,92 @@
+
+:host {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+::ng-deep mwl-calendar-week-view *,
+::ng-deep mwl-calendar-day-view *
+{
+  box-sizing: border-box;
+  white-space: pre-line;
+}
+
+::ng-deep .cal-event {
+  color: white !important;
+}
+
+.full {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.actionCalendar {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.actionCalendar .button {
+  min-width: 30px;
+  width: 30px;
+  height: 30px;
+  margin: 5px;
+}
+
+.actionCalendar .actionDay {
+  width: 200px;
+  display: flex;
+  align-items: center;
+}
+
+.actionCalendar .actionSwitch {
+  display: flex;
+  justify-content: space-between;
+  flex-grow: 1;
+  margin: 0 40px;
+}
+
+.actionCalendar .actionSwitch h3 {
+  padding: 0;
+  margin: 0 10px;
+  flex-grow: 1;
+  align-self: center;
+  text-align: center;
+  border-bottom: none;
+}
+
+.actionCalendar .actionFrequence {
+  width: 200px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.nbPompes {
+  width: 100%;
+  display: flex;
+  margin-bottom: 5px;
+}
+
+.nbPompes > div {
+  border: solid 1px #ededed;
+  text-align: center;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nbPompes .label {
+  width: 70px;
+}
+
+.nbPompes .nbPompe {
+  flex-grow: 1;
+
+}
+

@@ -1,0 +1,151 @@
+@import "variables";
+:host {
+  width: 100%
+}
+
+* {
+  box-sizing: border-box;
+}
+
+label {
+  min-width: 80px;
+}
+
+.gess {
+  width: 100%;
+}
+
+.ges {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  padding: 10px;
+  background-color: $couleurFondTr1;
+  margin-bottom: 10px;
+}
+
+.dateHeureDebut {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.dateHeureDebut > * {
+  width: 45%;
+}
+
+.dateHeureFin {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.dateHeureFin > * {
+  width: 45%;
+}
+
+.ges:nth-child(odd) {
+  background-color: $couleurFondTr2;
+}
+
+.content-ges {
+  display: flex;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.action-ges {
+  width: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.detail-ges {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.detail-ges > * {
+  width: 30%;
+}
+
+.affectation-gess {
+  width: 100%;
+}
+
+.affectation-ges {
+  width: 100%;
+  display: flex;
+  padding: 10px;
+  background-color: rgba(0,0,0,0.05);
+}
+
+.affectation-ges:nth-child(odd) {
+  background-color: rgba(0,0,0,0.1);
+}
+
+.content-affectation-ges {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.action-affectation-ges {
+  width: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.filtre-pompe-affectation-ges {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.filtre-pompe-affectation-ges > * {
+  width: 45%;
+  display: flex;
+  align-items: center;
+}
+
+.operateur-tache-affectation-ges {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.operateur-affectation-ges {
+  width: 100%;
+}
+
+.tache-affectation-ges {
+  width: 100%;
+}
+
+.taches {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.select-tache {
+  width: 100%;
+  display: flex;
+}
+
+.list-taches {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tache {
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+}

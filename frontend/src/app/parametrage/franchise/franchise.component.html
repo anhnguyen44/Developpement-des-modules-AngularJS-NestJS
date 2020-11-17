@@ -1,0 +1,242 @@
+<app-menu-parametrage *ngIf="!superAdminId; else superAdminMenu"></app-menu-parametrage>
+<ng-template #superAdminMenu>
+  <app-menu-superadmin></app-menu-superadmin>
+</ng-template>
+<div class="content">
+  <div class="bloc" *ngIf="franchise && franchise.id">
+    <div class="formgroup">
+      <label>Référence</label>
+      <div>{{franchise.id}}</div>
+    </div>
+  </div>
+
+  <h2>Informations</h2>
+  <div class="bloc">
+    <form [formGroup]="franchiseForm" (ngSubmit)="onSubmitInformations()">
+      <div class="formgroup">
+        <label>Numéro de contrat</label>
+        <input formControlName="numeroContrat"
+          [ngClass]="{ 'invalid': submittedInformations && f.numeroContrat.errors }"
+          *ngIf="canEditSiege | async; else txtNumContrat">
+        <ng-template #txtNumContrat>
+          <div>{{franchise?.numeroContrat}}</div>
+        </ng-template>
+      </div>
+      <div class="formgroup">
+        <label>Raison sociale</label>
+        <input formControlName="raisonSociale"
+          [ngClass]="{ 'invalid': submittedInformations && f.raisonSociale.errors }">
+      </div>
+
+      <div class="formgroup">
+        <label>Statut juridique</label>
+        <input formControlName="statutJuridique"
+          [ngClass]="{ 'invalid': submittedInformations && f.statutJuridique.errors }"
+          oninput="this.value = this.value.toUpperCase()">
+      </div>
+      <div class="formgroup">
+        <label>RCS <i class="fas fa-question-circle" tooltip="Format attendu 'RCS Ville XXX XXX XXX'"></i></label>
+        <input formControlName="rcs" [ngClass]="{ 'invalid': submittedInformations && f.rcs.errors }">
+      </div>
+
+      <div class="formgroup">
+        <label>NAF</label>
+        <input formControlName="naf" [ngClass]="{ 'invalid': submittedInformations && f.naf.errors }">
+      </div>
+      <div class="formgroup">
+        <label>Numéro TVA</label>
+        <input formControlName="numeroTVA" [ngClass]="{ 'invalid': submittedInformations && f.numeroTVA.errors }">
+      </div>
+      <div class="formgroup">
+        <label>SIRET</label>
+        <input formControlName="siret" [ngClass]="{ 'invalid': submittedInformations && f.siret.errors }">
+      </div>
+      <div class="formgroup">
+        <label>Pourcentage de TVA par défaut</label>
+        <!-- <input formControlName="pourcentTVADefaut" [ngClass]="{ 'invalid': submittedInformations && f.pourcentTVADefaut.errors }"> -->
+        <select [ngClass]="{ 'invalid': submittedInformations && f.pourcentTVADefaut.errors }"
+          formControlName="pourcentTVADefaut">
+          <option value="2.1">2,1%</option>
+          <option value="5.5">5,5%</option>
+          <option value="8.5">8,5%</option>
+          <option value="19.6">19,6%</option>
+          <option value="20.0">20,0%</option>
+        </select>
+      </div>
+      <div class="formgroup">
+        <label>Capital social</label>
+        <input formControlName="capitalSocial" [ngClass]="{ 'invalid': submittedInformations && f.capitalSocial.errors }">
+      </div>
+    
+      <div class="formgroup full" *ngIf="canEditSiege | async">
+        <label>Nom du franchisé (visible SA)</label>
+        <input formControlName="nomPrenomSignature"
+          [ngClass]="{ 'invalid': submittedInformations && f.nomPrenomSignature.errors }">
+      </div>
+      <div class="action" *ngIf="(franchise && franchise.id) || superAdminId === 0">
+        <button class="button" type="button" (click)="resetForm(franchiseForm)" tabindex="13"
+          [disabled]="franchiseForm.pristine"><i class="fas fa-undo"></i> Annuler</button>
+        <button class="button" type="submit" tabindex="13" [disabled]="franchiseForm.pristine"><i
+            class="fas fa-save"></i> Enregistrer</button>
+      </div>
+    </form>
+
+    <h3 *ngIf="franchise && franchise.id">Gestion du Personnel</h3>
+    <form *ngIf="franchise && franchise.id">
+      <div class="table">
+        <!-- <div class="action">
+          <div class="left">
+            <i class="fas fa-unlink"></i>
+          </div>
+          <div class="right">
+            <div (click)="openUserModal()" class="nofocus">
+              <i class="fas fa-plus"></i>Ajouter
+            </div>
+          </div>
+        </div> -->
+        <div class="header">
+          <div class="row">
+            <div>Nom</div>
+            <div>Prénom</div>
+            <div>Téléphone</div>
+            <div>Portable</div>
+            <div>Fonction</div>
+            <div>Profils sur la franchise</div>
+          </div>
+        </div>
+        <div>
+          <div class="content" *ngIf="franchise?.users?.length > 0; else noContact">
+            <div class="row" *ngFor="let personnel of franchise.users"
+              (dblclick)="gotoUserDetails('parametrage/utilisateur/modifier', personnel)">
+              <div>{{personnel?.nom}}</div>
+              <div>{{personnel?.prenom}}</div>
+              <div>{{personnel?.adresse?.telephone | telephone}}</div>
+              <div>{{personnel?.mobile | telephone}}</div>
+              <div>{{personnel?.fonction?.nom}}</div>
+              <div><span *ngFor="let profil of personnel.listeProfil; last as isLast">{{profil.nom}}<span
+                    *ngIf="!isLast">, </span></span></div>
+            </div>
+          </div>
+          <ng-template #noContact>
+            <div class="danger message">
+              Aucun gérant n'est saisi, Il faut un gérant pour valider la saisie.
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <h2 *ngIf="franchise && franchise.id">Assurances et ASN</h2>
+  <div class="bloc" *ngIf="franchise && franchise.id">
+    <form [formGroup]="assuranceForm" (ngSubmit)="onSubmitAssurance()">
+      <div class="formgroup">
+        <label>Compagnie assurance</label>
+        <input formControlName="compagnieAssurance"
+          [ngClass]="{ 'invalid': submittedAssurance && fAssurance.compagnieAssurance.errors }">
+      </div>
+
+      <div class="formgroup">
+        <label>Adresse compagnie assurance</label>
+        <input formControlName="adresseCompagnieAssurance"
+          [ngClass]="{ 'invalid': submittedAssurance && fAssurance.adresseCompagnieAssurance.errors }">
+      </div>
+      <div class="formgroup">
+        <label>N° Contrat RCP</label>
+        <input formControlName="numeroContratRCP"
+          [ngClass]="{ 'invalid': submittedAssurance && fAssurance.numeroContratRCP.errors }"
+          *ngIf="canEditSiege | async; else txtnumeroContratRCP">
+        <ng-template #txtnumeroContratRCP>
+          <div>{{franchise?.numeroContratRCP}}</div>
+        </ng-template>
+      </div>
+
+      <div class="formgroup">
+        <label>Montant garanti annuel</label>
+        <input formControlName="montantAnnuelGaranti"
+          [ngClass]="{ 'invalid': submittedAssurance && fAssurance.montantAnnuelGaranti.errors }"
+          *ngIf="canEditSiege | async; else txtmontantAnnuelGaranti">
+        <ng-template #txtmontantAnnuelGaranti>
+          <div>{{franchise?.montantAnnuelGaranti}}</div>
+        </ng-template>
+      </div>
+
+      <div class="formgroup">
+        <label>Date de validité</label>
+        <input formControlName="dateValiditeAssurance"
+          [ngClass]="{ 'invalid': submittedAssurance && fAssurance.dateValiditeAssurance.errors }" type="date">
+      </div>
+
+      <div class="action" *ngIf="(franchise && franchise.id)">
+        <button class="button" type="button" (click)="resetForm(assuranceForm)" tabindex="13"
+          [disabled]="assuranceForm.pristine"><i class="fas fa-undo"></i> Annuler</button>
+        <button class="button" type="submit" tabindex="13" [disabled]="assuranceForm.pristine"><i
+            class="fas fa-save"></i> Enregistrer</button>
+      </div>
+    </form>
+  </div>
+
+
+
+
+
+
+  <h2 *ngIf="(canEditSiege | async) && franchise && franchise.id && this.superAdminId !== undefined">Agences</h2>
+  <div class="bloc" *ngIf="(canEditSiege | async) && franchise && franchise.id && this.superAdminId !== undefined">
+    <app-liste-bureau [superAdminFranchiseId]="franchise.id" [isSuperAdmin]="true" [isInsideFranchiseSA]="true"></app-liste-bureau>
+  </div>
+
+
+
+
+
+
+
+  <h2 *ngIf="(canEditSiege | async) && franchise && franchise.id">Administration</h2>
+  <div class="bloc" *ngIf="(canEditSiege | async) && franchise && franchise.id">
+    <form [formGroup]="administrationForm" (ngSubmit)="onSubmitAdministration()">
+      <div class="formgroup">
+        <label>Date de première signature</label>
+        <input formControlName="datePremiereSignature"
+          [ngClass]="{ 'invalid': submittedAdministration && fAdministration.datePremiereSignature.errors }"
+          type="date">
+      </div>
+      <div class="formgroup">
+        <label>Date de signature du contrat en cours</label>
+        <input formControlName="dateSignatureContratEnCours"
+          [ngClass]="{ 'invalid': submittedAdministration && fAdministration.dateSignatureContratEnCours.errors }"
+          type="date">
+      </div>
+      <div class="formgroup">
+        <label>Date de fin de validitédu contrat en cours</label>
+        <input formControlName="dateFinContratEnCours"
+          [ngClass]="{ 'invalid': submittedAdministration && fAdministration.dateFinContratEnCours.errors }"
+          type="date">
+      </div>
+      <div class="formgroup">
+        <label>Date de démarrage</label>
+        <input formControlName="dateDemarrage"
+          [ngClass]="{ 'invalid': submittedAdministration && fAdministration.dateDemarrage.errors }" type="date">
+      </div>
+      <div class="formgroup">
+        <label>Trigramme</label>
+        <input formControlName="trigramme"
+          [ngClass]="{ 'invalid': submittedAdministration && fAdministration.trigramme.errors }"
+          oninput="this.value = this.value.toUpperCase()" minlength="3" maxlength="3">
+      </div>
+
+      <div class="action" *ngIf="franchise && franchise.id">
+        <button class="button btn-danger" type="button" (click)="doSortieReseau()" *ngIf="superAdminId">Sortie
+          réseau</button>
+        <button class="button" type="button" (click)="doGenerateGrilles()">Générer/Mettre à jour les grilles</button>
+        <button class="button" type="button" (click)="resetForm(administrationForm)" tabindex="13"
+          [disabled]="administrationForm.pristine"><i class="fas fa-undo"></i> Annuler</button>
+        <button class="button" type="submit" tabindex="13" [disabled]="administrationForm.pristine"><i
+            class="fas fa-save"></i> Enregistrer</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<app-modal-user *ngIf="userModalOpened" (emitClose)="closeUserModal()" [@fadeIn] [@fadeOut]
+  (emitUtilisateur)="editProfilsUser($event)"></app-modal-user>

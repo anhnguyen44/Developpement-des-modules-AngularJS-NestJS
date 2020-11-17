@@ -1,0 +1,60 @@
+:host {
+    width: 100%;
+    color: #505151;
+    background-color: #e8e7e9;
+    font-family: "Ubuntu" !important;
+    min-height: 500px;
+    margin: 0;
+    // z-index: 10000;
+} 
+
+:host p{
+  display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    color: #505151;
+    font-family: Ubuntu, sans-serif;
+}
+:host #tiny h2 {
+    margin: 0;
+    padding: 15px 20px;
+    font-size: 1em;
+    color: #ec7123;
+    background-color: #ffffff;
+    border-bottom: 1px solid #ec7123;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  }
+  
+#tiny h3 {
+    width: 100%;
+    color: #ec7123;
+    border-bottom: 1px solid #ec7123;
+    font-size: 1em;
+    margin: 10px -20px;
+    margin-bottom: 20px;
+    padding: 15px;
+  }
+  
+#tiny h4 {
+    width: 100%;
+  }
+  
+#tiny hr {
+    margin-top: 1em;
+    margin-bottom: 1em;
+  }
+
+// pour le full screen tinyMce
+:host ::ng-deep #tiny div.mce-fullscreen {
+  top: 180px
+}
+
+
+
+
+
+
+
+  

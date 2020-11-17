@@ -1,0 +1,88 @@
+@import '../../../../variables';
+
+:host{
+  width: 100%;
+}
+
+.avance {
+  width: 100%;
+  padding: 10px;
+  text-align: right;
+}
+
+.avance i {
+  margin-right: 10px;
+}
+
+.avance>div {
+  cursor: pointer;
+}
+
+.action {
+  justify-content: flex-end;
+  padding: 0 10px;
+}
+
+.action>.button {
+  margin-left: 10px;
+}
+
+.action i {
+  font-size: 1em;
+}
+
+.rechercheAvance {
+  background-color: $couleurFondBloc;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.inputSearch {
+  display: flex;
+  position: relative;
+  align-items: center;
+  width: 100%;
+}
+
+.inputSearch i {
+  font-size: 1.3em;
+  position: absolute;
+  right: 5px;
+  cursor: pointer;
+  transition: all 0.5s;
+}
+
+.inputSearch i:hover{
+  color: $couleurFondBoutton;
+}
+
+@media (max-width: 640px) {
+
+  .recherche {
+    flex-wrap: wrap;
+  }
+
+  .recherche>* {
+    width: 100%;
+  }
+
+  .inputSearch {
+    margin-bottom: 10px;
+  }
+
+  .rechercheAvance {
+    flex-wrap: wrap;
+  }
+
+  .rechercheAvance>* {
+    width: 100%;
+  }
+
+  .action>* {
+    width: 100%;
+    margin-left: 0;
+  }
+}

@@ -1,0 +1,18 @@
+<div class="header">
+  <div class="row">
+    <div *ngIf="checkbox" class="grow0">
+      <input type="checkbox" [checked]="allSelected" (change)="checkAll($event)">
+    </div>
+    <div *ngFor="let header of headers" class="tableHeader {{header.style}}">
+      {{header.label}}
+      <div class="order" *ngIf="header.isOrderable">
+        <div>
+          <i class="fas fa-caret-up up" [class.selected]="header.order === 'ASC'" (click)="order('ASC', header)"></i>
+        </div>
+          <div>
+            <i class="fas fa-caret-down down" [class.selected]="header.order === 'DESC'" (click)="order('DESC', header)"></i>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,146 @@
+<div class="bloc" *ngIf="!isModal">
+    <div class="formgroup">
+        <label class="sub">Référence</label>
+        <div *ngIf="idProcessus; else nouveauProcessus">{{idProcessus}}</div>
+        <ng-template #nouveauProcessus>
+            Nouveau processus
+        </ng-template>
+    </div>
+</div>
+<h2 class="sub">Information</h2>
+<div class="bloc">
+    <form class="sub" [formGroup]="processusForm" (ngSubmit)="onSubmit(processusForm)">
+        <div class="formgroup full">
+            <label class="sub">Libellé</label>
+            <input type="text" formControlName="libelle"
+                [ngClass]="{ 'invalid': processusForm['controls'].libelle.errors && submited}">
+        </div>
+        <div class="formgroup">
+            <label class="sub">Type de lieu de travail</label>
+            <select formControlName="idTypeBatiment"
+                [ngClass]="{ 'invalid': processusForm['controls'].idTypeBatiment.errors && submited}">
+                <option *ngFor="let typeBatiment of listTypeBatiment" [value]="typeBatiment.id">{{typeBatiment.nom}}</option>
+            </select>
+        </div>
+        <div class="formgroup">
+            <label class="sub">MPCA</label>
+            <select formControlName="idMpca" [ngClass]="{ 'invalid': processusForm['controls'].idMpca.errors && submited}">
+                <option *ngFor="let mpca of listMpca" [value]="mpca.id">{{mpca.nom}}</option>
+            </select>
+        </div>
+        <div class="formgroup">
+            <label class="sub">Outil technique</label>
+            <select formControlName="idOutilTechnique"
+                [ngClass]="{ 'invalid': processusForm['controls'].idOutilTechnique.errors && submited}">
+                <option *ngFor="let outilTechnique of listOutilTechnique" [value]="outilTechnique.id">{{outilTechnique.nom}}
+                </option>
+            </select>
+        </div>
+        <h3 class="sub">Moyen de protection collective</h3>
+        <div class="formgroup">
+            <label class="sub">Travail à l'humide</label>
+            <select formControlName="idTravailHumide"
+                [ngClass]="{ 'invalid': processusForm['controls'].idTravailHumide.errors && submited}">
+                <option *ngFor="let travailHumide of listTravailHumide" [value]="travailHumide.id">{{travailHumide.nom}}
+                </option>
+            </select>
+        </div>
+        <div class="formgroup">
+            <label class="sub">Captage / Aspiration à la source</label>
+            <select formControlName="idCaptageAspirationSource"
+                [ngClass]="{ 'invalid': processusForm['controls'].idCaptageAspirationSource.errors && submited}">
+                <option *ngFor="let captageAspirationSource of listCaptageAspirationSource"
+                    [value]="captageAspirationSource.id">{{captageAspirationSource.nom}}</option>
+            </select>
+        </div>
+        <h3 class="sub">Information durée</h3>
+        <div class="formgroup">
+            <label class="sub">Processus cyclique</label>
+            <input type="checkbox" formControlName="isProcessusCyclique" (change)="processusForm.patchValue({tr: null})">
+        </div>
+        <div class="formgroup">
+            <label class="sub">Description cycle</label>
+            <input type="text" formControlName="description">
+        </div>
+
+        <h3 class="sub">Informations complémentaires</h3>
+        <div class="formgroup full">
+            <label class="sub">Phase d'installation</label>
+            <div class="tache">
+                <div class="selection-tache">
+                    <input type="text" list="tacheProcessus" [(ngModel)]="selectedTacheInstallation"
+                        [ngModelOptions]="{standalone: true}">
+                    <div class="p8">
+                        <i class="sub fas fa-plus-circle" (click)="addTache('installation')"></i>
+                    </div>
+                </div>
+                <div class="list-taches">
+                    <div *ngFor="let tache of processusForm.get('tachesInstallation')!.value">
+                        <div>{{tache.nom}}</div>
+                        <i class="sub fas p8 fa-unlink" (click)="removeTacheProcessusInstallation(tache)"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="formgroup full">
+            <label class="sub">Phase de retrait</label>
+            <div class="tache">
+                <div class="selection-tache">
+                    <input type="text" list="tacheProcessus" [(ngModel)]="selectedTacheRetrait"
+                        [ngModelOptions]="{standalone: true}">
+                    <div class="p8">
+                        <i class="sub fas fa-plus-circle" (click)="addTache('retrait')"></i>
+                    </div>
+                </div>
+                <div class="list-taches">
+                    <div *ngFor="let tache of processusForm.get('tachesRetrait')!.value">
+                        <div>{{tache.nom}}</div>
+                        <i class="sub fas p8 fa-unlink" (click)="removeTacheProcessusRetrait(tache)"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="formgroup full">
+                <label class="sub">Phase de repli</label>
+                <div class="tache">
+                    <div class="selection-tache">
+                        <input type="text" list="tacheProcessus" [(ngModel)]="selectedTacheRepli"
+                            [ngModelOptions]="{standalone: true}">
+                        <div class="p8">
+                            <i class="sub fas fa-plus-circle" (click)="addTache('repli')"></i>
+                        </div>
+                    </div>
+                    <div class="list-taches">
+                        <div *ngFor="let tache of processusForm.get('tachesRepli')!.value">
+                            <div>{{tache.nom}}</div>
+                            <i class="sub fas p8 fa-unlink" (click)="removeTacheProcessusRepli(tache)"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <datalist id="tacheProcessus">
+            <select>
+                <option *ngFor="let tacheProcessus of tachesProcessus" [value]="tacheProcessus.nom"></option>
+            </select>
+        </datalist>
+        <div class="formgroup">
+            <label class="sub">Empoussièrement attendu en fibres d'amiante (f/L)</label>
+            <input type="number" formControlName="niveauAttenduFibresAmiante" (change)="updateTsatA()">
+        </div>
+        <div class="formgroup">
+            <label class="sub">Tmin (en minutes)</label>
+            <input type="number" formControlName="tmin">
+        </div>
+        <div class="formgroup">
+            <label class="sub">TsatA (en minutes)</label>
+            <input type="number" formControlName="tsatA">
+        </div>
+        <div class="action">
+            <button class="button" type="submit">Valider</button>
+        </div>
+    </form>
+</div>

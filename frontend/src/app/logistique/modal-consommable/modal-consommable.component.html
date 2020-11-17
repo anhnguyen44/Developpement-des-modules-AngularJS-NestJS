@@ -1,0 +1,12 @@
+<div class="content" (clickOutside)="emitClose.emit()" [delayClickOutsideInit]="true">
+  <i class="fas fa-times btn-close" (click)="close()"></i>
+  <div class="bloc">
+    <div class="formgroup">
+      <label>Quantité à mettre au stock</label>
+      <input type="number" [(ngModel)]="nombreAAjouter">
+    </div>
+    <div class="action">
+      <div class="button" (click)="setStock()">Valider</div>
+    </div>
+  </div>
+</div>

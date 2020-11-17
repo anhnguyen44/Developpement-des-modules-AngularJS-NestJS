@@ -1,0 +1,271 @@
+<app-menu-contact></app-menu-contact>
+<div class="content">
+  <div class="bloc">
+    <div class="formgroup">
+      <label>Référence</label>
+      <div *ngIf="compte?.id; else newCompte">{{compte.id}}</div>
+      <ng-template #newCompte>
+        Nouveau compte
+      </ng-template>
+    </div>
+  </div>
+  <h2>
+    Informations Compte
+  </h2>
+  <div class="bloc">
+    <form [formGroup]="compteForm" (ngSubmit)="onSubmit(compteForm)">
+      <div class="formgroup full o1" *ngIf="bureaux && bureaux.length > 0">
+        <label>Agence affectée</label>
+        <select formControlName="bureau" [compareWith]="compare"
+          [ngClass]="{ 'invalid': compteForm['controls'].bureau.errors && submited}" tabindex="1">
+          <option *ngFor="let bureau of bureaux" [ngValue]="bureau">{{bureau.nom}} - {{bureau.nomCommercial}}</option>
+        </select>
+      </div>
+      <div class="formgroup o2">
+        <label>Raison Sociale</label>
+        <input type="text" formControlName="raisonSociale"
+          [ngClass]="{ 'invalid': compteForm['controls'].raisonSociale.errors && submited}" tabindex="2">
+      </div>
+      <div class="formgroup o3" formGroupName="adresse">
+        <label>Adresse</label>
+        <input type="text" formControlName="adresse"
+          [ngClass]="{ 'invalid': compteForm['controls'].adresse['controls'].adresse.errors && submited}" tabindex="8">
+        <i class="fas fa-map-marker-alt"
+          *ngIf="adresseForm.get('adresse')?.value && adresseForm.get('cp')?.value && adresseForm.get('ville')?.value"
+          (click)="goToGoogleAdresse(adresseForm)"></i>
+      </div>
+      <div class="formgroup o2">
+        <label>Qualité <i tooltip="La qualité détermine la nature ou le secteur d'activité du compte client."
+            class="fas fa-question-circle"></i></label>
+        <select formControlName="qualite" [compareWith]="compare" tabindex="3">
+          <option *ngFor="let qualite of qualites" [ngValue]="qualite">{{qualite.nom}}</option>
+        </select>
+      </div>
+      <div class="formgroup o3" formGroupName="adresse">
+        <label>Complement</label>
+        <input type="text" formControlName="complement" tabindex="9">
+      </div>
+
+      <div class="formgroup o2">
+        <label>SIRET</label>
+        <input type="text" formControlName="siret" tabindex="4">
+      </div>
+
+      <div class="formgroup o3" formGroupName="adresse">
+        <label>Code postal</label>
+        <!-- <input type="text" formControlName="cp"
+          [ngClass]="{ 'invalid': compteForm['controls'].adresse['controls'].cp.errors && submited}"> -->
+          <app-cp-ville [isRechercheVille]="false" [parentForm]="adresseForm" [internalFormControlName]="'cp'" (emitCP)="setCP($event)" [tabindex]="10"></app-cp-ville>
+      </div>
+      <div class="formgroup o2" formGroupName="adresse">
+        <label>Téléphone</label>
+        <input type="text" formControlName="telephone"
+               [value]="adresseForm.get('telephone')!.value | telephone"
+          [ngClass]="{ 'invalid': compteForm['controls'].adresse['controls'].telephone.errors && submited}" tabindex="5">
+        <a *ngIf="compteForm['controls'].adresse['controls'].telephone.valid"
+          href="{{'tel:+33' + adresseForm.get('telephone').value.split(' ').join('').substr(1)}}" class="smallAction">
+          <i class="fas fa-phone"></i>
+        </a>
+
+      </div>
+      <div class="formgroup o3" formGroupName="adresse">
+        <label>Ville</label>
+        <!-- <input type="text" formControlName="ville"
+          [ngClass]="{ 'invalid': compteForm['controls'].adresse['controls'].ville.errors && submited}"> -->
+          <app-cp-ville [isRechercheVille]="true" [parentForm]="adresseForm" [internalFormControlName]="'ville'" (emitCP)="setCP($event)" [tabindex]="11"></app-cp-ville>
+      </div>
+      <div class="formgroup o2" formGroupName="adresse">
+        <label>Fax</label>
+        <input type="text" formControlName="fax"
+               [value]="adresseForm.get('fax')!.value | telephone"
+          [ngClass]="{ 'invalid': compteForm['controls'].adresse['controls'].fax.errors && submited}" tabindex="6">
+      </div>
+      <div class="formgroup noMobile">
+
+      </div>
+      <div class="formgroup o2" formGroupName="adresse">
+        <label>Email</label>
+        <input type="text" formControlName="email"
+          [ngClass]="{ 'invalid': compteForm['controls'].adresse['controls'].email.errors && submited}" tabindex="7">
+        <a class="smallAction" *ngIf="adresseForm['controls'].email.valid"
+          [href]="'mailto:' + adresseForm.get('email').value">
+          <i class="fas fa-envelope"></i>
+        </a>
+
+      </div>
+      <h3 class="o3">Contacts entreprise</h3>
+      <div class="table o3">
+        <div class="action">
+          <div class="left">
+          </div>
+          <div class="right">
+            <div (click)="openModalInterlocuteur()" class="nofocus">
+              <i class="fas fa-plus"></i>Ajouter
+            </div>
+          </div>
+        </div>
+        <div class="header">
+          <div class="row">
+            <div>Nom</div>
+            <div>Prénom</div>
+            <div>Téléphone</div>
+            <div>Portable</div>
+            <div class="grow0" tooltip="Contact principal" show-delay="150" hide-delay="150"><i
+                class="fas fa-user-tie"></i></div>
+            <div class="grow0" tooltip="Demandeur" show-delay="150" hide-delay="150"><i class="fas fa-user-tag"></i>
+            </div>
+            <div class="grow0" tooltip="Envoi rapport" show-delay="150" hide-delay="150"><i class="fas fa-file-alt"></i>
+            </div>
+            <div class="grow0" tooltip="Envoi devis" show-delay="150" hide-delay="150"><i
+                class="fas fa-file-invoice"></i></div>
+            <div class="grow0" tooltip="Envoi facture" show-delay="150" hide-delay="150"><i class="fas fa-receipt"></i>
+            </div>
+            <div class="action">Action</div>
+          </div>
+        </div>
+        <div class="content" *ngIf="compte?.compteContacts?.length > 0; else noContact">
+          <div class="row" *ngFor="let compteContact of compte.compteContacts">
+            <div>
+              <div class="labelTable">Nom</div><span>{{compteContact.contact.nom}}</span>
+            </div>
+            <div>
+              <div class="labelTable">Prénom</div><span>{{compteContact.contact.prenom}}</span>
+            </div>
+            <div>
+              <div class="labelTable">Téléphone</div><span>{{compteContact.contact.adresse.telephone}}</span>
+            </div>
+            <div>
+              <div class="labelTable">Portable</div><span>{{compteContact.contact.portable}}</span>
+            </div>
+            <div class="grow0">
+              <div class="labelTable">Principale</div>
+              <input type="checkbox" [(ngModel)]="compteContact.bPrincipale" id="Principale"
+                [ngModelOptions]="{standalone: true}" (change)="changeCompteContact($event, compteContact)">
+            </div>
+            <div class="grow0">
+              <div class="labelTable">Demandeur</div>
+              <input type="checkbox" [(ngModel)]="compteContact.bDemandeur" id="Demandeur"
+                [ngModelOptions]="{standalone: true}" (change)="changeCompteContact($event, compteContact)">
+            </div>
+            <div class="grow0">
+              <div class="labelTable">Rapport</div>
+              <input type="checkbox" [(ngModel)]="compteContact.bRapport" [ngModelOptions]="{standalone: true}">
+            </div>
+            <div class="grow0">
+              <div class="labelTable">Devis</div>
+              <input type="checkbox" [(ngModel)]="compteContact.bDevis" id="Devis" [ngModelOptions]="{standalone: true}"
+                (change)="changeCompteContact($event, compteContact)">
+            </div>
+            <div class="grow0">
+              <div class="labelTable">Facture</div>
+              <input type="checkbox" [(ngModel)]="compteContact.bFacture" id="Facture"
+                [ngModelOptions]="{standalone: true}" (change)="changeCompteContact($event, compteContact)">
+            </div>
+            <div class="action">
+              <i class="fas fa-eye" (click)="goToContact(compteContact.idContact)"></i>
+              <i class="fas fa-unlink" tooltip="Délier" *ngIf="!compteContact.contact.isLinked"
+                (click)="unlinkCompteContact(compteContact)"></i>
+              <i class="fas fa-unlink btn-disabled"
+                tooltip="Impossible de délier ce contact, il est déjà relié à d'autres éléments via ce compte"
+                *ngIf="compteContact.contact.isLinked"></i>
+            </div>
+          </div>
+        </div>
+        <ng-template #noContact>
+          <div class="danger message">
+            Aucun contact n'est saisi, il faut un contact principal pour valider la saisie.
+          </div>
+        </ng-template>
+      </div>
+      <h3 class="o4">Tarifs spécifiques</h3>
+      <div class="formgroup o4">
+        <label>Type de grille</label>
+        <select [(ngModel)]="typeGrille" [ngModelOptions]="{standalone: true}" (change)="filtreGrilleTarifs()"
+          [compareWith]="compare" tabindex="12">
+          <option *ngFor="let typeGrille of typeGrillesFiltre" [ngValue]="typeGrille">{{typeGrille.nom}}</option>
+        </select>
+      </div>
+
+      <div class="formgroup o5">
+        <label>Grille Tarif</label>
+        <select *ngIf="grilleTarifsType && grilleTarifsType.length > 0; else pasDeGrilleSpecifique" [(ngModel)]="grilleTarif" [ngModelOptions]="{standalone: true}" [compareWith]="compare" tabindex="13">
+          <option *ngFor="let grilleTari of grilleTarifsType" [ngValue]="grilleTari">{{grilleTari.reference}}</option>
+        </select>
+        <div class="roundbutton btn-add" *ngIf="grilleTarifsType && grilleTarifsType.length > 0"
+          (click)="ajoutGrilleTarif()">
+          <i class="fas fa-plus-circle"></i>
+        </div>
+        <ng-template #pasDeGrilleSpecifique>
+          <div class="danger">Aucune grille tarif spécifique de ce type</div>
+        </ng-template>
+      </div>
+
+      <div class="table o6">
+        <div class="header">
+          <div class="row">
+            <div>Type de grille</div>
+            <div>Nom grille tarif</div>
+            <div class="action">Action</div>
+          </div>
+        </div>
+        <div class="content" *ngIf="compte">
+          <div class="row" *ngFor="let grilleTarif of compte.grilleTarifs">
+            <div>
+              <div class="labelTable">Type</div><span>{{grilleTarif.typeGrille.nom}}</span>
+            </div>
+            <div>
+              <div class="labelTable">Nom</div><span>{{grilleTarif.reference}}</span>
+            </div>
+            <div class="action"><i class="fas fa-unlink" tooltip="Délier" (click)="unlinkGrilleTarif(grilleTarif)"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="o7">Informations Complémentaires</h3>
+      <div class="formgroup o7">
+        <label>N° client compta</label>
+        <input type="text" formControlName="numClientCompta" tabindex="14">
+      </div>
+      <div class="formgroup o7">
+        <label>Laboratoire</label>
+        <input type="checkbox" formControlName="bLaboratoire" tabindex="15">
+      </div>
+      <div class="formgroup o7" *ngIf="compteForm.get('bLaboratoire')?.value === true"
+        (change)="changeBLaboratoire($event)">
+        <label>Accréditation COFRAC</label>
+        <input type="checkbox" formControlName="bAccreditationCofrac" tabindex="16">
+      </div>
+      <div class="formgroup o7"
+        *ngIf="compteForm.get('bAccreditationCofrac')?.value === true && compteForm.get('bLaboratoire')?.value === true"
+        (change)="changeBAccreditationCofrac($event)">
+        <label>Date de validite</label>
+        <input type="date" [value]="compteForm.get('dateValiditeCofrac')?.value | date:'yyyy-MM-dd'"
+          formControlName="dateValiditeCofrac" tabindex="17">
+      </div>
+      <div class="formgroup o7">
+        <label>Mode de facturation</label>
+        <select formControlName="typeFacturation" [compareWith]="compare" tabindex="18">
+          <option *ngFor="let typeFactu of listeTypeFacturation" [ngValue]="typeFactu">{{typeFactu.nom}}</option>
+        </select>
+      </div>
+      <div class="formgroup o7" *ngIf="compteForm.get('typeFacturation')?.value?.id === 4">
+        <label>Nombre de jours</label>
+        <input type="number" formControlName="nbJoursFacturation" tabindex="19">
+      </div>
+
+      <h3 class="o8">Commentaires</h3>
+      <div class="formgroup full o8">
+        <label>Commentaire</label>
+        <textarea formControlName="commentaire" tabindex="20"></textarea>
+      </div>
+      <div class="action o8">
+        <button class="button" tabindex="21">Valider</button>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<app-modal-contact *ngIf="modalType" [type]="modalType" [nonAttache]=true [compte]="compteForm.value"
+  (emitContact)="setContact($event)" (emitClose)="closeModal()" [@fadeOut] [@fadeIn]></app-modal-contact>

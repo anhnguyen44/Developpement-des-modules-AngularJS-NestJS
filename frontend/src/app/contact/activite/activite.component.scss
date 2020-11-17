@@ -1,0 +1,14 @@
+:host{
+  display: flex;
+  width: 100%;
+}
+
+textarea{
+  height: 63px;
+}
+
+@media (max-width: 640px) {
+  :host{
+    flex-wrap: wrap;
+  }
+}

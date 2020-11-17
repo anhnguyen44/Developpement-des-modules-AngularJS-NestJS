@@ -1,0 +1,9 @@
+:host{
+  width: 100%;
+}
+
+@media(max-width: 640px) {
+  select {
+    width: 150px;
+  }
+}

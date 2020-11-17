@@ -1,0 +1,24 @@
+<app-menu-chantier
+        [isNewPrelevement]="isNew"
+        [prelevement]="prelevement">
+</app-menu-chantier>
+<app-liste-prelevement
+        *ngIf="type === 'liste'"
+        [idParent]="idParent"
+        [application]="application"
+        [canCreate]="canEdit"
+        [redirectPath]="redirectPath"
+        (emitDelete)="refreshParent()">
+</app-liste-prelevement>
+<app-prelevement
+        [prelevement]="prelevement"
+        [isNew]="isNew"
+        [idParent]="idParent"
+        [idChantier]="idParent"
+        [nomIdParent]="nomIdParent"
+        [redirectPath]="redirectPath"
+        *ngIf="type === 'information' && ( isNew || (prelevement && prelevement.id))">
+</app-prelevement>
+<app-historique *ngIf="type === 'historique' && prelevement && prelevement.id" [idParent]="prelevement.id" [application]="'prelevement'">
+</app-historique>
+

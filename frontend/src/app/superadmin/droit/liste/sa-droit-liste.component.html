@@ -1,0 +1,34 @@
+<app-menu-superadmin></app-menu-superadmin>
+<div class="content">
+  <app-recherche [champDeRecherches]="champDeRecherches" [queryBuild]="queryBuild" (emitQueryBuild)="setQueryBuild($event)"></app-recherche>
+  <div class="bloc">
+    <div class="table">
+      <div class="action">
+        <div class="left">
+          <!-- <i class="fas fa-trash" *ngIf="canCreateRight | async"></i> -->
+        </div>
+        <div class="right">
+          <i class="fas fa-file-excel"></i>
+          <div routerLink="/superadmin/droit/ajouter" class="nofocus" *ngIf="canCreateRight | async">
+            <i class="fas fa-plus"></i> Créer
+          </div>
+        </div>
+      </div>
+      <app-header-table [querybuild]="queryBuild" [headers]="headers" (emitQueryBuild)="setQueryBuild($event)"></app-header-table>
+      <div class="content">
+        <div class="row" *ngFor="let droit of droits" (dblclick)="gotoDetails('superadmin/droit/modifier', droit)">
+          <div class="grow2">{{droit.nom}}</div>
+          <div class="grow2">{{droit.code}}</div>
+          <div class="grow1">{{droit.niveau}}</div>
+          <div class="action"><i class="fas fa-trash delete-link"  (click)="supprimer(droit.id)" *ngIf="canCreateRight | async"></i></div>
+        </div>
+        <app-pagination
+                [nbObjets]="nbObjets"
+                [queryBuild]="queryBuild"
+                (emitQueryBuild)="setQueryBuild($event)"
+        ></app-pagination>
+      </div>
+    </div>
+  </div>
+</div>
+

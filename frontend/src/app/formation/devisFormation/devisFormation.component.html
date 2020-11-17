@@ -1,0 +1,8 @@
+<app-menu-formation></app-menu-formation>
+<div class="content" style="min-height:1050px" *ngIf='countDevis === 0'>
+    <h2>Liste devis</h2>
+    <div class="bloc">
+        <button class="button" (click)='testCreerDevis($event)'>Créer des devis pour des stagiaires actuellement</button>
+    </div>
+</div>
+<app-liste-devis-commande *ngIf='listeEntrerise && countDevis >= listeEntrerise.length || listDe && listDe.length > 0 && countDevis >= listDe.length' [idFormation]='idFormation'></app-liste-devis-commande>

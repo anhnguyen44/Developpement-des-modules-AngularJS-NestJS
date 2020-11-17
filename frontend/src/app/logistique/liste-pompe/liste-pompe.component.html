@@ -1,0 +1,37 @@
+<app-menu-logistique *ngIf="!modal"></app-menu-logistique>
+<div class="content">
+  <app-recherche [champDeRecherches]="champDeRecherches" [queryBuild]="queryBuild" (emitQueryBuild)="setQueryBuild($event)"></app-recherche>
+  <div class="bloc">
+    <div class="table">
+      <div class="action">
+        <div class="left">
+
+        </div>
+        <div class="right">
+          <i class="fas fa-file-excel"></i>
+          <div [routerLink]="['/logistique', 'pompe', 'ajouter']" class="nofocus">
+            <i class="fas fa-plus"></i> Créer
+          </div>
+        </div>
+      </div>
+      <app-header-table *ngIf="queryBuild" [headers]="headers" [querybuild]="queryBuild" (emitQueryBuild)="setQueryBuild($event)"></app-header-table>
+      <div class="content">
+        <div class="row" *ngFor="let pompe of pompes" (dblclick)="goToDetail(pompe)" [class.affecte]="rendezVous && pompe.rendezVousPompes.length > 0">
+          <div><div class="labelTable">Libellé</div>{{pompe.libelle}}</div>
+          <div><div class="labelTable">Ref</div>{{pompe.ref}}</div>
+          <div><div class="labelTable">Type</div>{{enumTypePompe[pompe.idTypePompe] | enum}}</div>
+          <div><div class="labelTable">Bureau</div>{{pompe.bureau.nom}} - {{pompe.bureau.nomCommercial}}</div>
+          <div class="action">
+            <i *ngIf="!modal" class="fas fa-pencil-alt" (click)="goToDetail(pompe)"></i>
+            <i *ngIf="modal" class="fas fa-link" (click)="goToDetail(pompe)"></i>
+          </div>
+        </div>
+        <app-pagination *ngIf="queryBuild"
+                [queryBuild]="queryBuild"
+                [nbObjets]="nbObjets"
+                (emitQueryBuild)="setQueryBuild($event)"
+        ></app-pagination>
+      </div>
+    </div>
+  </div>
+</div>

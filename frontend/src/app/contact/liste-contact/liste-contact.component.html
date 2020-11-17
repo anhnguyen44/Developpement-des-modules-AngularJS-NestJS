@@ -1,0 +1,39 @@
+<app-recherche [champDeRecherches]="champDeRecherches" [queryBuild]="queryBuild" [canCreate]="modal || modalClient" (emitQueryBuild)="setQueryBuild($event)" (emitNouveau)="setNouveau()"></app-recherche>
+<div class="content">
+  <div class="bloc">
+    <div class="table">
+      <div class="action" *ngIf="!modal && !modalClient">
+        <div class="left">
+
+        </div>
+        <div class="right">
+          <i *ngIf="canExport" (click)="generateXlsx()" class="fas fa-file-excel"></i>
+          <div routerLink="/contact/contact/ajouter" class="nofocus">
+            <i class="fas fa-plus"></i> Créer
+          </div>
+        </div>
+      </div>
+      <app-header-table [headers]="headers" [querybuild]="queryBuild" (emitQueryBuild)="setQueryBuild($event)"></app-header-table>
+      <div class="content">
+        <div class="row" *ngFor="let contact of interlocuteurs" (dblclick)="gotoDetails(contact)">
+          <div><div class="labelTable">{{headers[0].label}}</div><span>{{contact.nom}}</span></div>
+          <div><div class="labelTable">{{headers[1].label}}</div><span>{{contact.prenom}}</span></div>
+          <div><div class="labelTable">{{headers[2].label}}</div><span>{{contact.adresse.adresse}} <span *ngIf="contact.adresse.complement"> - {{contact.adresse.complement}}</span></span></div>
+          <div><div class="labelTable">{{headers[3].label}}</div><span>{{contact.adresse.cp}}</span></div>
+          <div><div class="labelTable">{{headers[4].label}}</div><span>{{contact.adresse.ville}}</span></div>
+          <div><div class="labelTable">{{headers[5].label}}</div><span>{{contact.adresse.telephone | telephone}}</span></div>
+          <div><div class="labelTable">{{headers[6].label}}</div><span>{{contact.portable | telephone}}</span></div>
+          <div class="action">
+            <i *ngIf="!modal && !modalClient" class="fas fa-pencil-alt" (click)="gotoDetails(contact)"></i>
+            <i *ngIf="modal || modalClient" class="fas fa-link" (click)="gotoDetails(contact)"></i>
+          </div>
+        </div>
+        <app-pagination
+                [queryBuild]="queryBuild"
+                [nbObjets]="nbObjets"
+                (emitQueryBuild)="setQueryBuild($event)"
+        ></app-pagination>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,195 @@
+<nav class="menu-gauche">
+     <div [class.active]="activeMenu === 'informations'" [routerLink]="['/chantier', id, 'informations']" *ngIf="id">
+          Informations
+     </div>
+     <div [class.active]="true" *ngIf="!id">Informations</div>
+     <div [class.active]="activeMenu === 'besoin'" [routerLink]="['/chantier', id, 'besoin']"
+          *ngIf="id && !disableOnglets">Besoin client
+     </div>
+     <div [class.active]="activeMenu === 'sites'" [routerLink]="['/chantier', id, 'sites', 'liste']"
+          *ngIf="id && !disableOnglets">Sites d'intervention
+     </div>
+     <div [class.active]="activeMenu === 'strategie'" [routerLink]="['/chantier', id, 'strategie', 'liste']"
+          *ngIf="id && !disableOnglets">Stratégies
+     </div>
+     <div [class.active]="activeMenu === 'strategie' && !idStrategie && activeSubMenu === 'liste'"
+          [routerLink]="['/chantier', id, 'strategie', 'liste']"
+          *ngIf="id && !disableOnglets && activeMenu === 'strategie'" style="padding: 0;">
+          &nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-chevron-right"></i> Liste
+     </div>
+
+     <div *ngIf="activeMenu === 'strategie' && activeSubMenu === 'liste'" class="no-border">
+          <div [class.active]="false"
+               *ngIf="!disableOnglets && activeMenu === 'strategie' && chantier && chantier.besoinClient && chantier.besoinClient.ss3 && chantier.besoinClient.ss4 && listeSS3.length && listeSS4.length"
+               style="padding: 0; cursor: default !important; color: #7a7a7a !important; border: none !important;">
+               &nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-chevron-right"></i> SS3
+          </div>
+          <div *ngFor="let stratSS3 of listeSS3" [class.active]="activeSubSubMenu == stratSS3.id.toString()" style="padding: 0;">
+               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+               <span style="font-size: .8em;" [routerLink]="['/chantier', id, 'strategie', stratSS3.id]">
+                    <i class="fas fa-angle-double-right"></i> {{stratSS3.reference}}
+               </span>
+               <div *ngIf="activeSubSubMenu == stratSS3.id" style="padding: 0; font-size: .75em;">
+                    <span *ngFor="let zi of stratSS3.zonesIntervention" [class.active]="activeSubSubSubMenu == zi.id"
+                         [routerLink]="['/chantier', id, 'strategie', stratSS3.id, 'edit-zone', zi.id, 'definition']">
+                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{zi.reference}}<br />
+                    </span>
+               </div>
+          </div>
+          <div [class.active]="false"
+               *ngIf="!disableOnglets && activeMenu === 'strategie' && chantier && chantier.besoinClient && chantier.besoinClient.ss3 && chantier.besoinClient.ss4 && listeSS3.length && listeSS4.length"
+               style="padding: 0; cursor: default !important; color: #7a7a7a !important; border: none !important;">
+               &nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-chevron-right"></i> SS4
+          </div>
+          <div *ngFor="let stratSS4 of listeSS4" [class.active]="activeSubSubMenu == stratSS4.id" style="padding: 0;">
+               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+               <span style="font-size: .8em;" [routerLink]="['/chantier', id, 'strategie', stratSS4.id]">
+                    <i class="fas fa-angle-double-right"></i> {{stratSS4.reference}}
+               </span>
+               <div *ngIf="activeSubSubMenu == stratSS4.id" style="padding: 0; font-size: .75em;">
+                    <span *ngFor="let zi of stratSS4.zonesIntervention" [class.active]="activeSubSubSubMenu == zi.id"
+                         [routerLink]="['/chantier', id, 'strategie', stratSS4.id, 'edit-zone', zi.id, 'definition']">
+                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{zi.reference}}<br />
+                    </span>
+               </div>
+          </div>
+          <div *ngFor="let stratCSP of listeCSP" [class.active]="activeSubSubMenu == stratCSP.id" style="padding: 0;">
+               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+               <span style="font-size: .8em;" [routerLink]="['/chantier', id, 'strategie', stratCSP.id]">
+                    <i class="fas fa-angle-double-right"></i> {{stratCSP.reference}}
+               </span>
+               <div *ngIf="activeSubSubMenu == stratCSP.id" style="padding: 0; font-size: .75em;">
+                    <span *ngFor="let zi of stratCSP.zonesIntervention" [class.active]="activeSubSubSubMenu == zi.id"
+                         [routerLink]="['/chantier', id, 'strategie', stratCSP.id, 'edit-zone', zi.id, 'definition']">
+                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{zi.reference}}<br />
+                    </span>
+               </div>
+          </div>
+     </div>
+
+     <div [class.active]="activeMenu === 'strategie' && activeSubMenu === 'documents'"
+          [routerLink]="['/chantier', id, 'strategie', 'documents']"
+          *ngIf="id && !disableOnglets && activeMenu === 'strategie'" style="padding: 0;">
+          &nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-chevron-right"></i> Documents
+     </div>
+     <div *ngIf="activeMenu === 'strategie' && activeSubMenu === 'documents'" class="no-border">
+          <div [class.active]="false"
+               *ngIf="!disableOnglets && activeMenu === 'strategie' && chantier && chantier.besoinClient && chantier.besoinClient.ss3 && chantier.besoinClient.ss4 && listeSS3.length && listeSS4.length"
+               style="padding: 0; cursor: default !important; color: #7a7a7a !important; border: none !important;">
+               &nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-chevron-right"></i> SS3
+          </div>
+          <div *ngFor="let stratSS32 of listeSS3" [class.active]="activeSubSubMenu == stratSS32.id" style="padding: 0;">
+               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+               <span style="font-size: .8em;" [routerLink]="['/chantier', id, 'strategie', stratSS32.id, 'documents']">
+                    <i class="fas fa-angle-double-right"></i> {{stratSS32.reference}}
+               </span>
+          </div>
+          <div [class.active]="false"
+               *ngIf="!disableOnglets && activeMenu === 'strategie' && chantier && chantier.besoinClient && chantier.besoinClient.ss3 && chantier.besoinClient.ss4 && listeSS3.length && listeSS4.length"
+               style="padding: 0; cursor: default !important; color: #7a7a7a !important; border: none !important;">
+               &nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-chevron-right"></i> SS4
+          </div>
+          <div *ngFor="let stratSS42 of listeSS4" [class.active]="activeSubSubMenu == stratSS42.id" style="padding: 0;">
+               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+               <span style="font-size: .8em;" [routerLink]="['/chantier', id, 'strategie', stratSS42.id, 'documents']">
+                    <i class="fas fa-angle-double-right"></i> {{stratSS42.reference}}
+               </span>
+          </div>
+          <div *ngFor="let stratCSP2 of listeCSP" [class.active]="activeSubSubMenu == stratCSP2.id" style="padding: 0;">
+               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+               <span style="font-size: .8em;" [routerLink]="['/chantier', id, 'strategie', stratCSP2.id, 'documents']">
+                    <i class="fas fa-angle-double-right"></i> {{stratCSP2.reference}}
+               </span>
+          </div>
+     </div>
+
+     <div [class.active]="activeMenu === 'strategie' && activeSubMenu === 'historique'"
+          [routerLink]="['/chantier', id, 'strategie', 'historique']"
+          *ngIf="id && !disableOnglets && activeMenu === 'strategie'" style="padding: 0;">
+          &nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-chevron-right"></i> Historique
+     </div>
+     <div *ngIf="activeMenu === 'strategie' && activeSubMenu === 'historique'" class="no-border">
+          <div [class.active]="false"
+               *ngIf="!disableOnglets && activeMenu === 'strategie' && chantier && chantier.besoinClient && chantier.besoinClient.ss3 && chantier.besoinClient.ss4 && listeSS3.length && listeSS4.length"
+               style="padding: 0; cursor: default !important; color: #7a7a7a !important; border: none !important;">
+               &nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-chevron-right"></i> SS3
+          </div>
+          <div *ngFor="let stratSS32 of listeSS3" [class.active]="activeSubSubMenu == stratSS32.id" style="padding: 0;">
+               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+               <span style="font-size: .8em;" [routerLink]="['/chantier', id, 'strategie', stratSS32.id, 'historique']">
+                    <i class="fas fa-angle-double-right"></i> {{stratSS32.reference}}
+               </span>
+          </div>
+          <div [class.active]="false"
+               *ngIf="!disableOnglets && activeMenu === 'strategie' && chantier && chantier.besoinClient && chantier.besoinClient.ss3 && chantier.besoinClient.ss4 && listeSS3.length && listeSS4.length"
+               style="padding: 0; cursor: default !important; color: #7a7a7a !important; border: none !important;">
+               &nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-chevron-right"></i> SS4
+          </div>
+          <div *ngFor="let stratSS42 of listeSS4" [class.active]="activeSubSubMenu == stratSS42.id" style="padding: 0;">
+               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+               <span style="font-size: .8em;" [routerLink]="['/chantier', id, 'strategie', stratSS42.id, 'historique']">
+                    <i class="fas fa-angle-double-right"></i> {{stratSS42.reference}}
+               </span>
+          </div>
+          <div *ngFor="let stratCSP2 of listeCSP" [class.active]="activeSubSubMenu == stratCSP2.id" style="padding: 0;">
+               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+               <span style="font-size: .8em;" [routerLink]="['/chantier', id, 'strategie', stratCSP2.id, 'historique']">
+                    <i class="fas fa-angle-double-right"></i> {{stratCSP2.reference}}
+               </span>
+          </div>
+     </div>
+
+     <div [class.active]="activeMenu === 'devis'" [routerLink]="['/chantier', id, 'devis', 'liste']"
+          *ngIf="id && !disableOnglets">Devis & Commandes
+     </div>
+
+     <div [class.active]="activeMenu === 'prelevement'" [routerLink]="['/chantier', id, 'prelevement', 'liste']"
+          *ngIf="!disableOnglets && id">
+          Prélévements
+     </div>
+     <div [class.active]="activeSubSubMenu === 'information'" style="padding: 0" *ngIf="prelevement"
+          [routerLink]="['/chantier', id, 'prelevement', prelevement.id, 'information']"><span
+               style="font-size: .8em;"><i class="fas fa-angle-double-right"></i> Information</span>
+     </div>
+
+     <div [class.active]="activeMenu === 'intervention'" [routerLink]="['/chantier', id, 'intervention', 'liste']"
+          *ngIf="!disableOnglets && id">
+          Intervention
+     </div>
+     <div [class.active]="activeSubSubMenu === 'information'" style="padding: 0" *ngIf="intervention"
+          [routerLink]="['/chantier', id, 'intervention', intervention.id, 'information']">
+          <span style="font-size: .8em;"><i class="fas fa-angle-double-right"></i> Information</span>
+     </div>
+     <div [class.active]="activeSubSubMenu === 'information'" style="padding: 0" *ngIf="isNewInter"
+          [routerLink]="['/chantier', id, 'intervention', 'ajouter']">
+          <span style="font-size: .8em;"><i class="fas fa-angle-double-right"></i> Information</span>
+     </div>
+     <div [class.active]="activeSubSubMenu === 'preparation'" style="padding: 0"
+          *ngIf="intervention && intervention.idStatut >= enumStatutIntervention.VALIDE"
+          [routerLink]="['/chantier', id, 'intervention', intervention.id, 'preparation']">
+          <span style="font-size: .8em;"><i class="fas fa-angle-double-right"></i> Preparation</span>
+     </div>
+     <div [class.active]="activeSubSubMenu === 'depart-terrain'" style="padding: 0"
+          *ngIf="intervention && intervention.idStatut >= enumStatutIntervention.DEPART_TERRAIN"
+          [routerLink]="['/chantier', id, 'intervention', intervention.id, 'depart-terrain']">
+          <span style="font-size: .8em;"><i class="fas fa-angle-double-right"></i> Départ terrain</span>
+     </div>
+     <div [class.active]="activeSubSubMenu === 'retour-terrain'" style="padding: 0"
+          *ngIf="intervention && intervention.idStatut >= enumStatutIntervention.RETOUR_TERRAIN"
+          [routerLink]="['/chantier', id, 'intervention', intervention.id, 'retour-terrain']">
+          <span style="font-size: .8em;"><i class="fas fa-angle-double-right"></i> Retour terrain</span>
+     </div>
+     <div [class.active]="activeSubSubMenu === 'historique'" style="padding: 0"
+          *ngIf="intervention && intervention.idStatut >= enumStatutIntervention.VALIDE"
+          [routerLink]="['/chantier', id, 'intervention', intervention.id, 'historique']">
+          <span style="font-size: .8em;"><i class="fas fa-angle-double-right"></i> Historique</span>
+     </div>
+
+
+     <div [class.active]="activeMenu === 'fichier'" [routerLink]="['/chantier', id, 'fichier']"
+          *ngIf="id && !disableOnglets">Fichiers
+     </div>
+     <div [class.active]="activeMenu === 'historique'" [routerLink]="['/chantier', id, 'historique']"
+          *ngIf="id && !disableOnglets">Historique
+     </div>
+</nav>

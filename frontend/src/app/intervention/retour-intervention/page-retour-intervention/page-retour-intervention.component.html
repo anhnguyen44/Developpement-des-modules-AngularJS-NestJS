@@ -1,0 +1,126 @@
+<div class="bloc">
+    <div class="formgroup">
+        <label>Réfèrence</label>
+        <div *ngIf="intervention?.id; else pasInterventionRef">{{intervention?.id}}</div>
+        <ng-template #pasInterventionRef>Nouvelle intervention</ng-template>
+    </div>
+    <div class="formgroup">
+        <label>Statut</label>
+        <div *ngIf="intervention?.id; else pasInterventionStatut">
+            {{enumStatutIntervention[intervention.idStatut]}}
+        </div>
+        <ng-template #pasInterventionStatut>SAISIE</ng-template>
+    </div>
+</div>
+
+<h2>Prélévements</h2>
+
+<div class="bloc">
+    <div class="listeBoutton">
+        <div *ngFor="let prelevementInter of intervention.prelevements" [class.selected]="prelevementInter.id === prelevement.id" (click)="changePrelevement(prelevementInter)">
+            <i *ngIf="prelevementInter.idTypePrelevement === enumTypePrelevement.METAOP" class="fas fa-male"></i>
+            <i *ngIf="prelevementInter.idTypePrelevement === enumTypePrelevement.ENVIRONNEMENTAL" class="fas fa-map-marker-alt"></i>
+            <i *ngIf="prelevementInter.idTypePrelevement === enumTypePrelevement.MEST" class="fas fa-shower"></i>
+            <span>{{prelevementInter.reference}}</span>
+            <span><i *ngIf="prelevementInter.isSaisie" class="fas fa-check"></i></span>
+        </div>
+    </div>
+</div>
+
+<h2>{{enumTypePrelevement[prelevement.idTypePrelevement] | enum}}</h2>
+
+<div class="bloc">
+    <div class="formgroup" *ngIf="prelevement.idTypePrelevement === enumTypePrelevement.METAOP">
+        <label>Filtre Témoin</label>
+        <select [(ngModel)]="intervention.idFiltreTemoinPI" *ngIf="isEditable; else noEditFiltreTemoinPI">
+            <option *ngFor="let filtre of getFiltresDispo(prelevement.idTypePrelevement)" [value]="filtre.id">{{filtre.ref}}</option>
+        </select>
+        <ng-template #noEditFiltreTemoinPI>{{intervention.filtreTemoinPI.ref}}</ng-template>
+    </div>
+    <div class="formgroup" *ngIf="prelevement.idTypePrelevement === enumTypePrelevement.ENVIRONNEMENTAL">
+        <label>Filtre Témoin</label>
+        <select [(ngModel)]="intervention.idFiltreTemoinPPF" *ngIf="isEditable; else noEditFiltreTemoinPPF">
+            <option *ngFor="let filtre of getFiltresDispo(prelevement.idTypePrelevement)" [value]="filtre.id">{{filtre.ref}}</option>
+        </select>
+        <ng-template #noEditFiltreTemoinPPF>{{intervention.filtreTemoinPPF.ref}}</ng-template>
+    </div>
+    <div class="formgroup noMobile" *ngIf="prelevement.idTypePrelevement === enumTypePrelevement.MEST">
+    </div>
+    <div class="formgroup">
+        <label></label>
+        <div class="button">
+            <i class="fas fa-sticky-note"></i> Fiches écart
+        </div>
+    </div>
+    <h3>{{prelevement.reference}}</h3>
+    <div class="formgroup">
+        <label *ngIf="isEditable || prelevement.idStatutPrelevement === enumStatutPrelevement.NON_EFFECTUE">Non effectué</label>
+        <input type="checkbox" [(ngModel)]="isNonEffectue" (click)="setIsNonEffectue($event)" *ngIf="isEditable">
+    </div>
+    <div class="listeBoutton"
+         *ngIf="prelevement.idTypePrelevement === enumTypePrelevement.METAOP
+         && prelevement.idStatutPrelevement != enumStatutPrelevement.NON_EFFECTUE">
+        <div [class.selected]="momentPrelevement === 'avant'" (click)="changeMomentPrelevement('avant')"><span>Avant</span></div>
+        <div [class.selected]="momentPrelevement === 'pendant'" (click)="changeMomentPrelevement('pendant')"><span>Pendant</span></div>
+        <div [class.selected]="momentPrelevement === 'après'" (click)="changeMomentPrelevement('après')"><span>Après</span></div>
+    </div>
+    <div class="full">
+        <app-prelevement-point-fixe
+                [filtres]="getFiltresDispo(prelevement.idTypePrelevement)"
+                [pompes]="getListePompe(prelevement.idTypePrelevement)"
+                [prelevement]="prelevement"
+                [isEditable]="isEditable"
+                (emitPrelevement)="checkSaisie($event)"
+                *ngIf="prelevement.idTypePrelevement === enumTypePrelevement.ENVIRONNEMENTAL
+                && prelevement.idStatutPrelevement != enumStatutPrelevement.NON_EFFECTUE">
+        </app-prelevement-point-fixe>
+        <app-meta-operateur-avant
+                [filtres]="getFiltresDispo(prelevement.idTypePrelevement)"
+                [pompes]="getListePompe(prelevement.idTypePrelevement)"
+                [prelevement]="prelevement"
+                [debitmetres]="debitmetres"
+                [isEditable]="isEditable"
+                [isGenerateAffectation]="isGenerateAffectation"
+                (emitPrelevement)="checkSaisie($event)"
+                *ngIf="prelevement.idTypePrelevement === enumTypePrelevement.METAOP
+                && momentPrelevement === 'avant'
+                && prelevement.idStatutPrelevement != enumStatutPrelevement.NON_EFFECTUE">
+        </app-meta-operateur-avant>
+        <app-meta-operateur-pendant
+                [prelevement]="prelevement"
+                [isEditable]="isEditable"
+                (emitPrelevement)="checkSaisie($event)"
+                *ngIf="prelevement.idTypePrelevement === enumTypePrelevement.METAOP
+                && momentPrelevement === 'pendant'
+                && prelevement.idStatutPrelevement != enumStatutPrelevement.NON_EFFECTUE">
+        </app-meta-operateur-pendant>
+        <app-meta-operateur-apres
+                [prelevement]="prelevement"
+                [debitmetres]="debitmetres"
+                [isEditable]="isEditable"
+                [techniciens]="techniciens"
+                (emitPrelevement)="checkSaisie($event)"
+                *ngIf="prelevement.idTypePrelevement === enumTypePrelevement.METAOP
+                && momentPrelevement === 'après'
+                && prelevement.idStatutPrelevement != enumStatutPrelevement.NON_EFFECTUE">
+        </app-meta-operateur-apres>
+        <app-prelevement-mest
+            [prelevement]="prelevement"
+            [isEditable]="isEditable"
+            (emitPrelevement)="checkSaisie($event)"
+            *ngIf="prelevement.idTypePrelevement === enumTypePrelevement.MEST
+            && prelevement.idStatutPrelevement != enumStatutPrelevement.NON_EFFECTUE">
+        </app-prelevement-mest>
+    </div>
+</div>
+
+<div class="bloc" *ngIf="intervention.idStatut !== enumStatutIntervention.TERMINE">
+    <div class="action">
+        <div class="button" (click)="save()">
+            Enregister
+        </div>
+        <div class="button" (click)="terminerIntervention()">
+            Terminer l'intervention
+        </div>
+    </div>
+</div>

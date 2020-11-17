@@ -1,0 +1,19 @@
+<div class="content">
+  <i class="fas fa-times btn-close" (click)="emitClose.emit()"></i>
+  <app-liste-prelevement
+          *ngIf="typeModal === 'liste'"
+          [nonPreleve]="nonPreleve"
+          [intervention]="intervention"
+          [modal]="true"
+          [idParent]="idParent"
+          [application]="application"
+          (emitPrelevements)="emitPrelevements.emit($event)"
+  ></app-liste-prelevement>
+  <app-prelevement
+          *ngIf="typeModal === 'new'"
+          [modal]="true"
+          [isNew]="true"
+          [idChantier]="idChantier"
+          (emitPrelevements)="emitPrelevements.emit($event)"
+  ></app-prelevement>
+</div>

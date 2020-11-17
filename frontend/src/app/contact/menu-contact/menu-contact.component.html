@@ -1,0 +1,14 @@
+<nav class="menu-gauche">
+  <div *ngIf="idType && type === 'compte'" [class.active]="activeMenu === 'modifier'" [routerLink]="['/contact/compte', idType, 'modifier']">Informations</div>
+  <div *ngIf="!idType && type === 'compte'" [class.active]="activeMenu === 'ajouter'">Informations</div>
+  <div *ngIf="idType && type === 'contact'" [class.active]="activeMenu === 'modifier'" [routerLink]="['/contact/contact', idType, 'modifier']">Informations</div>
+  <div *ngIf="!idType && type === 'contact'" [class.active]="activeMenu === 'ajouter'">Informations</div>
+  <div *ngIf="idType" [class.active]="activeMenu === 'activite'" [routerLink]="['/contact', type, idType, 'activite']">Activités</div>
+
+  <div *ngIf="idType && type === 'compte'" [class.active]="activeMenu === 'processus'" [routerLink]="['/contact', type, idType, 'processus']">Processus</div>
+  <div *ngIf="activeMenu === 'processus' && idProcessus" [class.active]="activeSousMenu === 'modifier'" [routerLink]="['/contact', type, idType, 'processus', idProcessus, 'modifier']" class="sous-menu"><i class="fas fa-angle-double-right"></i> Informations</div>
+  <div *ngIf="activeMenu === 'processus' && idProcessus" [class.active]="activeSousMenu === 'historique'" [routerLink]="['/contact', type, idType, 'processus', idProcessus, 'historique']" class="sous-menu"><i class="fas fa-angle-double-right"></i> Historique</div>
+  <div *ngIf="activeMenu === 'processus' && idProcessus" [class.active]="activeSousMenu === 'prelevement'" [routerLink]="['/contact', type, idType, 'processus', idProcessus, 'prelevement']" class="sous-menu"><i class="fas fa-angle-double-right"></i> Prélèvements</div>
+
+  <div *ngIf="idType" [class.active]="activeMenu === 'historique'" [routerLink]="['/contact', type, idType, 'historique']">Historique</div>
+</nav>
